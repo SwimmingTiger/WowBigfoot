@@ -118,7 +118,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</StatusBar>
 		</Frames>
 	</Frame>
-	<Button name="SpellTimerFrameBFCD" frameStrata="MEDIUM" movable="true" clampedToScreen="true" enableMouse="true" parent="UIParent" hidden="true">
+	<Button name="SpellTimerFrameBFCD" frameStrata="MEDIUM" movable="true" clampedToScreen="true" enableMouse="true" parent="UIParent" hidden="true" inherits="BackdropTemplate">
 		<Size>
 			<AbsDimension x="190" y="10"/>
 		</Size>

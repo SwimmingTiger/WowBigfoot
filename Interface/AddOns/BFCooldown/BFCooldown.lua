@@ -6,7 +6,9 @@ local GetInventoryItemID = GetInventoryItemID;
 local GetSpellTexture = GetSpellTexture;
 local GetSpellCooldown = GetSpellCooldown;
 local GetSpellInfo = GetSpellInfo
-local CreateFrame = CreateFrame;
+local CreateFrame = function(frameType, name, parent, template, ...)
+    return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
 local IsActionInRange = IsActionInRange;
 local find = string.find;
 local font = GameTooltipTextLeft1:GetFont();
@@ -713,7 +715,7 @@ function CD:HookCooldown()
             actionButton_Register(frame)
         end
     end
-    hooksecurefunc('ActionBarButtonEventsFrame_RegisterFrame',
+    hooksecurefunc(ActionBarButtonEventsFrame, 'RegisterFrame',
                    actionButton_Register)
 end
 function CD:SPELL_UPDATE_COOLDOWN()
