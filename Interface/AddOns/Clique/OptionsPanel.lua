@@ -147,8 +147,8 @@ end
 
 StaticPopupDialogs["CLIQUE_CONFIRM_PROFILE_DELETE"] = {
 	preferredIndex = STATICPOPUPS_NUMDIALOGS,
-    button1 = YES,
-    button2 = NO,
+    button1 = "Yes",
+    button2 = "No",
     hideOnEscape = 1,
     timeout = 0,
     whileDead = 1,
@@ -157,8 +157,8 @@ StaticPopupDialogs["CLIQUE_CONFIRM_PROFILE_DELETE"] = {
 StaticPopupDialogs["CLIQUE_NEW_PROFILE"] = {
 	preferredIndex = STATICPOPUPS_NUMDIALOGS,
 	text = "Enter the name of a new profile you'd like to create",
-	button1 = OKAY,
-	button2 = CANCEL,
+	button1 = "Okay",
+	button2 = "Cancel",
 	OnAccept = function(self)
 		local base = self:GetName()
 		local editbox = _G[base .. "EditBox"]

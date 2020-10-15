@@ -165,7 +165,7 @@ local function enable(frame)
     end
 
     -- skip the nameplates, they're TEHBROKEN
-    if frame and frame.GetName and frame:GetName():match("^NamePlate") then
+    if frame and frame.GetName and frame:GetName() and frame:GetName() :match("^NamePlate") then
         return
     end
 
@@ -183,18 +183,12 @@ function addon:Enable_BlizzCompactUnitFrames()
             return
         end
 
-        local name = frame and frame.GetName and frame:GetName()
         for i = 1, 3 do
-            local buff = _G[name .. "Buff" .. i]
-            local debuff = _G[name .. "Debuff" .. i]
-            local dispel = _G[name .. "DispelDebuff" .. i]
-			local statusIcon = _G[name .. "CenterStatusIcon" .. i]
+            local buffFrame = frame.BuffFrame
 
-            if buff then enable(buff) end
-            if debuff then enable(debuff) end
-            if dispel then enable(dispel) end
-			if statusIcon then enable(statusIcon) end
+            if buffFrame then enable(buffFrame) end
         end
+
         enable(frame)
     end)
 end

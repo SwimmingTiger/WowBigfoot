@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ http://wowprogramming.com/FrameXML/UI.xsd">
     <Button name="CliqueRowTemplate" enableMouse="true" virtual="true">
         <Size x="298" y="30"/>
@@ -328,7 +329,7 @@
                             </Anchors>
                         </ButtonText>
                     </Button>
-                    <Slider name="$parent_VSlider" parentKey="slider" valueStep="1.0" hidden="true" orientation="VERTICAL">
+                    <Slider name="$parent_VSlider" parentKey="slider" valueStep="1.0" hidden="true" orientation="VERTICAL" inherits="BackdropTemplate">
                         <Size x="18" y="0"/>
                         <Anchors>
                             <Anchor point="TOPRIGHT" x="0" y="-20"/>
@@ -453,7 +454,7 @@
                     </Button>
 
                     <!-- Wrap the scroll frame in a frame that can capture clicks -->
-                    <Button name="CliqueClickGrabber" parentKey="clickGrabber">
+                    <Button name="CliqueClickGrabber" parentKey="clickGrabber" inherits="BackdropTemplate">
                         <Size x="320" y="160"/>
                         <Anchors>
                             <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
