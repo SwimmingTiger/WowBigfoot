@@ -1,9 +1,8 @@
 local mod	= DBM:NewMod("Annihilon", "DBM-GarrisonInvasions")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(90802)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
@@ -14,13 +13,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_START"
 )
 
-local warnVoidBomb				= mod:NewTargetAnnounce(180939, 3)
-local warnWhirlingVoid			= mod:NewTargetAnnounce(180932, 2)
-local warnTwistMind				= mod:NewTargetAnnounce(180950, 4)
+local warnVoidBomb		= mod:NewTargetAnnounce(180939, 3)
+local warnWhirlingVoid	= mod:NewTargetAnnounce(180932, 2)
+local warnTwistMind		= mod:NewTargetAnnounce(180950, 4)
 
-local specWarnVoidBomb			= mod:NewSpecialWarningYou(180939, nil, nil, nil, 1, 2)
-local yellVoidBomb				= mod:NewYell(180939)
-local specWarnTwistMind			= mod:NewSpecialWarningSwitch(180950, "Dps", nil, nil, 1, 2)
+local specWarnVoidBomb	= mod:NewSpecialWarningYou(180939, nil, nil, nil, 1, 2)
+local yellVoidBomb		= mod:NewYell(180939)
+local specWarnTwistMind	= mod:NewSpecialWarningSwitch(180950, "Dps", nil, nil, 1, 2)
 
 mod:AddHudMapOption("HudMapOnMC", 180950)
 
@@ -42,7 +41,7 @@ end
 
 function mod:OnCombatEnd()
 	if self.Options.HudMapOnMC then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
 end
 
@@ -55,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnTwistMind:Play("findmc")
 		end
 		if self.Options.HudMapOnMC then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 30, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 5, 30, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	end
 end
@@ -64,7 +63,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 180950 then
 		if self.Options.HudMapOnMC then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	end
 end

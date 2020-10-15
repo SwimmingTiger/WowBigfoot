@@ -1,9 +1,8 @@
 local mod	= DBM:NewMod("Drogan", "DBM-GarrisonInvasions")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 23 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(90841)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
@@ -13,10 +12,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 180880"
 )
 
-local warnWhirlingAxe			= mod:NewSpellAnnounce(180882, 3)
-local warnChainGrasp			= mod:NewTargetAnnounce(180880, 3)
+local warnWhirlingAxe		= mod:NewSpellAnnounce(180882, 3)
+local warnChainGrasp		= mod:NewTargetAnnounce(180880, 3)
 
-local specWarnChainGrasp		= mod:NewSpecialWarningYou(180880, nil, nil, nil, 1, 5)--Persists for 30 seconds or until you get 30 yards from boss, whichever first.
+local specWarnChainGrasp	= mod:NewSpecialWarningYou(180880, nil, nil, nil, 1, 5)--Persists for 30 seconds or until you get 30 yards from boss, whichever first.
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId

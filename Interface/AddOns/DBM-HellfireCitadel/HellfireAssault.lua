@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1426, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(90019)--Main ID is door, door death= win. 94515 Siegemaster Mar'tak
 mod:SetEncounterID(1778)
-mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod.syncThreshold = 4
 mod.respawnTime = 29
@@ -15,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 184394 181155 185816 183452 181968 180945 190748",
 	"SPELL_AURA_APPLIED 180079 184243 180927 184369 180076",
 	"SPELL_AURA_APPLIED_DOSE 184243",
-	"SPELL_AURA_REMOVED 184369 184243",
+	"SPELL_AURA_REMOVED 184369",
 	"SPELL_CAST_SUCCESS 184370",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
@@ -90,11 +89,6 @@ local timerSiegeVehicleCD			= mod:NewTimer(60, "timerSiegeVehicleCD", 160240, ni
 
 --local berserkTimer				= mod:NewBerserkTimer(360)
 
-local countdownHowlingAxe			= mod:NewCountdownFades("Alt7", 184369)
-local countdownSlam					= mod:NewCountdownFades("Alt11", 184243, false)
-
-local voiceFelfireSiegeVehicles		= mod:NewVoice("ej11428")--One option for locations, independant of integration with vehicle announce objects.
-
 mod:AddRangeFrameOption(8, 184369)
 mod:AddHudMapOption("HudMapOnAxe", 184369)
 --mod:AddSetIconOption("SetIconOnAdds", "ej11411", false, true)--If last wave isn't dead before new wave, this icon option will screw up. A more complex solution may be needed. Or just accept that this will only work for guilds with high dps
@@ -161,8 +155,8 @@ function mod:OnCombatStart(delay)
 	timerBerserkersCD:Start(29.5-delay, 1)
 	timerFelCastersCD:Start(35-delay, 1)
 	if self:IsMythic() then
-		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_LEFT..")")
-		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_RIGHT..")")
+		timerSiegeVehicleCD:Start(52.5-delay, "("..DBM_CORE_L.LEFT..")")
+		timerSiegeVehicleCD:Start(55-delay, "("..DBM_CORE_L.RIGHT..")")
 	else
 		timerSiegeVehicleCD:Start(37.8-delay, "")
 	end
@@ -173,9 +167,9 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnAxe then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
-end 
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -218,10 +212,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			warnSlam:Show(args.destName, amount)
 		end
-		if args:IsPlayer() then
-			countdownSlam:Cancel()
-			countdownSlam:Start()
-		end
 	elseif spellId == 180927 then--Vehicle Spawns
 		self.vb.vehicleCount = self.vb.vehicleCount + 1
 		local Count = self.vb.vehicleCount
@@ -251,35 +241,24 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Code will create left and right and center timers and will almost always show 2 timers at once for the split format of fight
 			--Center timers are only exception
 			if Count == 1 or Count == 3 or Count == 5 or Count == 12 or Count == 14 or Count == 16 or Count == 18 then--Left
-				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_LEFT..")")
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_L.LEFT..")")
 				DBM:Debug("Starting a left vehicle timer")
-				voiceFelfireSiegeVehicles:Schedule(1, "left")--Schedule voice here because it's a left vehicle starting a timer for another left vehicle
 			elseif Count == 2 or Count == 4 or Count == 6 or Count == 13 or Count == 15 or Count == 17 or Count == 19 then--Right
-				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_L.RIGHT..")")
 				DBM:Debug("Starting a right vehicle timer")
-				voiceFelfireSiegeVehicles:Schedule(1, "right")--Schedule voice here because it's a right vehicle starting a timer for another right vehicle
 			elseif Count == 11 then--Last center, start both next left and right timers
-				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count-1], "("..DBM_CORE_LEFT..")")--Time for this one stored in 10 slot in table
-				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_RIGHT..")")
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count-1], "("..DBM_CORE_L.LEFT..")")--Time for this one stored in 10 slot in table
+				timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_L.RIGHT..")")
 				DBM:Debug("Starting a left and a right vehicle timer after center phase")
-				voiceFelfireSiegeVehicles:Schedule(1, "center")
 			elseif Count == 7 or Count == 8 or Count == 9 then--Center
 				if Count == 8 then--Hack to allow timer not to overwrite another center timer
-					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "( "..DBM_CORE_MIDDLE.." )")
+					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "( "..DBM_CORE_L.MIDDLE.." )")
 				else
-					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_MIDDLE..")")
+					timerSiegeVehicleCD:Start(mythicVehicleTimers[Count], "("..DBM_CORE_L.MIDDLE..")")
 				end
 				DBM:Debug("Starting a Center timer")
-				if Count == 7 then--Need a left voice
-					voiceFelfireSiegeVehicles:Schedule(1, "left")
-				elseif Count == 8 then--Now right voice
-					voiceFelfireSiegeVehicles:Schedule(1, "right")
-				else--Finally, center voice
-					voiceFelfireSiegeVehicles:Schedule(1, "center")
-				end
 			elseif Count == 10 then--No timer started at 10
 				DBM:Debug("Doing no timer for vehicle 10")
-				voiceFelfireSiegeVehicles:Schedule(1, "center")
 				return
 			else
 				DBM:AddMsg("No Vehicle timer information beyond this point. If you have log or video of this pull, please share it")
@@ -305,12 +284,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnHowlingAxe:Show()
 			yellHowlingAxe:Yell()
-			countdownHowlingAxe:Start()
 			specWarnHowlingAxe:Play("runout")
 			updateRangeFrame(self, true)
 		end
 		if self.Options.HudMapOnAxe then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(184369, "highlight", args.destName, 5, 7, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterRangeMarkerOnPartyMember(184369, "highlight", args.destName, 5, 7, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif spellId == 180076 then
 		warnSiphon:Show(args.destName)
@@ -322,21 +300,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 184369 then
 		if self.Options.HudMapOnAxe then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
-	elseif spellId == 184243 and args:IsPlayer() then
-		countdownSlam:Cancel()
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 93858 then--Gorebound Berserker
-		
+
 	elseif cid == 93931 then--Gorebound Felcaster
 		self.vb.felCastersAlive = self.vb.felCastersAlive - 1
 	elseif cid == 93881 then--Contract Engineer
-		
+
 	end
 end
 
@@ -373,13 +349,12 @@ function mod:OnSync(msg)
 	if not self:IsInCombat() then return end
 	if msg == "BossLeaving" and self:AntiSpam(20, 5) then
 		timerHowlingAxeCD:Stop()
-		countdownHowlingAxe:Cancel()
 		timerShockwaveCD:Stop()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
 		if self.Options.HudMapOnAxe then
-			DBMHudMap:Disable()
+			DBM.HudMap:Disable()
 		end
 	elseif msg == "Felcaster" then
 		self.vb.felcasterCount = self.vb.felcasterCount + 1

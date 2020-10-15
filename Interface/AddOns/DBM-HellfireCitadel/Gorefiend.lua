@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1372, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(90199)
 mod:SetEncounterID(1783)
-mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
 mod.respawnTime = 30
 
@@ -23,45 +22,42 @@ mod:RegisterEventsInCombat(
 
 --(ability.id = 181973 or ability.id = 181582 or ability.id = 187814) and type = "begincast" or (ability.id = 179977 or ability.id = 182170 or ability.id = 181085) and type = "cast" or (ability.id = 179864 or ability.id = 185982 or ability.id = 189131) and (type = "applydebuff" or type = "applybuff")
 --TODO, Touch of Doom was 25 seconds in LFR, tested after heroic. changed? VERIFY
-local warnShadowofDeath					= mod:NewTargetCountAnnounce(179864, 3)
-local warnTouchofDoom					= mod:NewTargetAnnounce(179978, 4)
-local warnSharedFate					= mod:NewTargetCountAnnounce(179909, 4, nil, "-Tank", 2)--Announce all 2/3
-local warnHungerforLife					= mod:NewTargetAnnounce(180148, 3, nil, false)--Knowing who has it not very important, only if it's on you
-local warnGoreboundSpiritSoon			= mod:NewSoonAnnounce("ej11020", 3, 187814)
-local warnRagingCharge					= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
-local warnCrushingDarkness				= mod:NewCastAnnounce(180017, 3, 6, nil, false)
+local warnShadowofDeath				= mod:NewTargetCountAnnounce(179864, 3)
+local warnTouchofDoom				= mod:NewTargetAnnounce(179978, 4)
+local warnSharedFate				= mod:NewTargetCountAnnounce(179909, 4, nil, "-Tank", 2)--Announce all 2/3
+local warnHungerforLife				= mod:NewTargetAnnounce(180148, 3, nil, false)--Knowing who has it not very important, only if it's on you
+local warnGoreboundSpiritSoon		= mod:NewSoonAnnounce("ej11020", 3, 187814)
+local warnRagingCharge				= mod:NewSpellAnnounce(187814, 3, nil, "Melee")
+local warnCrushingDarkness			= mod:NewCastAnnounce(180017, 3, 6, nil, false)
 
-local specWarnShadowofDeath				= mod:NewSpecialWarningYouCount(179864, nil, nil, nil, 1, 5)
-local specWarnShadowofDeathTank			= mod:NewSpecialWarningTaunt(179864, nil, nil, nil, 1, 2)
-local specWarnTouchofDoom				= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, 2)
-local yellTouchofDoom					= mod:NewYell(179977)
-local specWarnDoomWell					= mod:NewSpecialWarningMove(179995)
-local specWarnSharedFate				= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3, 2)--Only non rooted player get moveto. rooted player can't do anything.
-local yellSharedFate					= mod:NewYell(179909, 135484)--Only rooted player should yell
-local specWarnFeastofSouls				= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based
-local specWarnFeastofSoulsEnded			= mod:NewSpecialWarningEnd(181973)
-local specWarnHungerforLife				= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
-local specWarnEnragedSpirit				= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
-local specWarnGoreboundSpirit			= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
-local specWarnBurning					= mod:NewSpecialWarningStack(185189, nil, 4)
-local specWarnBurningOther				= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
-local specWarnBellowingShout			= mod:NewSpecialWarningInterrupt(181582, "HasInterrupt", nil, 2, 1, 2)
+local specWarnShadowofDeath			= mod:NewSpecialWarningYouCount(179864, nil, nil, nil, 1, 5)
+local specWarnShadowofDeathTank		= mod:NewSpecialWarningTaunt(179864, nil, nil, nil, 1, 2)
+local specWarnTouchofDoom			= mod:NewSpecialWarningRun(179977, nil, nil, nil, 4, 2)
+local yellTouchofDoom				= mod:NewYell(179977)
+local specWarnDoomWell				= mod:NewSpecialWarningMove(179995)
+local specWarnSharedFate			= mod:NewSpecialWarningMoveTo(179908, nil, nil, nil, 3, 2)--Only non rooted player get moveto. rooted player can't do anything.
+local yellSharedFate				= mod:NewYell(179909, 135484)--Only rooted player should yell
+local specWarnFeastofSouls			= mod:NewSpecialWarningSpell(181973, nil, nil, nil, 2)--Energy based
+local specWarnFeastofSoulsEnded		= mod:NewSpecialWarningEnd(181973)
+local specWarnHungerforLife			= mod:NewSpecialWarningRun(180148, nil, nil, nil, 4, 2)
+local specWarnEnragedSpirit			= mod:NewSpecialWarningSwitch("ej11378", "-Healer")
+local specWarnGoreboundSpirit		= mod:NewSpecialWarningSwitch("ej11020", "-Healer")
+local specWarnBurning				= mod:NewSpecialWarningStack(185189, nil, 4)
+local specWarnBurningOther			= mod:NewSpecialWarningTaunt(185189, nil, nil, nil, nil, 2)
+local specWarnBellowingShout		= mod:NewSpecialWarningInterrupt(181582, "HasInterrupt", nil, 2, 1, 2)
 
-local timerShadowofDeathCDDps			= mod:NewTimer(30, "SoDDPS2", 179864, "Dps", nil, 5)
-local timerShadowofDeathCDTank			= mod:NewTimer(30, "SoDTank2", 179864, "Tank", nil, 5)
-local timerShadowofDeathCDHealer		= mod:NewTimer(30, "SoDHealer2", 179864, "Healer", nil, 5)
-local timerTouchofDoomCD				= mod:NewCDTimer(18, 179977, nil, nil, nil, 3)--25 seconds in LFR, tested after heroic. changed? VERIFY
-local timerSharedFateCD					= mod:NewNextCountTimer(29, 179909, nil, "-Tank", 2, 3, nil, DBM_CORE_DEADLY_ICON)--29-31
-local timerCrushingDarknessCD			= mod:NewNextTimer(10, 180017, nil, false, 2, 2)--Actually 16, but i delay start by 6 seconds for reduced spam
-local timerFeastofSouls					= mod:NewNextTimer(123.5, 181973, nil, nil, nil, 6)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
+local timerShadowofDeathCDDps		= mod:NewTimer(30, "SoDDPS2", 179864, "Dps", nil, 5)
+local timerShadowofDeathCDTank		= mod:NewTimer(30, "SoDTank2", 179864, "Tank", nil, 5)
+local timerShadowofDeathCDHealer	= mod:NewTimer(30, "SoDHealer2", 179864, "Healer", nil, 5)
+local timerTouchofDoomCD			= mod:NewCDTimer(18, 179977, nil, nil, nil, 3)--25 seconds in LFR, tested after heroic. changed? VERIFY
+local timerSharedFateCD				= mod:NewNextCountTimer(29, 179909, nil, "-Tank", 2, 3, nil, DBM_CORE_L.DEADLY_ICON)--29-31
+local timerCrushingDarknessCD		= mod:NewNextTimer(10, 180017, nil, false, 2, 2)--Actually 16, but i delay start by 6 seconds for reduced spam
+local timerFeastofSouls				= mod:NewNextTimer(123.5, 181973, nil, nil, nil, 6)--Probably next timer too, or close to it, depends how consistent energy gains are, may have small variation, like gruul
 
-local timerDigest						= mod:NewCastTimer(40, 181295, nil, nil, nil, nil, nil, DBM_CORE_DEADLY_ICON)
-local timerCrushingDarkness				= mod:NewCastTimer(6, 180017, nil, false)
+local timerDigest					= mod:NewCastTimer(40, 181295, nil, nil, nil, nil, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 8)
+local timerCrushingDarkness			= mod:NewCastTimer(6, 180017, nil, false)
 
---local berserkTimer					= mod:NewBerserkTimer(360)
-
-local countdownShadowofDeath			= mod:NewCountdownFades("Alt5", 179864)
-local countdownDigest					= mod:NewCountdown("Alt40", 181295, nil, nil, 8)
+--local berserkTimer				= mod:NewBerserkTimer(360)
 
 mod:AddSetIconOption("SetIconOnFate", 179909)
 mod:AddSetIconOption("SetIconOnDoom", 179977, false)
@@ -105,7 +101,7 @@ local function sharedFateDelay(self)
 	if self.vb.rootedFate then
 		local marker1
 		if self.Options.HudMapOnSharedFate and not playerDown and (playerHasFate or not self.Options.ShowOnlyPlayer) then
-			marker1 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179909, "party", self.vb.rootedFate, 0.6, 10, nil, nil, nil, 0.5):Appear():SetLabel(self.vb.rootedFate, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
+			marker1 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(179909, "party", self.vb.rootedFate, 0.6, 10, nil, nil, nil, 0.5):Appear():SetLabel(self.vb.rootedFate, nil, nil, nil, nil, nil, 0.8, nil, -17, 11, nil)
 		end
 		for i = 1, #sharedFateTargets do
 			local name = sharedFateTargets[i]
@@ -114,7 +110,7 @@ local function sharedFateDelay(self)
 				specWarnSharedFate:Play("linegather")
 			end
 			if marker1 and name and DBM:GetRaidUnitId(name) then
-				local marker2 = DBMHudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.4, 10, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
+				local marker2 = DBM.HudMap:RegisterRangeMarkerOnPartyMember(179908, "party", name, 0.4, 10, nil, nil, nil, 0.5):Appear():SetLabel(name, nil, nil, nil, nil, nil, 0.8, nil, -16, 9, nil)
 				if name == playerName or self.vb.rootedFate == playerName then--Green line since player is in link
 					marker1:EdgeTo(marker2, nil, 10, 0, 1, 0, 0.5)
 				else--Yellow Line since player is not in link
@@ -136,9 +132,9 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(5)
 	end
 	if self:IsMythic() then
-		timerShadowofDeathCDDps:Start(2-delay, "2x"..DBM_CORE_DAMAGE_ICON)
-		timerShadowofDeathCDTank:Start(9-delay, "1x"..DBM_CORE_TANK_ICON)
-		timerShadowofDeathCDHealer:Start(21-delay, "2x"..DBM_CORE_HEALER_ICON)
+		timerShadowofDeathCDDps:Start(2-delay, "2x"..DBM_CORE_L.DAMAGE_ICON)
+		timerShadowofDeathCDTank:Start(9-delay, "1x"..DBM_CORE_L.TANK_ICON)
+		timerShadowofDeathCDHealer:Start(21-delay, "2x"..DBM_CORE_L.HEALER_ICON)
 	else
 		local numDpsPlayers = 1
 		local numHealerPlayers = 1
@@ -151,9 +147,9 @@ function mod:OnCombatStart(delay)
 			numDpsPlayers = 4
 		end
 		if playersCount >= 20 then numHealerPlayers = 2 end--2 healers 20 players or over
-		timerShadowofDeathCDDps:Start(2-delay, numDpsPlayers.."x"..DBM_CORE_DAMAGE_ICON, 1)
-		timerShadowofDeathCDTank:Start(13-delay, "1x"..DBM_CORE_TANK_ICON, 2)
-		timerShadowofDeathCDHealer:Start(30-delay, numHealerPlayers.."x"..DBM_CORE_HEALER_ICON, 3)
+		timerShadowofDeathCDDps:Start(2-delay, numDpsPlayers.."x"..DBM_CORE_L.DAMAGE_ICON, 1)
+		timerShadowofDeathCDTank:Start(13-delay, "1x"..DBM_CORE_L.TANK_ICON, 2)
+		timerShadowofDeathCDHealer:Start(30-delay, numHealerPlayers.."x"..DBM_CORE_L.HEALER_ICON, 3)
 	end
 	timerCrushingDarknessCD:Start(5-delay)
 	timerTouchofDoomCD:Start(9-delay)
@@ -172,12 +168,12 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnSharedFate then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-end 
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -213,7 +209,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShadowofDeath:CombinedShow(0.5, self.vb.shadowOfDeathCount, args.destName)
 		if args:IsPlayer() then
 			specWarnShadowofDeath:Show(self.vb.shadowOfDeathCount)
-			countdownShadowofDeath:Start()
 			specWarnShadowofDeath:Play("teleyou")
 		end
 		--Check if it's a tank (todo, maybe just change it to count == 2 to reduce cpu, the tank is pretty much always 2/6
@@ -272,10 +267,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			if self:IsMythic() then
 				timerDigest:Start(35)
-				countdownDigest:Start(35)
 			else
 				timerDigest:Start()
-				countdownDigest:Start()
 			end
 			playerDown = true
 			if self.Options.RangeFrame then
@@ -309,8 +302,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		self.vb.rootedFate = nil
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:FreeEncounterMarkerByTarget(179909, args.destName)
-			--fDBMHudMap:ClearAllEdges()
+			DBM.HudMap:FreeEncounterMarkerByTarget(179909, args.destName)
+			--fDBM.HudMap:ClearAllEdges()
 		end
 		if self.Options.SetIconOnFate then
 			self:SetIcon(args.destName, 0)
@@ -320,12 +313,11 @@ function mod:SPELL_AURA_REMOVED(args)
 			playerHasFate = false
 		end
 		if self.Options.HudMapOnSharedFate then
-			DBMHudMap:FreeEncounterMarkerByTarget(179908, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(179908, args.destName)
 		end
 	elseif spellId == 181295 then
 		if args:IsPlayer() then
 			timerDigest:Stop()
-			countdownDigest:Cancel()
 			playerDown = false
 			if self.Options.RangeFrame and self:IsInCombat() then
 				DBM.RangeCheck:Show(5)
@@ -394,12 +386,12 @@ function mod:OnSync(msg)
 		local count = self.vb.shadowOfDeathCount
 		if self:IsMythic() then
 			if count == 1 or count == 4 or count == 5 then--DPS 4x (3 timers)
-				timerShadowofDeathCDDps:Start(27, "2x"..DBM_CORE_DAMAGE_ICON)
+				timerShadowofDeathCDDps:Start(27, "2x"..DBM_CORE_L.DAMAGE_ICON)
 			elseif count == 2 then--Tank 2x (1 timer)
-				timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
+				timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_L.TANK_ICON)
 			elseif count == 3 then--Healer 2x (1 timer)
-				timerShadowofDeathCDHealer:Start(45, "2x"..DBM_CORE_HEALER_ICON)
-			end	
+				timerShadowofDeathCDHealer:Start(45, "2x"..DBM_CORE_L.HEALER_ICON)
+			end
 		else
 			if count == 1 or count == 4 then--DPS 3x (2 timers)
 				local numPlayers = 1
@@ -415,14 +407,14 @@ function mod:OnSync(msg)
 				if count == 4 and (playersCount == 15 or playersCount == 16 or playersCount == 21 or playersCount == 22) then--subtrack 1 from above for 2nd cast
 					numPlayers = numPlayers - 1
 				end
-				timerShadowofDeathCDDps:Start(36, numPlayers.."x"..DBM_CORE_DAMAGE_ICON)
+				timerShadowofDeathCDDps:Start(36, numPlayers.."x"..DBM_CORE_L.DAMAGE_ICON)
 			elseif count == 2 then--Tank 1x (0 timers)
 				--Do nothing, only one tank is sent
-				--timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_TANK_ICON)
+				--timerShadowofDeathCDTank:Start(60, "1x"..DBM_CORE_L.TANK_ICON)
 			elseif count == 3 and playersCount > 10 then--Healer 2x (1 timer). Only gets a 2nd one if > 10 players
 				local numPlayers = 1--Only one healer for 11-28 players
 				if playersCount >= 29 then numPlayers = 2 end--Only 2 healers for player count 29 and 30
-				timerShadowofDeathCDHealer:Start(36, numPlayers.."x"..DBM_CORE_HEALER_ICON)
+				timerShadowofDeathCDHealer:Start(36, numPlayers.."x"..DBM_CORE_L.HEALER_ICON)
 			end
 		end
 	elseif msg == "FeastEnded" then
@@ -430,9 +422,9 @@ function mod:OnSync(msg)
 		specWarnFeastofSoulsEnded:Show()
 		--Timers exactly same as pull
 		if self:IsMythic() then
-			timerShadowofDeathCDDps:Start(2, "2x"..DBM_CORE_DAMAGE_ICON)
-			timerShadowofDeathCDTank:Start(9, "1x"..DBM_CORE_TANK_ICON)
-			timerShadowofDeathCDHealer:Start(21, "2x"..DBM_CORE_HEALER_ICON)
+			timerShadowofDeathCDDps:Start(2, "2x"..DBM_CORE_L.DAMAGE_ICON)
+			timerShadowofDeathCDTank:Start(9, "1x"..DBM_CORE_L.TANK_ICON)
+			timerShadowofDeathCDHealer:Start(21, "2x"..DBM_CORE_L.HEALER_ICON)
 			if self.Options.InfoFrame then
 				--Switch back to digest
 				DBM.InfoFrame:SetHeader(digestDebuff)
@@ -450,9 +442,9 @@ function mod:OnSync(msg)
 				numDpsPlayers = 4
 			end
 			if playersCount >= 20 then numHealerPlayers = 2 end--2 healers 20 players or over
-			timerShadowofDeathCDDps:Start(2, numDpsPlayers.."x"..DBM_CORE_DAMAGE_ICON)
-			timerShadowofDeathCDTank:Start(13, "1x"..DBM_CORE_TANK_ICON)
-			timerShadowofDeathCDHealer:Start(30, numHealerPlayers.."x"..DBM_CORE_HEALER_ICON)
+			timerShadowofDeathCDDps:Start(2, numDpsPlayers.."x"..DBM_CORE_L.DAMAGE_ICON)
+			timerShadowofDeathCDTank:Start(13, "1x"..DBM_CORE_L.TANK_ICON)
+			timerShadowofDeathCDHealer:Start(30, numHealerPlayers.."x"..DBM_CORE_L.HEALER_ICON)
 		end
 		timerCrushingDarknessCD:Start(5)
 		timerTouchofDoomCD:Start(9)

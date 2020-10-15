@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1391, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806143035")
 mod:SetCreatureID(89890)
 mod:SetEncounterID(1777)
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod.respawnTime = 30
 
@@ -36,6 +35,7 @@ local specWarnWakeofDestruction			= mod:NewSpecialWarningSpell(181499, nil, nil,
 --Armed
 local specWarnDisarmedEnd				= mod:NewSpecialWarningEnd(179667)
 local specWarnSoulCleave				= mod:NewSpecialWarningCount(179406, "Melee", nil, nil, 1, 5)
+local specWarnDisembodiedYou			= mod:NewSpecialWarningYou(179407)
 local specWarnDisembodied				= mod:NewSpecialWarningTaunt(179407)
 local specWarnBefouled					= mod:NewSpecialWarningMoveAway(179711)--Aoe damage was disabled on ptr, bug?
 local specWarnBefouledOther				= mod:NewSpecialWarningTargetCount(179711, false)
@@ -47,19 +47,14 @@ local yellSeedsofDestruction			= mod:NewYell(181508)
 
 --Armed
 local timerRumblingFissureCD			= mod:NewNextTimer(39, 179582, 161600, nil, nil, 5)
-local timerBefouledCD					= mod:NewNextTimer(38, 179711, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON)
-local timerSoulCleaveCD					= mod:NewNextTimer(40, 179406, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerBefouledCD					= mod:NewNextTimer(38, 179711, nil, nil, nil, 3, nil, DBM_CORE_L.HEALER_ICON)
+local timerSoulCleaveCD					= mod:NewNextTimer(40, 179406, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerCavitationCD					= mod:NewNextTimer(40, 181461, nil, nil, nil, 2)
 --Disarmed
-local timerDisarmCD						= mod:NewNextTimer(85.8, 179667, nil, nil, nil, 6)
-local timerSeedsofDestructionCD			= mod:NewNextCountTimer(14.5, 181508, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--14.5-16
+local timerDisarmCD						= mod:NewNextTimer(85.8, 179667, nil, nil, nil, 6, nil, nil, nil, 1, 4)
+local timerSeedsofDestructionCD			= mod:NewNextCountTimer(14.5, 181508, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 3, 4)--14.5-16
 
 --local berserkTimer					= mod:NewBerserkTimer(360)
-
-local countdownDisarm					= mod:NewCountdown(85.8, 179667)
-local countdownDisembodied				= mod:NewCountdownFades("AltTwo15", 179407, false)--Depends on whether or not you are going down.
-local countdownSeedsofDestructionCD		= mod:NewCountdown(14.5, 181508)--Seeds cannot be cast while disarm countdown is running, so this is fine.
-local countdownSeedsofDestruction		= mod:NewCountdownFades("Alt5", 181508)--Alt count for expiring is good.
 
 mod:AddRangeFrameOption(10, 179711)
 mod:AddInfoFrameOption(182008, false)
@@ -106,7 +101,7 @@ local iconedAssignments = {RAID_TARGET_1, RAID_TARGET_2, RAID_TARGET_3, RAID_TAR
 local iconedVoiceAssignments = {"mm1", "mm2", "mm3", "mm4", "mm5"}
 local numberedAssignments = {1, 2, 3, 4, 5}
 local numberedVoiceAssignments = {"\\count\\1", "\\count\\2", "\\count\\3", "\\count\\4", "\\count\\5"}
-local DirectionLineAssignments = {DBM_CORE_LEFT, DBM_CORE_MIDDLE..DBM_CORE_LEFT, DBM_CORE_MIDDLE, DBM_CORE_MIDDLE..DBM_CORE_RIGHT, DBM_CORE_RIGHT}
+local DirectionLineAssignments = {DBM_CORE_L.LEFT, DBM_CORE_L.MIDDLE..DBM_CORE_L.LEFT, DBM_CORE_L.MIDDLE, DBM_CORE_L.MIDDLE..DBM_CORE_L.RIGHT, DBM_CORE_L.RIGHT}
 local DirectionVoiceAssignments = {"left", "centerleft", "center", "centerright", "right"}
 local function warnSeeds(self)
 	--Sort alphabetical to match bigwigs, and since combat log order may diff person to person
@@ -144,15 +139,15 @@ local function warnSeeds(self)
 		end
 		if self.Options.HudMapOnSeeds then
 			if i == 1 then--Yellow to match Star
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "star", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(181508, "star", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
 			elseif i == 2 then--Orange to match Circle
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "circle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(181508, "circle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
 			elseif i == 3 then--Purple to match Diamond
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "diamond", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(181508, "diamond", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
 			elseif i == 4 then--Green to match Triangle
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "triangle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(181508, "triangle", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
 			else--White to match  Moon
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(181508, "moon", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(181508, "moon", targetName, 3, 13, 1, 1, 1, 0.5, nil, true):Pulse(0.5, 0.5)
 			end
 		end
 	end
@@ -171,7 +166,7 @@ local function delayModCheck(self)
 	if IsInRaid() and not IsPartyLFG() then--Future proof in case solo/not in a raid
 		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
-			if UnitIsGroupLeader(uId, LE_PARTY_CATEGORY_HOME) then
+			if UnitIsGroupLeader(uId, 1) then
 				if self:CheckBigWigs(DBM:GetUnitFullName(uId)) then
 					leaderHasBW = true
 				end
@@ -200,7 +195,6 @@ function mod:OnCombatStart(delay)
 	timerSoulCleaveCD:Start(25-delay, 1)
 	timerCavitationCD:Start(35-delay, 1)
 	timerDisarmCD:Start(86.7-delay)
-	countdownDisarm:Start(86.7-delay)
 	if UnitIsGroupLeader("player") and not self:IsLFR() then
 		if self.Options.SeedsBehavior == "Iconed" then
 			self:SendSync("Iconed")
@@ -226,12 +220,12 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnSeeds then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-end 
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -253,10 +247,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self.vb.SeedsCount = self.vb.SeedsCount + 1
 		if self.vb.Enraged then
 			timerSeedsofDestructionCD:Start(40, self.vb.SeedsCount+1)
-			countdownSeedsofDestructionCD:Start(40)
 		elseif self.vb.SeedsCount < 2 then--Only casts two between phases, unless enraged
 			timerSeedsofDestructionCD:Start(nil, self.vb.SeedsCount+1)
-			countdownSeedsofDestructionCD:Start(14.5)
 		end
 	elseif spellId == 179582 and self:AntiSpam(5, 4) then
 		self.vb.FissureCount = self.vb.FissureCount + 1
@@ -284,7 +276,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self:AntiSpam(5, 2) then
 			self:Schedule(3.5, warnWake, self)
-			countdownSeedsofDestruction:Start()--Everyone, because waves occur.
 		end
 		seedsTargets[#seedsTargets+1] = args.destName
 		self:Unschedule(warnSeeds)
@@ -309,13 +300,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		self.vb.SeedsCount = 0
 		specWarnDisarmed:Show()
 		timerSeedsofDestructionCD:Start(8.5, 1)--8.5-10
-		countdownSeedsofDestructionCD:Start(8.5)
 	elseif spellId == 179681 then--Enrage (has both armed and disarmed abilities)
 		timerDisarmCD:Stop()--Assumed
-		countdownDisarm:Cancel()
 		timerCavitationCD:Stop()
 		timerSeedsofDestructionCD:Stop()
-		countdownSeedsofDestructionCD:Cancel()
 		timerRumblingFissureCD:Stop()
 		timerSoulCleaveCD:Stop()
 		self.vb.Enraged = true
@@ -326,7 +314,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEnrage:Play("enrage")
 		timerRumblingFissureCD:Start(6, 1)--Keep an eye on this
 		timerSeedsofDestructionCD:Start(27, 1)
-		countdownSeedsofDestructionCD:Start(27)
 		timerCavitationCD:Start(35.5, 1)
 	elseif spellId == 189030 or spellId == 189031 or spellId == 189032 then
 		self.vb.befouledTargets = self.vb.befouledTargets + 1
@@ -344,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 179407 then
 		warnDisembodied:CombinedShow(0.3, self.vb.SoulCleaveCount, args.destName)
 		if args:IsPlayer() then
-			countdownDisembodied:Start()
+			specWarnDisembodiedYou:Show()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if self:IsTanking(uId, "boss1") then
@@ -364,7 +351,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.HudMapOnSeeds then
-			DBMHudMap:FreeEncounterMarkerByTarget(181508, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(181508, args.destName)
 		end
 	elseif spellId == 179667 then--Disarmed removed (armed)
 		self.vb.FissureCount = 0
@@ -377,7 +364,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSoulCleaveCD:Start(23, 1)
 		timerCavitationCD:Start(33, 1)
 		timerDisarmCD:Start()
-		countdownDisarm:Start()
 	elseif spellId == 182008 and self.Options.SetIconOnLatent then
 		self:SetIcon(args.destName, 0)
 	end
@@ -389,7 +375,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		warnWake(self)
 		if self.vb.Enraged or self.vb.CavitationCount == 1 then--Only casts two between phases, unless enraged
 			timerCavitationCD:Start(nil, self.vb.CavitationCount+1)
-		end	
+		end
 	end
 end
 
@@ -411,5 +397,5 @@ function mod:OnSync(msg)
 		self:Unschedule(delayModCheck)
 		self.vb.yellType = "FreeForAll"
 		DBM:AddMsg(L.DBMConfigMsg:format(msg))
-	end	
+	end
 end

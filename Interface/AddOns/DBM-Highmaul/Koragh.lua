@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1153, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(79015)
 mod:SetEncounterID(1723)
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 3, 2, 1)--Don't know total number of icons needed yet
 --Could not find sound path on internet
 
@@ -13,8 +12,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 162185 162184 172747 163517 162186 172895",
 	"SPELL_CAST_SUCCESS 161612",
-	"SPELL_AURA_APPLIED 156803 162186 161242 163472 172895 172917",
-	"SPELL_AURA_REMOVED 162186 163472 172895 156803",
+	"SPELL_AURA_APPLIED 156803 162186 161242 172895 172917",
+	"SPELL_AURA_REMOVED 162186 172895 156803",
 	"SPELL_DAMAGE 161612 161576",
 	"SPELL_ABSORBED 161612 161576",
 	"SPELL_MISSED 161612 161576",
@@ -27,7 +26,7 @@ local warnExpelMagicFrost			= mod:NewTargetAnnounce(161411, 3)
 local warnExpelMagicArcane			= mod:NewTargetAnnounce(162186, 4)
 local warnBallsSoon					= mod:NewPreWarnAnnounce(161612, 6.5, 2)
 local warnBallsHit					= mod:NewCountAnnounce(161612, 2)
-local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
+--local warnMC						= mod:NewTargetAnnounce(163472, 4)--Mythic
 local warnForfeitPower				= mod:NewCastAnnounce(163517, 4, nil, nil, false, 2)--Definitely Spammy (can have 8 up at once)
 local warnExpelMagicFel				= mod:NewTargetAnnounce(172895, 4)
 
@@ -44,7 +43,7 @@ local specWarnExpelMagicArcaneYou	= mod:NewSpecialWarningMoveAway(162186, nil, n
 local specWarnExpelMagicArcane		= mod:NewSpecialWarningTaunt(162186, nil, nil, nil, nil, 2)
 local yellExpelMagicArcane			= mod:NewYell(162186)
 local specWarnBallsSoon				= mod:NewSpecialWarningPreWarn(161612, nil, 6.5, nil, nil, nil, 2)
-local specWarnMC					= mod:NewSpecialWarningSwitch(163472, "Dps", nil, nil, 1, 2)
+--local specWarnMC					= mod:NewSpecialWarningSwitch(163472, "Dps", nil, nil, 1, 2)
 local specWarnForfeitPower			= mod:NewSpecialWarningInterrupt(163517)--Spammy?
 local specWarnExpelMagicFel			= mod:NewSpecialWarningYou(172895)--Maybe needs "do not move" warning or at very least "try not to move" since sometimes you have to move for trample.
 local specWarnExpelMagicFelFades	= mod:NewSpecialWarning("specWarnExpelMagicFelFades", nil, nil, nil, 3, 2)--No generic that describes this
@@ -53,27 +52,23 @@ local specWarnExpelMagicFelMove		= mod:NewSpecialWarningMove(172917)--Under you 
 
 local timerVulnerability			= mod:NewBuffActiveTimer(23, 160734, nil, nil, nil, 6)--more like 23-24 than 20
 local timerTrampleCD				= mod:NewCDTimer(16, 163101, nil, nil, nil, 3)
-local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185, nil, false, 2)--Has countdown, and fight has a lot of itmers now, i found this timer HIGHLY distracting when trying to process multiple important ability cds at once.
+local timerExpelMagicFire			= mod:NewBuffFadesTimer(11.5, 162185, nil, false, 2, 5, nil, nil, nil, 1, 4)
 local timerExpelMagicFireCD			= mod:NewCDTimer(58, 162185, nil, nil, nil, 3)--58-66 Variation
 local timerExpelMagicFrost			= mod:NewBuffActiveTimer(20, 161411, nil, false, 3)
 local timerExpelMagicFrostCD		= mod:NewCDTimer(60, 161411, nil, nil, nil, 2)--60-63 variation
 local timerExpelMagicShadowCD		= mod:NewCDTimer(59, 162184, nil, "Tank|Healer", nil, 5)--60-63 variation
 local timerExpelMagicArcane			= mod:NewTargetTimer(10, 162186, nil, "Tank|Healer")
-local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--26-32
-local timerBallsCD					= mod:NewNextCountTimer(30, 161612, nil, nil, nil, 5)
+local timerExpelMagicArcaneCD		= mod:NewCDTimer(26, 162186, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--26-32
+local timerBallsCD					= mod:NewNextCountTimer(30, 161612, nil, nil, nil, 5, nil, nil, nil, 1, 5)
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
-local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895, nil, "-Tank", 2, 3, nil, DBM_CORE_HEROIC_ICON)--Mythic
-local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895)--Mythic
-
-local countdownMagicFire			= mod:NewCountdownFades(11.5, 162185)
-local countdownBalls				= mod:NewCountdown("Alt30", 161612)
-local countdownFel					= mod:NewCountdownFades("AltTwo11", 172895)
+local timerExpelMagicFelCD			= mod:NewCDTimer(15.5, 172895, nil, "-Tank", 2, 3, nil, DBM_CORE_L.HEROIC_ICON)--Mythic
+local timerExpelMagicFel			= mod:NewBuffFadesTimer(12, 172895, nil, nil, nil, 5, nil, nil, nil, 3, 4)--Mythic
 
 mod:AddRangeFrameOption("5")
-mod:AddSetIconOption("SetIconOnMC", 163472, false)
+--mod:AddSetIconOption("SetIconOnMC", 163472, false)
 mod:AddSetIconOption("SetIconOnFel", 172895, false)
 mod:AddArrowOption("FelArrow", 172895, true, 3)
-mod:AddHudMapOption("HudMapOnMC", 163472)
+--mod:AddHudMapOption("HudMapOnMC", 163472)
 mod:AddHudMapOption("HudMapForFel", 172895)
 
 mod.vb.ballsCount = 0
@@ -103,7 +98,6 @@ local function checkBossForgot(self)
 	DBM:Debug("checkBossForgot ran, which means expected balls 10 seconds late, starting 20 second timer for next balls")
 --	self.vb.ballsCount = self.vb.ballsCount + 1
 	timerBallsCD:Start(20, self.vb.ballsCount+1)
-	countdownBalls:Start(20)
 	self:Schedule(13.5, ballsWarning, self)
 end
 
@@ -129,7 +123,6 @@ function mod:OnCombatStart(delay)
 	timerExpelMagicFireCD:Start(6-delay)
 	timerExpelMagicArcaneCD:Start(30-delay)
 	timerBallsCD:Start(36-delay, 1)
-	countdownBalls:Start(36-delay)
 	timerExpelMagicFrostCD:Start(40-delay)
 	timerExpelMagicShadowCD:Start(55-delay)
 	self:Schedule(29.5-delay, ballsWarning, self)
@@ -146,7 +139,7 @@ function mod:OnCombatEnd()
 		DBM.Arrow:Hide()
 	end
 	if self.Options.HudMapOnMC or self.Options.HudMapForFel then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
 end
 
@@ -179,7 +172,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerExpelMagicFireCD:Start()
 		end
-		countdownMagicFire:Start()
 		specWarnExpelMagicFire:Play("scattersoon")
 		specWarnExpelMagicFire:ScheduleVoice(5, "scatter")
 		self:Schedule(11.5, closeRange, self)
@@ -262,7 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 161242 and self:AntiSpam(23, args.destName) and not self:IsLFR() then--Players may wabble in and out of it and we don't want to spam warnings.
 		warnCausticEnergy:CombinedShow(1, args.destName)--Two targets on mythic, which is why combinedshow. (10 on LFR. too much spam and not important, so disabled in LFR)
-	elseif spellId == 163472 then
+	--[[elseif spellId == 163472 then
 		warnMC:CombinedShow(0.5, args.destName)
 		if self:AntiSpam(3, 1) then
 			specWarnMC:Show()
@@ -272,20 +264,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetSortedIcon(1, args.destName, 8, nil, true)--TODO, find out number of targets and add
 		end
 		if self.Options.HudMapOnMC then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
-		end
+			DBM.HudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3.5, 0, 1, 0, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+		end--]]
 	elseif spellId == 172895 then
 		warnExpelMagicFel:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnExpelMagicFel:Show()
 			timerExpelMagicFel:Start()
-			countdownFel:Start()
 			yellExpelMagicFel:Schedule(11)--Yell right before expire, not apply
 			if not self:HasMapRestrictions() then
 				lastX, LastY = UnitPosition("player")
 				self:Schedule(7, returnPosition, self)
 				if self.Options.HudMapForFel then
-					DBMHudMap:RegisterStaticMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 12, 0, 1, 0, 0.5, nil, nil, 4):Pulse(0.5, 0.5)
+					DBM.HudMap:RegisterStaticMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 12, 0, 1, 0, 0.5, nil, nil, 4):Pulse(0.5, 0.5)
 				end
 			end
 		end
@@ -301,13 +292,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 162186 and args:IsPlayer() and self.Options.RangeFrame and not self.vb.fireActive then
 		DBM.RangeCheck:Hide()
-	elseif spellId == 163472 then
+	--[[elseif spellId == 163472 then
 		if self.Options.SetIconOnMC then
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.HudMapOnMC then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
-		end
+			DBM.HudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+		end--]]
 	elseif spellId == 172895 then
 		if args:IsPlayer() then
 			lastX, LastY = nil, nil
@@ -315,7 +306,7 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.Arrow:Hide()
 			end
 			if self.Options.HudMapForFel then
-				DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+				DBM.HudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 			end
 		end
 		if self.Options.SetIconOnFel then
@@ -367,9 +358,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if ballsRemaining > 5 then--If 5 seconds or less on timer, balls are already falling and will not be delayed. If remaining >5 it'll be delayed by 20 seconds (entirety of charge phase)
 			timerBallsCD:Stop()
 			timerBallsCD:Start(ballsRemaining+23, self.vb.ballsCount+1)
-			countdownBalls:Cancel()
 			specWarnBallsSoon:Cancel()
-			countdownBalls:Start(ballsRemaining+23)
 			self:Unschedule(ballsWarning)
 			self:Unschedule(checkBossForgot)--Cancel check boss forgot
 			self:Schedule(ballsRemaining+16.5, ballsWarning, self)
@@ -377,7 +366,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM:Debug("timerBallsCD is extending by 23 seconds due to shield phase")
 		else
 			DBM:Debug("remaining less than 5, no action taken")
-		end	
+		end
 	end
 end
 
@@ -415,7 +404,6 @@ function mod:OnSync(msg, targetname)
 		self:Unschedule(ballsWarning)
 		self:Unschedule(checkBossForgot)
 		timerBallsCD:Stop()--Sometimes balls still hit even with > 5-6 seconds, cancel timers an count
-		countdownBalls:Cancel()--Then code below will just fix it all on it's own
 		local timer
 		if self.vb.shieldCharging then
 			timer = 52
@@ -426,7 +414,6 @@ function mod:OnSync(msg, targetname)
 		end
 		warnBallsHit:Show(self.vb.ballsCount)
 		timerBallsCD:Start(timer, self.vb.ballsCount+1)
-		countdownBalls:Start(timer)
 		self:Schedule(timer-6.5, ballsWarning, self)
 		self:Schedule(timer+10, checkBossForgot, self)--Fire checkbossForgot 10 seconds after raid should have soaked or taken damage
 	end

@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod(1433, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(90316)
 mod:SetEncounterID(1788)
 mod:DisableESCombatDetection()--Remove if blizz fixes trash firing ENCOUNTER_START
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Unknown full spectrum of icons yet. Don't know how many debuffs go out.
 mod.respawnTime = 15
 mod:DisableRegenDetection()--Boss returns true on UnitAffectingCombat when fighting his trash, making boss pre mature pull by REGEN method
@@ -69,19 +68,15 @@ local specWarnFelConduit				= mod:NewSpecialWarningInterrupt(181827, nil, nil, n
 
 local timerFelLaserCD					= mod:NewCDTimer(16, 182582, nil, nil, nil, 3)--16-22. Never pauses, used all phases
 local timerChakramCD					= mod:NewCDTimer(33, 182178, nil, nil, nil, 3)
-local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerPhantasmalWindsCD			= mod:NewCDTimer(35, 181957, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
 local timerPhantasmalWoundsCD			= mod:NewCDTimer(30.5, 182325, nil, "Healer", 2, 5)--30.5-32
 local timerFocusedBlast					= mod:NewCastTimer(11, 181912, nil, nil, nil, 2)--Doesn't realy need a cd timer. he casts it twice back to back, then lands
-local timerShadowRiposteCD				= mod:NewCDTimer(23.5, 185345, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
+local timerShadowRiposteCD				= mod:NewCDTimer(23.5, 185345, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 --Adds
-local timerFelBombCD					= mod:NewCDTimer(18.5, 181753, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
-local timerFelConduitCD					= mod:NewCDTimer(15, 181827, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, 156842, "Tank", nil, 3)--14-18
-local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-
-local countdownPhantasmalWinds			= mod:NewCountdown(35, 181957)
-local countdownFelBomb					= mod:NewCountdown("Alt18", 181753)
-local countdownCorruption				= mod:NewCountdown("AltTwo14", 181824, "Tank")
+local timerFelBombCD					= mod:NewCDTimer(18.5, 181753, nil, nil, nil, 3, nil, DBM_CORE_L.MAGIC_ICON, nil, 3, 4)
+local timerFelConduitCD					= mod:NewCDTimer(15, 181827, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerPhantasmalCorruptionCD		= mod:NewCDTimer(14, 181824, 156842, "Tank", nil, 3, nil, nil, nil, 2, 4)--14-18
+local timerDarkBindingsCD				= mod:NewCDTimer(34, 185456, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 
 local berserkTimer						= mod:NewBerserkTimer(540)
 
@@ -149,15 +144,15 @@ local function showChakram(self)
 	end
 	if ranged and melee and tank then
 		DBM:Debug("All Chakram found!", 2)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", ranged, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(ranged, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", melee, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(melee, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(182178, "party", tank, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(tank, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
+		DBM.HudMap:RegisterRangeMarkerOnPartyMember(182178, "party", ranged, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(ranged, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
+		DBM.HudMap:RegisterRangeMarkerOnPartyMember(182178, "party", melee, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(melee, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
+		DBM.HudMap:RegisterRangeMarkerOnPartyMember(182178, "party", tank, 0.65, 6, nil, nil, nil, 0.8, nil, false):Appear():SetLabel(tank, nil, nil, nil, nil, nil, 0.8, nil, -15, 8, nil)
 		if playerName == melee or playerName == ranged or playerName == tank then--Player in it, Yellow lines
-			DBMHudMap:AddEdge(1, 1, 0, 0.5, 6, ranged, melee, nil, nil, nil, nil)
-			DBMHudMap:AddEdge(1, 1, 0, 0.5, 6, melee, tank, nil, nil, nil, nil)
+			DBM.HudMap:AddEdge(1, 1, 0, 0.5, 6, ranged, melee, nil, nil, nil, nil)
+			DBM.HudMap:AddEdge(1, 1, 0, 0.5, 6, melee, tank, nil, nil, nil, nil)
 		else--Red lines
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 6, ranged, melee, nil, nil, nil, nil)
-			DBMHudMap:AddEdge(1, 0, 0, 0.5, 6, melee, tank, nil, nil, nil, nil)
+			DBM.HudMap:AddEdge(1, 0, 0, 0.5, 6, ranged, melee, nil, nil, nil, nil)
+			DBM.HudMap:AddEdge(1, 0, 0, 0.5, 6, melee, tank, nil, nil, nil, nil)
 		end
 	end
 end
@@ -179,11 +174,9 @@ function mod:OnCombatStart(delay)
 	if self:IsNormal() then--Normal timers are about 40% slower on pull, 20% slower rest of fight
 		timerFelLaserCD:Start(25)
 		timerPhantasmalWindsCD:Start(30-delay)
-		countdownPhantasmalWinds:Start(30-delay)
 		timerPhantasmalWoundsCD:Start(44-delay)
 	else
 		timerPhantasmalWindsCD:Start(16.5-delay)
-		countdownPhantasmalWinds:Start(16.5-delay)
 		timerFelLaserCD:Start(18.5)--Verify it can still be this low, every pull on mythic was 20-22
 		timerPhantasmalWoundsCD:Start(28-delay)
 		if self:IsMythic() then
@@ -202,9 +195,9 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnChakram then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
-end 
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -261,7 +254,6 @@ function mod:SPELL_CAST_START(args)
 		--Clear. Sure I could just do GetTime+39 and call it a day, but this is prettier
 		timerChakramCD:Stop()
 		timerPhantasmalWindsCD:Stop()
-		countdownPhantasmalWinds:Cancel()
 		timerPhantasmalWoundsCD:Stop()
 		timerDarkBindingsCD:Stop()
 		timerShadowRiposteCD:Stop()
@@ -282,16 +274,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif spellId == 181956 then
 		if self:IsNormal() then
 			timerPhantasmalWindsCD:Start(46)
-			countdownPhantasmalWinds:Start(46)
 		else
 			timerPhantasmalWindsCD:Start()
-			countdownPhantasmalWinds:Start()
 		end
 	elseif spellId == 181912 and self.vb.focusedBlast == 2 then--Air phase over immediately after he finishes casting 2nd blast.
 		--Timers resume with +3-7, sometimes more. Extreme cases I suspect just got delayed by laser or some other channeled spell
 		timerChakramCD:Start(self.vb.savedChakram+3)
 		timerPhantasmalWindsCD:Start(self.vb.savedWinds+5)
-		--countdownPhantasmalWinds:Start(self.vb.savedWinds+5)--no countdown for this one unless made accurate enough
 		timerPhantasmalWoundsCD:Start(self.vb.savedWounds+5)
 		if self:IsMythic() then
 			timerShadowRiposteCD:Start(self.vb.savedRiposte+5)
@@ -364,10 +353,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhantasmalCorruption:Show(args.destName)
 		if self:IsNormal() then
 			timerPhantasmalCorruptionCD:Start(21, args.sourceGUID)
-			countdownCorruption:Start(21)
 		else
-			timerPhantasmalCorruptionCD:Start(args.sourceGUID)
-			countdownCorruption:Start()
+			timerPhantasmalCorruptionCD:Start(14, args.sourceGUID)
 		end
 		if args:IsPlayer() then
 			updateRangeFrame(self)
@@ -393,10 +380,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFelBomb:Show(args.destName)
 		if self:IsNormal() then
 			timerFelBombCD:Start(23, args.sourceGUID)
-			countdownFelBomb:Start(23)
 		else
 			timerFelBombCD:Start(args.sourceGUID)
-			countdownFelBomb:Start()
 		end
 		if args:IsPlayer() then
 			updateRangeFrame(self)
@@ -487,7 +472,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 182178 or spellId == 182200 then
 --		if self.Options.HudMapOnChakram then
---			DBMHudMap:FreeEncounterMarkerByTarget(182178, args.destName)
+--			DBM.HudMap:FreeEncounterMarkerByTarget(182178, args.destName)
 --		end
 	end
 end
@@ -527,12 +512,10 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			local cid = self:GetCIDFromGUID(unitGUID)
 			if cid == 91543 then--Corrupted Talonpriest
 				timerFelBombCD:Start(14, unitGUID)
-				countdownFelBomb:Start(14)
 			elseif cid == 91541 then--Shadowfel Warden
 				timerFelConduitCD:Start(4, unitGUID)
 			elseif cid == 91539 then--Fel Raven
 				timerPhantasmalCorruptionCD:Start(16, unitGUID)
-				countdownCorruption:Start(16)
 			elseif cid == 93625 then--Phantasmal Resonance
 				timerDarkBindingsCD:Start(23.6, unitGUID)
 			end
@@ -544,12 +527,10 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 91543 then--Corrupted Talonpriest
 		timerFelBombCD:Cancel(args.destGUID)
-		countdownFelBomb:Cancel()
 	elseif cid == 91541 then--Shadowfel Warden
 		timerFelConduitCD:Cancel(args.destGUID)
 	elseif cid == 91539 then--Fel Raven
 		timerPhantasmalCorruptionCD:Cancel(args.destGUID)
-		countdownCorruption:Cancel()
 	elseif cid == 93625 then--Phantasmal Resonance
 		timerDarkBindingsCD:Cancel(args.destGUID)
 	end

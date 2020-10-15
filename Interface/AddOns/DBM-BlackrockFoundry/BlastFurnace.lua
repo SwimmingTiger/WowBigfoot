@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1154, "DBM-BlackrockFoundry", nil, 457)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(76809, 76806)--76809 foreman feldspar, 76806 heart of the mountain, 76809 Security Guard, 76810 Furnace Engineer, 76811 Bellows Operator, 76815 Primal Elementalist, 78463 Slag Elemental, 76821 Firecaller
 mod:SetEncounterID(1690)
-mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 mod.respawnTime = 10
 
@@ -37,36 +36,36 @@ local warnFixate				= mod:NewTargetAnnounce(155196, 4)
 local warnVolatileFire			= mod:NewTargetAnnounce(176121, 4, nil, false, 2)--Spam. disable by default.
 local warnFireCaller			= mod:NewCountAnnounce("ej9659", 3, 156937, "Tank", nil, nil, 2)
 local warnSecurityGuard			= mod:NewCountAnnounce("ej9648", 2, 160379, "Tank", nil, nil, 2)
+local warnSlagElemental			= mod:NewCountAnnounce("ej9657", 2, 155179, nil, nil, nil, 2)
 --Phase 3
 local warnPhase3				= mod:NewPhaseAnnounce(3, 2, nil, nil, nil, nil, nil, 2)
 local warnMelt					= mod:NewTargetAnnounce(155225, 4)--Every 10 sec.
 local warnHeat					= mod:NewStackAnnounce(155242, 2, nil, "Tank")
 
-local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, 2)
+local specWarnBomb				= mod:NewSpecialWarningMoveTo(155192, nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.you:format(155192), nil, 3, 2)
 local specWarnBellowsOperator	= mod:NewSpecialWarningSwitch("ej9650", "-Healer", nil, 2, nil, 2)
 local specWarnDeafeningRoar		= mod:NewSpecialWarningSpell(177756, "Tank")--Can't be dodged(was only dodgable on beta), was wrong warning for a long time. Also does a lot less damage than it did in beta too so not 3 anymore either.
 local specWarnRepair			= mod:NewSpecialWarningInterrupt(155179, "-Healer", nil, nil, nil, 2)
-local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932, nil, nil, 2, 3)
-local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, nil, 2)
+local specWarnRuptureOn			= mod:NewSpecialWarningYou(156932, nil, nil, 2, 3, 2)
+local specWarnRupture			= mod:NewSpecialWarningMove(156932, nil, nil, nil, 1, 2)
 local yellRupture				= mod:NewYell(156932)
 --Phase 2
-local specWarnFixate			= mod:NewSpecialWarningYou(155196)
-local specWarnMeltYou			= mod:NewSpecialWarningYou(155225)
-local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false)
-local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, nil, 2)
+local specWarnFixate			= mod:NewSpecialWarningYou(155196, nil, nil, nil, 1, 2)
+local specWarnMeltYou			= mod:NewSpecialWarningYou(155225, nil, nil, nil, 1, 2)
+local specWarnMeltNear			= mod:NewSpecialWarningClose(155225, false, nil, nil, 1, 2)
+local specWarnMelt				= mod:NewSpecialWarningMove(155223, nil, nil, nil, 1, 2)
 local yellMelt					= mod:NewYell(155223)
-local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer")
-local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false)
-local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121)
+local specWarnCauterizeWounds	= mod:NewSpecialWarningInterrupt(155186, "-Healer", nil, nil, 1, 2)
+local specWarnPyroclasm			= mod:NewSpecialWarningInterrupt(156937, false, nil, nil, 1, 2)
+local specVolatileFire			= mod:NewSpecialWarningMoveAway(176121, nil, nil, nil, 1, 2)
 local specWarnTwoVolatileFire	= mod:NewSpecialWarning("specWarnTwoVolatileFire", nil, nil, nil, 3)--A person with double volatile fire is extremely dangerous, they will kill everyone
 local yellVolatileFire			= mod:NewYell(176121)
---local specWarnSlagElemental		= mod:NewSpecialWarningSwitch("ej9657", "Dps")-- is really needed in mythic? needs review (Slay Elemental, 176143)
-local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps")
-local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller")
-local specWarnSlagPool			= mod:NewSpecialWarningMove(155743)
+local specWarnShieldsDown		= mod:NewSpecialWarningSwitch("ej9655", "Dps", nil, nil, 1, 2)
+local specWarnEarthShield		= mod:NewSpecialWarningDispel(155173, "MagicDispeller", nil, nil, 1, 2)
+local specWarnSlagPool			= mod:NewSpecialWarningMove(155743, nil, nil, nil, 1, 8)
 --Phase 3
 local specWarnHeartoftheMountain= mod:NewSpecialWarningSwitch("ej10808", "Tank")
-local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 2, nil, nil, nil, 2)
+local specWarnHeat				= mod:NewSpecialWarningStack(155242, nil, 2, nil, nil, nil, 6)
 local specWarnHeatOther			= mod:NewSpecialWarningTaunt(155242, nil, nil, nil, nil, 2)
 --All
 local specWarnBlast				= mod:NewSpecialWarningSoon(155209, nil, nil, nil, 2, 2)
@@ -75,26 +74,17 @@ mod:AddTimerLine(SCENARIO_STAGE:format(1))
 local timerBomb					= mod:NewBuffFadesTimer(15, 155192)
 local timerBlastCD				= mod:NewCDTimer(25, 155209, nil, nil, nil, 2)--25 seconds base. shorter when loading is being channeled by operators.
 local timerRuptureCD			= mod:NewCDTimer(20, 156934, nil, "-Tank", 2, 3)
-local timerEngineer				= mod:NewNextCountTimer(41, "ej9649", nil, nil, nil, 1, 155179)
+local timerEngineer				= mod:NewNextCountTimer(41, "ej9649", nil, nil, nil, 1, 155179, nil, nil, 1, 5)
 local timerBellowsOperator		= mod:NewCDCountTimer(59, "ej9650", nil, nil, nil, 1, 155181)--60-65second variation for sure
 mod:AddTimerLine(SCENARIO_STAGE:format(2))
 local timerVolatileFireCD		= mod:NewCDTimer(20, 176121, nil, false, nil, 3)--Very useful, but off by default since it can be spammy if > 2 adds up at once.
-local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121)
-local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps", nil, 6, nil, DBM_CORE_DAMAGE_ICON)
+local timerVolatileFire			= mod:NewBuffFadesTimer(8, 176121, nil, nil, nil, 5, nil, nil, nil, 1, 4)
+local timerShieldsDown			= mod:NewBuffActiveTimer(30, 158345, nil, "Dps", nil, 6, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerSlagElemental		= mod:NewNextCountTimer(55, "ej9657", nil, "-Tank", nil, 1, 155196)--Definitely 55 seconds, although current detection method may make it appear 1-2 seconds if slag has to run across room before casting first fixate
-local timerFireCaller			= mod:NewNextCountTimer(45, "ej9659", nil, "Tank", nil, 1, 156937)
-local timerSecurityGuard		= mod:NewNextCountTimer(40, "ej9648", nil, "Tank", nil, 1, 160379, DBM_CORE_TANK_ICON)
+local timerFireCaller			= mod:NewNextCountTimer(45, "ej9659", nil, "Tank", nil, 1, 156937, nil, nil, 3, 4)
+local timerSecurityGuard		= mod:NewNextCountTimer(40, "ej9648", nil, "Tank", nil, 1, 160379, DBM_CORE_L.TANK_ICON, nil, 2, 4)
 
 local berserkTimer				= mod:NewBerserkTimer(780)
-
-local countdownBlast			= mod:NewCountdown(30, 155209, false, 2)
-local countdownEngineer			= mod:NewCountdown("AltTwo41", "ej9649", "Tank", 2)
---Phase 2 countdowns, no conflict with phase 1 countdowns
-local countdownFireCaller		= mod:NewCountdown("AltTwo64", "ej9659", "Tank")
-local countdownSecurityGuard	= mod:NewCountdown("Alt41", "ej9648", "Tank")
-local countdownVolatileFire		= mod:NewCountdownFades(8, 176121)
-
-local voiceSlagElemental		= mod:NewVoice("ej9657", "-Tank")
 
 mod:AddRangeFrameOption(8)
 mod:AddBoolOption("InfoFrame")
@@ -195,11 +185,9 @@ local function Engineers(self)
 	if self:IsDifficulty("mythic", "normal") then
 		timerEngineer:Start(35, count+1)
 		self:Schedule(35, Engineers, self)
-		countdownEngineer:Start(35)
 	elseif self:IsHeroic() then
 		timerEngineer:Start(40.5, count+1)
 		self:Schedule(40.5, Engineers, self)
-		countdownEngineer:Start(40.5)
 	end
 end
 
@@ -213,11 +201,9 @@ local function SecurityGuard(self)
 	end
 	if self.vb.phase == 1 then
 		timerSecurityGuard:Start(30.5, count+1)
-		countdownSecurityGuard:Start(30.5)
 		self:Schedule(30.5, SecurityGuard, self)
 	else
 		timerSecurityGuard:Start(40, count+1)
-		countdownSecurityGuard:Start(40)
 		self:Schedule(40, SecurityGuard, self)
 	end
 end
@@ -311,7 +297,7 @@ function mod:CustomHealthUpdate()
 		end
 		return ("%d%%"):format(health)
 	end
-	return DBM_CORE_UNKNOWN
+	return DBM_CORE_L.UNKNOWN
 end
 
 function mod:OnCombatStart(delay)
@@ -337,14 +323,11 @@ function mod:OnCombatStart(delay)
 	local blastTimer = self:IsMythic() and 24 or 29
 	self.vb.lastTotal = blastTimer
 	timerBlastCD:Start(blastTimer)
-	countdownBlast:Start(blastTimer)
 	if not self:IsLFR() then
 		self:Schedule(firstTimer, SecurityGuard, self)
 		self:Schedule(firstTimer, Engineers, self)
 		timerSecurityGuard:Start(firstTimer, 2)
-		countdownSecurityGuard:Start(firstTimer)
 		timerEngineer:Start(firstTimer, 2)
-		countdownEngineer:Start(firstTimer)
 		berserkTimer:Start(-delay)
 	end
 	if self.Options.InfoFrame then
@@ -358,7 +341,7 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnBomb then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
@@ -370,8 +353,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 155186 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnCauterizeWounds:Show(args.sourceName)
+		specWarnCauterizeWounds:Play("kickcast")
 	elseif spellId == 156937 and self:CheckInterruptFilter(args.sourceGUID) then
 		specWarnPyroclasm:Show(args.sourceName)
+		specWarnPyroclasm:Play("kickcast")
 	elseif spellId == 177756 and self:CheckTankDistance(args.sourceGUID, 40) and self:AntiSpam(3.5, 7) then
 		specWarnDeafeningRoar:Show()
 	end
@@ -398,7 +383,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:CheckTankDistance(args.sourceGUID, 40) and self.vb.phase == 1 then--Filter Works very poorly, probably because mob not a BOSS id. usually see ALL warnings and all HUDs :\
 			warnBomb:CombinedShow(1, args.destName)
 			if self.Options.HudMapOnBomb then
-				DBMHudMap:RegisterRangeMarkerOnPartyMember(155192, "highlight", args.destName, 5, debuffTime+0.5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterRangeMarkerOnPartyMember(155192, "highlight", args.destName, 5, debuffTime+0.5, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 			end
 		end
 		if args:IsPlayer() then
@@ -431,14 +416,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				timerSlagElemental:Start(nil, count+1)
 			end
-			voiceSlagElemental:Play("ej9657")
+			warnSlagElemental:Show(count)
+			warnSlagElemental:Play("ej9657")
 			if count < 12 then
-				voiceSlagElemental:Schedule(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
+				warnSlagElemental:ScheduleVoice(1.5, nil, "Interface\\AddOns\\DBM-VP"..DBM.Options.ChosenVoicePack.."\\count\\"..count..".ogg")
 			end
 		end
 		warnFixate:CombinedShow(1, args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
+			specWarnFixate:Play("targetyou")
 			--Open Range Frame for http://www.wowhead.com/spell=177744 (not in encounter journal but it's very important especially on mythic)
 			updateRangeFrame(self)
 		end
@@ -456,6 +443,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 158345 and self:AntiSpam(10, 3) then--Might be SPELL_CAST_SUCCESS instead.
 		specWarnShieldsDown:Show()
+		specWarnShieldsDown:Play("changetarget")
 		if self:IsDifficulty("normal") then--40 seconds on normal
 			timerShieldsDown:Start(40, args.destGUID)
 		elseif self:IsHeroic() then
@@ -503,7 +491,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				if self:AntiSpam(3, 9) then
 					specVolatileFire:Show()
 					--Only one countdown/yell/runout alert though to avoid spam, user needs to get out of group for first expire, they just need to STAY out for second
-					countdownVolatileFire:Start(debuffTime)
 					specVolatileFire:ScheduleVoice(debuffTime - 4, "runout")
 					if not self:IsLFR() and self.Options.Yell176121 then
 						if self:IsMythic() and self.Options.VFYellType2 == "Countdown" then
@@ -526,6 +513,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMeltYou:Play("runout")
 		elseif self:CheckNearby(8, args.destName) then
 			specWarnMeltNear:Show()
+			specWarnMeltNear:Play("runaway")
 		end
 	elseif spellId == 156934 then
 		--Increase to 50 should fix any rare issues not get timer if on same area as boss.
@@ -541,6 +529,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 155173 and args:IsDestTypeHostile() then
 		specWarnEarthShield:Show(args.destName)
+		specWarnEarthShield:Play("dispelboss")
 	elseif spellId == 155170 then
 		warnInfuriated:Show(args.destName)
 	end
@@ -552,7 +541,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if args:IsSpellID(155192, 174716, 159558) then
 		if self.Options.HudMapOnBomb then
-			DBMHudMap:FreeEncounterMarkerByTarget(155192, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(155192, args.destName)
 		end
 		if args:IsPlayer() then
 			timerBomb:Stop()
@@ -600,7 +589,6 @@ function mod:UNIT_DIED(args)
 		else
 			timerFireCaller:Stop()
 			timerSecurityGuard:Stop()
-			countdownSecurityGuard:Cancel()
 			timerSlagElemental:Stop()
 			self:Unschedule(SecurityGuard)
 			self:Unschedule(FireCaller)
@@ -626,10 +614,8 @@ function mod:UNIT_DIED(args)
 			warnPhase2:Show()
 			self:Unschedule(Engineers)
 			timerEngineer:Stop()
-			countdownEngineer:Cancel()
 			timerBellowsOperator:Stop()
 			timerSecurityGuard:Stop()
-			countdownSecurityGuard:Cancel()
 			self:Unschedule(SecurityGuard)
 			warnPhase2:Play("ptwo")
 			--Start adds timers. Seem same in all modes.
@@ -638,7 +624,6 @@ function mod:UNIT_DIED(args)
 				timerSlagElemental:Start(13, 1)
 				self:Schedule(72, SecurityGuard, self)
 				timerSecurityGuard:Start(71.5, 1)
-				countdownSecurityGuard:Start(71.5)
 				self:Schedule(76, FireCaller, self)
 				timerFireCaller:Start(76, 1)
 			end
@@ -695,8 +680,6 @@ do
 				local bossPower = UnitPower("boss1") --Get Boss Power
 				local elapsed = bossPower / powerRate
 				timerBlastCD:Update(elapsed, totalTime)
-				countdownBlast:Cancel()
-				countdownBlast:Start(totalTime-elapsed)
 			end
 		else
 			local bossPower = UnitPower("boss1") --Get Boss Power
@@ -709,7 +692,6 @@ do
 			elseif bossPower < 5 and self.vb.blastWarned then--Should catch 0, if not, at least 1-4 will fire it but then timer may be a second or so off
 				self.vb.blastWarned = false
 				timerBlastCD:Start(totalTime)
-				countdownBlast:Start(totalTime)
 			end
 		end
 	end

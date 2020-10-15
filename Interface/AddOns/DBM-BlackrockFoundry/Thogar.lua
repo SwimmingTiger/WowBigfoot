@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1147, "DBM-BlackrockFoundry", nil, 457)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 36 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(76906)--81315 Crack-Shot, 81197 Raider, 77487 Grom'kar Firemender, 80791 Grom'kar Man-at-Arms, 81318 Iron Gunnery Sergeant, 77560 Obliterator Cannon, 81612 Deforester
 mod:SetEncounterID(1692)
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 2, 1)
 mod.respawnTime = 29.5
 
@@ -47,16 +46,14 @@ local specWarnBurning				= mod:NewSpecialWarningStack(164380, nil, 2)--Mythic
 
 --Operator Thogar
 local timerProtoGrenadeCD			= mod:NewCDTimer(11, 155864, nil, nil, nil, 3)
-local timerEnkindleCD				= mod:NewCDTimer(11.5, 155921, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerTrainCD					= mod:NewNextCountTimer("d15", 176312, nil, nil, nil, 1, nil, DBM_CORE_DEADLY_ICON)
+local timerEnkindleCD				= mod:NewCDTimer(11.5, 155921, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerTrainCD					= mod:NewNextCountTimer("d15", 176312, nil, nil, nil, 1, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 5)
 --Adds
---local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
-local timerIronbellowCD				= mod:NewCDTimer(8.5, 163753, nil, nil, nil, 2, nil, DBM_CORE_HEALER_ICON)
+--local timerCauterizingBoltCD		= mod:NewNextTimer(30, 160140, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
+local timerIronbellowCD				= mod:NewCDTimer(8.5, 163753, nil, nil, nil, 2, nil, DBM_CORE_L.HEALER_ICON)
 local timerDelayedSiegeBomb			= mod:NewNextCountTimer(6, 159481)
 
 local berserkTimer					= mod:NewBerserkTimer(492)
-
-local countdownTrain				= mod:NewCountdown(4.5, 176312)
 
 mod:AddInfoFrameOption(176312)
 mod:AddSetIconOption("SetIconOnAdds", "ej9549", false, true)
@@ -146,7 +143,7 @@ local otherTrains = {
 	[27] = { [2] = L.Train },--+15 after 26 (7:07)
 	[28] = { [3] = L.Train },--+10 after 27 (7:17)
 	[29] = { [3] = ManOArms },--+20 after 28 (7:37)
-	[30] = { [1] = L.Train, [4] = L.Train },--+5 after 29 (7:42) 
+	[30] = { [1] = L.Train, [4] = L.Train },--+5 after 29 (7:42)
 	[31] = { [4] = L.Train },--+15 after 30 (7:57) (guessed.)--seems berserk. 4 L.Trains in a row (interval 4 sec.)
 	[32] = { [3] = L.Train },--+4 after 31 (8:01)
 	[33] = { [2] = L.Train },--+4 after 32 (8:05)
@@ -187,7 +184,7 @@ local lfrTrains = {
 	[27] = { [2] = L.Train },--+15 after 26 (7:07)
 	[28] = { [3] = L.Train },--+10 after 27 (7:17)
 	[29] = { [3] = ManOArms },--+20 after 28 (7:37)
-	[30] = { [1] = L.Train, [4] = L.Train },--+5 after 29 (7:42) 
+	[30] = { [1] = L.Train, [4] = L.Train },--+5 after 29 (7:42)
 	[31] = { [4] = L.Train },--+15 after 30 (7:57) (guessed.)--seems berserk. 4 L.Trains in a row (interval 4 sec.)
 	[32] = { [3] = L.Train },--+4 after 31 (8:01)
 	[33] = { [2] = L.Train },--+4 after 32 (8:05)
@@ -205,7 +202,7 @@ end
 --	B: small Adds(Reinforcements)
 --	C: cannon
 --	D: big Adds (ManOArms)
---	E: fire(Deforester) 
+--	E: fire(Deforester)
 --	F: random express (3x TrainType A)
 --	X: random rail
 
@@ -372,9 +369,9 @@ local function lanePos(self)
 end
 
 local function laneCheck(self)
+	if self:HasMapRestrictions() then return end
 	local TrainTable = self:IsMythic() and mythicTrains or self:IsLFR() and lfrTrains or otherTrains
 	local train = self.vb.trainCount
-	if self:HasMapRestrictions() then return end
 	local playerLane = lanePos(self)
 	if TrainTable[train] and TrainTable[train][playerLane] then
 		specWarnTrain:Show()
@@ -408,7 +405,7 @@ local function updateInfoFrame()
 			addLine(TrainTable[train]["speciali"], "")
 		end
 	else
-		addLine(DBM_CORE_UNKNOWN, "")
+		addLine(DBM_CORE_L.UNKNOWN, "")
 	end
 	return lines, sortedLines
 end
@@ -424,23 +421,23 @@ local function showHud(self, Train, center)
 			hudType = "highlight"
 			Red, Green, Blue = 0, 1, 0
 		end
-		DBMHudMap:FreeEncounterMarkerByTarget(176312, "TrainHelper")--Clear any current icon, before showing next move
+		DBM.HudMap:FreeEncounterMarkerByTarget(176312, "TrainHelper")--Clear any current icon, before showing next move
 		--Regular Lane movements
 		local specialPosition = center and 3314 or self:IsMelee() and 3328 or 3300--Melee west, ranged east, unless center is passed then center
 		if Train == 9 then--Move to Circle (1)
 			if not hudType then hudType = "circle" end
 			if center then
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
 				--East (where adds jump down, everyone goes west on this move)
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3300, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3300, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm2")
 			end
 		elseif Train == 8 or Train == 11 or Train == 19.25 then--Move to diamond (2)
 			if not hudType then hudType = "diamond" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm3")
 			end
@@ -448,55 +445,55 @@ local function showHud(self, Train, center)
 			if not hudType then hudType = "triangle" end
 			if Train == 1 then
 				specialPosition = self:IsMelee() and 3300 or 3328--Only Train that does reverse specialPosition
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			else
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 542, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			end
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm4")
 			end
 		elseif Train == 20 or Train == 22 then--Move to Moon (4)
 			if not hudType then hudType = "moon" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, specialPosition, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm5")
 			end
 		--Special lane movements (usually corners)
 		elseif Train == 2 or Train == 28 then--Move to Cross (2 special corner)
 			if not hudType then hudType = "cross" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3277, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3277, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm7")
 			end
 		elseif Train == 14 or Train == 32 then--Move to skull (4 special corner)
 			if not hudType then hudType = "skull" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, 3353, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 517, 3353, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm8")
 			end
 		elseif Train == 17 then--Ranged and melee go to different lanes to avoid fire in on melee/adds in diamond while ranged kill cannon at triangle
 			if self:IsMelee() then--Move to diamond for man at arms Train
 				if not hudType then hudType = "diamond" end
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3332, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 566, 3332, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 				if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 					warnTrain:Play("mm3")
 				end
 			else--Move to triangle for Cannon
 				if not hudType then hudType = "triangle" end
-				DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 544, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+				DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 544, 3314, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 				if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 					warnTrain:Play("mm4")
 				end
 			end
 		elseif Train == 19 then-- (1 special corner)
 			if not hudType then hudType = "square" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3352, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3352, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm6")
 			end
 		elseif Train == 19.5 then----Move to star, also during Train count 19, but later
 			if not hudType then hudType = "star" end
-			DBMHudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3272, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterPositionMarker(176312, "TrainHelper", hudType, 590, 3272, 3.5, 12, Red, Green, Blue, 0.5):Pulse(0.5, 0.5)
 			if self.Options.TrainVoiceAnnounce ~= "LanesOnly" then
 				warnTrain:Play("mm1")
 			end
@@ -540,7 +537,7 @@ end
 
 function mod:GrenadeTarget(targetname, uId)
 	if not targetname then
-		warnProtoGrenade:Show(DBM_CORE_UNKNOWN)
+		warnProtoGrenade:Show(DBM_CORE_L.UNKNOWN)
 		return
 	end
 	if targetname == UnitName("player") then
@@ -681,11 +678,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			self.vb.trainCount = self.vb.trainCount + 1
 			showTrainWarning(self)
 			if msg == "Fake" then
-				countdownTrain:Start(3.0)
 				laneCheck(self)
 				fakeAdjust = 1.5
 			else
-				countdownTrain:Start()
 				self:Schedule(1.5, laneCheck, self)
 			end
 		end

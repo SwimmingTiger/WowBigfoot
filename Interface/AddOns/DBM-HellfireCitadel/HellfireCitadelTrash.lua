@@ -1,9 +1,8 @@
 local mod	= DBM:NewMod("HellfireCitadelTrash", "DBM-HellfireCitadel")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 --mod:SetModelID(47785)
-mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
@@ -49,7 +48,7 @@ function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
 	local spellId = args.spellId
 	if spellId == 189595 then
-		specWarnCrowdControl:Show()
+		specWarnCrowdControl:Show(args.sourceName)
 		specWarnCrowdControl:Play("turnaway")
 	elseif spellId == 189612 and self:CheckInterruptFilter(args.sourceGUID) and self:AntiSpam(3, 1) then
 		specWarnRendingHowl:Show(args.sourceName)

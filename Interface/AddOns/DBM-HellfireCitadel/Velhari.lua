@@ -1,21 +1,20 @@
 local mod	= DBM:NewMod(1394, "DBM-HellfireCitadel", nil, 669)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod:SetRevision("20201013140345")
 mod:SetCreatureID(90269)
 mod:SetEncounterID(1784)
-mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 4, 2, 1)
 mod.respawnTime = 39--Def less than 40 but much greater than 30. i have a video of a 38 second respawn
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 180260 180004 180533 180608 180300",
+	"SPELL_CAST_START 180260 180004 180533 180608 190001",
 	"SPELL_CAST_SUCCESS 179986 179991 180600 180526",
 	"SPELL_AURA_APPLIED 182459 185241 180166 180164 185237 185238 180526 180025 180000",
 	"SPELL_AURA_APPLIED_DOSE 180000",
-	"SPELL_AURA_REMOVED 182459 185241 180526 180300",
+	"SPELL_AURA_REMOVED 182459 185241 180526 190001",
 	"SPELL_PERIODIC_DAMAGE 180604",
 	"SPELL_ABSORBED 180604",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -23,7 +22,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_START boss2 boss3 boss4"
 )
 
---(ability.id = 180260 or ability.id = 180004 or ability.id = 180025 or ability.id = 180608 or ability.id = 180300 or ability.id = 180533) and type = "begincast" or (ability.id = 179986 or ability.id = 179991 or ability.id = 180600 or ability.id = 180526) and type = "cast" or (ability.id = 182459 or ability.id = 185241 or ability.id = 180166 or ability.id = 185237) and type = "applydebuff" or ability.id = 180000 and not type = "removedebuff"
+--(ability.id = 180260 or ability.id = 180004 or ability.id = 180025 or ability.id = 180608 or ability.id = 190001 or ability.id = 180533) and type = "begincast" or (ability.id = 179986 or ability.id = 179991 or ability.id = 180600 or ability.id = 180526) and type = "cast" or (ability.id = 182459 or ability.id = 185241 or ability.id = 180166 or ability.id = 185237) and type = "applydebuff" or ability.id = 180000 and not type = "removedebuff"
 --All
 local warnEdictofCondemnation				= mod:NewTargetCountAnnounce(182459, 3)
 local warnTouchofHarm						= mod:NewTargetAnnounce(180166, 3, nil, "Healer")--Todo, split new cast and jump into two different warnings?
@@ -49,7 +48,7 @@ local specWarnSealofDecayOther				= mod:NewSpecialWarningTaunt(180000, nil, nil,
 local specWarnAnnihilatingStrike			= mod:NewSpecialWarningYou(180260)
 local specWarnAnnihilatingStrikeNear		= mod:NewSpecialWarningClose(180260)
 local yellAnnihilatingStrike				= mod:NewYell(180260)
-local specWarnInfernalTempest				= mod:NewSpecialWarningCount(180300, nil, nil, nil, 2, 2)
+local specWarnInfernalTempest				= mod:NewSpecialWarningCount(190001, nil, nil, nil, 2, 2)
 ----Ancient Enforcer
 local specWarnAncientEnforcer				= mod:NewSpecialWarningSwitch("ej11155", "-Healer", nil, nil, 1, 2)
 local specWarnEnforcersOnslaught			= mod:NewSpecialWarningDodge(180004, "Tank", nil, 2, 1, 5)
@@ -68,30 +67,24 @@ local specWarnGaveloftheTyrant				= mod:NewSpecialWarningCount(180608, nil, nil,
 local specWarnAncientSovereign				= mod:NewSpecialWarningSwitch("ej11170", "-Healer", nil, nil, 1, 2)
 
 mod:AddTimerLine(ALL)--All
-local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5, nil, DBM_CORE_TANK_ICON)--I don't think it's really needed, but at least make it an option
-local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459, 57377, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--"condemnation" short name
-local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer", nil, 3, nil, DBM_CORE_HEALER_ICON)
+local timerSealofDecayCD					= mod:NewCDTimer(6, 180000, nil, false, nil, 5, nil, DBM_CORE_L.TANK_ICON)--I don't think it's really needed, but at least make it an option
+local timerEdictofCondemnationCD			= mod:NewNextCountTimer(60, 182459, 57377, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON)--"condemnation" short name
+local timerTouchofHarmCD					= mod:NewNextCountTimer(45, 180166, nil, "Healer", nil, 3, nil, DBM_CORE_L.HEALER_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(1))--Stage One: Oppression
-local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260, 92214, nil, nil, 3)--"Flame Strike" short name
-local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 180300, nil, nil, nil, 2)
+local timerAnnihilatingStrikeCD				= mod:NewNextCountTimer(10, 180260, 92214, nil, nil, 3, nil, nil, nil, 1, 3)--"Flame Strike" short name
+local timerInfernalTempestCD				= mod:NewNextCountTimer(10, 190001, nil, nil, nil, 2, nil, nil, nil, 2, 4)
 ----Ancient Enforcer
-local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerEnforcersOnslaughtCD				= mod:NewCDTimer(18, 180004, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(2))--Stage Two: Contempt
 local timerTaintedShadowsCD					= mod:NewNextTimer(5, 180533, nil, "Tank", nil, 5)
 local timerFontofCorruptionCD				= mod:NewNextTimer(19.6, 180526, 156842, nil, nil, 3)--156842 "Corruption" for short name?
 ----Ancient Harbinger
-local timerHarbingersMendingCD				= mod:NewCDTimer(10.5, 180025, 36968, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)
+local timerHarbingersMendingCD				= mod:NewCDTimer(10.5, 180025, 36968, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)
 mod:AddTimerLine(SCENARIO_STAGE:format(3))--Stage Three: Malice
-local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600, 160533, nil, nil, 3)
-local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608, 148800, nil, nil, 2)--Dat Hammer (alternative, "Hammer" 175798)
+local timerBulwarkoftheTyrantCD				= mod:NewNextCountTimer(10, 180600, 160533, nil, nil, 3, nil, nil, nil, 1, 3)
+local timerGaveloftheTyrantCD				= mod:NewNextCountTimer(10, 180608, 148800, nil, nil, 2, nil, nil, nil, 2, 3)--Dat Hammer (alternative, "Hammer" 175798)
 
 --local berserkTimer						= mod:NewBerserkTimer(360)
-
-local countdownAnnihilatingStrike			= mod:NewCountdown(10, 180260, nil, nil, 3)--It's same cd as Infernal tempest so going to use countdown for both. Starting count at 3 to avoid so much spam. every 10 seconds, 5-1 would be bit much. 3-1 important though
-local countdownInfernalTempest				= mod:NewCountdown("Alt50", 180300)
-local countdownFontofCorruption				= mod:NewCountdownFades("AltTwo50", 180526)
-local countdownBulwarkofTyrant				= mod:NewCountdown(10, 180608, nil, nil, 3)
-local countdownGavel						= mod:NewCountdown("Alt10", 180608, nil, nil, 3)
 
 mod:AddRangeFrameOption("5/4")
 mod:AddHudMapOption("HudMapOnStrike", 180260)
@@ -127,7 +120,7 @@ end
 
 function mod:AnnTarget(targetname, uId)
 	if not targetname then
-		warnAnnihilationStrike:Show(self.vb.annihilationCount, DBM_CORE_UNKNOWN)
+		warnAnnihilationStrike:Show(self.vb.annihilationCount, DBM_CORE_L.UNKNOWN)
 		return
 	end
 	if targetname == UnitName("player") then
@@ -139,7 +132,7 @@ function mod:AnnTarget(targetname, uId)
 		warnAnnihilationStrike:Show(self.vb.annihilationCount, targetname)
 	end
 	if self.Options.HudMapOnStrike then
-		DBMHudMap:RegisterRangeMarkerOnPartyMember(180260, "highlight", targetname, 3, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
+		DBM.HudMap:RegisterRangeMarkerOnPartyMember(180260, "highlight", targetname, 3, 4, 1, 0, 0, 0.5, nil, true, 2):Pulse(0.5, 0.5)
 	end
 end
 
@@ -154,7 +147,6 @@ function mod:OnCombatStart(delay)
 	self.vb.interruptCount = 0
 	timerSealofDecayCD:Start(3.5-delay)
 	timerAnnihilatingStrikeCD:Start(10-delay, 1)
-	countdownAnnihilatingStrike:Start(10-delay)
 	timerTouchofHarmCD:Start(16.8-delay, 1)
 	timerEdictofCondemnationCD:Start(57-delay, 1)
 end
@@ -164,9 +156,9 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	if self.Options.HudMapOnStrike or self.Options.HudMapEdict2 then
-		DBMHudMap:Disable()
+		DBM.HudMap:Disable()
 	end
-end 
+end
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -174,10 +166,8 @@ function mod:SPELL_CAST_START(args)
 		self.vb.annihilationCount = self.vb.annihilationCount + 1
 		if self.vb.annihilationCount == 3 then--Infernal tempest next
 			timerInfernalTempestCD:Start(10, self.vb.infernalTempestCount+1)
-			countdownInfernalTempest:Start()
 		else
 			timerAnnihilatingStrikeCD:Start(nil, self.vb.annihilationCount+1)
-			countdownAnnihilatingStrike:Start()
 		end
 		self:BossTargetScanner(90269, "AnnTarget", 0.05, 20, true)
 	elseif spellId == 180004 then
@@ -193,14 +183,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnGaveloftheTyrant:Show(self.vb.gavelCount)
 		specWarnGaveloftheTyrant:Play("carefly")
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
-		countdownBulwarkofTyrant:Start()
-	elseif spellId == 180300 then
+	elseif spellId == 190001 then
 		self.vb.infernalTempestCount = self.vb.infernalTempestCount + 1
 		specWarnInfernalTempest:Show(self.vb.infernalTempestCount)
 		specWarnInfernalTempest:Play("watchstep")
 		self.vb.annihilationCount = 0
 		timerAnnihilatingStrikeCD:Start(nil, 1)
-		countdownAnnihilatingStrike:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(4)
 		end
@@ -217,7 +205,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnAuraofContempt:Show()
 		--Cancel phase 1 abilities
 		timerAnnihilatingStrikeCD:Stop()
-		countdownAnnihilatingStrike:Cancel()
 		timerInfernalTempestCD:Stop()
 		timerTaintedShadowsCD:Start()
 		timerFontofCorruptionCD:Start(22)
@@ -230,7 +217,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnAuraofMalice:Show()
 		timerFontofCorruptionCD:Stop()
 		timerBulwarkoftheTyrantCD:Start(nil, 1)
-		countdownBulwarkofTyrant:Start()
 		warnAuraofMalice:Play("pthree")
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -244,10 +230,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBulwarkoftheTyrant:Show(self.vb.bulwarkCount, args.destName)
 		if self.vb.bulwarkCount == 3 then
 			timerGaveloftheTyrantCD:Start(nil, self.vb.gavelCount+1)
-			countdownGavel:Start()
 		else
 			timerBulwarkoftheTyrantCD:Start(nil, self.vb.bulwarkCount+1)
-			countdownBulwarkofTyrant:Start()
 		end
 	elseif spellId == 180526 then
 		timerFontofCorruptionCD:Start()
@@ -273,7 +257,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEdictofCondemnationOther:ScheduleVoice(5, "gather")
 		end
 		if self.Options.HudMapEdict2 then
-			DBMHudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 9, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
+			DBM.HudMap:RegisterRangeMarkerOnPartyMember(spellId, "highlight", args.destName, 3, 9, 1, 1, 0, 0.5, nil, true, 1):Pulse(0.5, 0.5)
 		end
 	elseif args:IsSpellID(180166, 185237) then--Casts
 		self.vb.touchofHarmCount = self.vb.touchofHarmCount + 1
@@ -292,11 +276,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 180526 then
 		warnFontofCorruption:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			local _, _, _, _, duration, expires = DBM:UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
-			if expires then
-				local remaining = expires-GetTime()
-				countdownFontofCorruption:Start(remaining)
-			end
 			specWarnFontofCorruption:Show()
 			yellFontofCorruption:Yell()
 			if self.Options.RangeFrame then
@@ -347,17 +326,16 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 182459 or spellId == 185241 then
 		--For icon option, or something.
 		if self.Options.HudMapEdict2 then
-			DBMHudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
+			DBM.HudMap:FreeEncounterMarkerByTarget(spellId, args.destName)
 		end
 	elseif spellId == 180526 then
 		if args:IsPlayer() then
 			specWarnFontofCorruptionOver:Show()
-			countdownFontofCorruption:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(5, debuffFilter)
 			end
 		end
-	elseif spellId == 180300 and self.Options.RangeFrame then
+	elseif spellId == 190001 and self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 end

@@ -1,12 +1,11 @@
 local mod	= DBM:NewMod(1195, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 29 $"):sub(12, -3))
+mod:SetRevision("20200806142006")
 mod:SetCreatureID(78948, 80557, 80551, 99999)--78948 Tectus, 80557 Mote of Tectus, 80551 Shard of Tectus
 mod:SetEncounterID(1722)--Hopefully win will work fine off this because otherwise tracking shard deaths is crappy
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
-mod:SetModelSound("sound\\creature\\tectus\\VO_60_HMR_TECTUS_AGGRO_01.ogg", "sound\\creature\\tectus\\vo_60_hmr_tectus_spell_05.ogg")
+--mod:SetModelSound("sound\\creature\\tectus\\VO_60_HMR_TECTUS_AGGRO_01.ogg", "sound\\creature\\tectus\\vo_60_hmr_tectus_spell_05.ogg")
 
 mod:RegisterCombat("combat")
 mod.syncThreshold = 4--Rise Mountain can occur pretty often.
@@ -42,14 +41,12 @@ local specWarnGiftOfEarth			= mod:NewSpecialWarningCount(162894, "Melee", nil, n
 
 local timerEarthwarperCD			= mod:NewNextTimer(40, "ej10061", nil, nil, nil, 1, 162894)--Both of these get delayed by upheavel
 local timerBerserkerCD				= mod:NewNextTimer(40, "ej10062", nil, "Tank", nil, 1, 163312)--Both of these get delayed by upheavel
-local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, "Melee", nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--10.5 but obviously delayed if stuns were used.
+local timerGiftOfEarthCD			= mod:NewCDTimer(10.5, 162894, nil, "Melee", nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--10.5 but obviously delayed if stuns were used.
 local timerEarthenFlechettesCD		= mod:NewCDTimer(14, 162968, nil, "Melee", nil, 5)--14 but obviously delayed if stuns were used. Also tends to be recast immediately if stun interrupted
 local timerCrystalBarrageCD			= mod:NewNextSourceTimer(30, 162346, nil, false, nil, 3)--Very accurate but spammy mess with 4+ adds up.
 local timerCrystalBarrage			= mod:NewBuffFadesTimer(15, 162346)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
-
-local countdownEarthwarper			= mod:NewCountdown(41, "ej10061", "Melee")
 
 mod:AddSetIconOption("SetIconOnEarthwarper", "ej10061", true, true)
 mod:AddSetIconOption("SetIconOnMote", "ej10064", false, true)--Working with both shard and mote. ej10083 description is bad / This more or less assumes the 4 at a time strat. if you unleash 8 it will fail. Although any guild unleashing 8 is probably doing it wrong (minus LFR)
@@ -66,8 +63,6 @@ local tectusN = EJ_GetEncounterInfo(1195)
 local shardN = DBM:EJ_GetSectionInfo(10063)
 local moteN = DBM:EJ_GetSectionInfo(10064)
 local moteH = {}
-local tectusGUID
-local shardGUID = {}
 local ltectusH, lshardC, lshardT, lmoteC, lmoteT = 1, 1, 1, 1, 1 -- not need to sync.
 
 function mod:CustomHealthUpdate()
@@ -80,19 +75,16 @@ function mod:CustomHealthUpdate()
 			local cid = self:GetCIDFromGUID(guid)
 			if cid == 78948 then
 				tectusH = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
-				tectusGUID = guid
 				ltectusH = tectusH
 			elseif cid == 80551 then
 				shardC = shardC + 1
 				shardT = shardT + (UnitHealth(unitID) / UnitHealthMax(unitID) * 100)
-				shardGUID[guid] = true
 				lshardC = shardC
 				lshardT = shardT
 			elseif cid == 80557 then
 				local health = UnitHealth(unitID) / UnitHealthMax(unitID) * 100
 				moteC = moteC + 1
 				moteT = moteT + health
-				moteGUID[guid] = true
 				lmoteC = moteC
 				lmoteT = moteT
 				moteH[guid] = health
@@ -101,7 +93,7 @@ function mod:CustomHealthUpdate()
 	end
 	for guid, health in pairs(moteH) do
 		if not moteGUID[guid] then
-			local newhealth = self:GetBossHPByGUID(guid) or health
+			local newhealth = self:GetBossHP(guid) or health
 			if newhealth >= 1 then
 				self.vb.healthPhase = 3
 				moteC = moteC + 1
@@ -120,7 +112,7 @@ function mod:CustomHealthUpdate()
 	elseif self.vb.healthPhase == 3 then
 		return ("(%d%%, %s)"):format((moteT > 0 and moteT or lmoteT) / (moteC > 0 and moteC or lmoteC), moteN)
 	end
-	return DBM_CORE_UNKNOWN
+	return DBM_CORE_L.UNKNOWN
 end
 
 function mod:OnCombatStart(delay)
@@ -131,7 +123,6 @@ function mod:OnCombatStart(delay)
 	self.vb.healthPhase = 1
 	table.wipe(moteH)
 	timerEarthwarperCD:Start(8-delay)
-	countdownEarthwarper:Start(8-delay)
 	timerBerserkerCD:Start(18-delay)
 	if self:IsMythic() then
 		--Figure out berserk
@@ -230,7 +221,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerGiftOfEarthCD:Start(10)--TODO, verify timing on new event
 			timerEarthenFlechettesCD:Start(15)--TODO, verify timing on new event
 			timerEarthwarperCD:Start()--TODO, verify timing on new event
-			countdownEarthwarper:Start()--TODO, verify timing on new event
 			if self.Options.SetIconOnEarthwarper and self.vb.EarthwarperAlive < 9 and not (self:IsMythic() and self.Options.SetIconOnMote) then--Support for marking up to 8 mobs (you're group is terrible)
 				self:ScanForMobs(80599, 2, 9-self.vb.EarthwarperAlive, 1, 0.2, 13, "SetIconOnEarthwarper")
 			end
@@ -244,7 +234,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self.vb.healthPhase = 2
 			if not self:IsMythic() then
 				timerEarthwarperCD:Stop()
-				countdownEarthwarper:Cancel()
 				timerBerserkerCD:Stop()
 			end
 		elseif cid == 80551 then
