@@ -1,3 +1,7 @@
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
+
 --[[
 Name: RangeDisplay
 Revision: $Revision: 392 $
