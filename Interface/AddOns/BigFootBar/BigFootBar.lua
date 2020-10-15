@@ -119,8 +119,8 @@ function BigFootBarButton_OnLoad(self)
     self:RegisterEvent("UPDATE_BINDINGS");
     self:RegisterEvent("UPDATE_SHAPESHIFT_FORM");
     self:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN");
-    ActionButton_UpdateAction(self);
-    ActionButton_UpdateHotkeys(self, self.buttonType);
+    --ActionButton_UpdateAction(self);
+    --ActionButton_UpdateHotkeys(self, self.buttonType);
 end
 local BigFootBar_f40fe078ddd73cb3e7cc2600b489b79e = BLibrary("BScale");
 local BigFootBar_Eventer = BLibrary("BEvent");
@@ -228,8 +228,8 @@ function BigFootBar_ToggleShowGrid(switch)
                                 BigFootBar_5e57ab95c762a48d9a126b104db1056f);
                     BigFootActionButton_ShowGrid(
                         BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
-                    ActionButton_Update(
-                        BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
+                    --[[ActionButton_Update(
+                        BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);]]
                 end
             end
         end
@@ -249,8 +249,8 @@ function BigFootBar_ToggleShowGrid(switch)
                                 BigFootBar_5e57ab95c762a48d9a126b104db1056f);
                     BigFootActionButton_HideGrid(
                         BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
-                    ActionButton_Update(
-                        BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
+                    --[[ActionButton_Update(
+                        BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);]]
                 end
             end
         end
@@ -1016,6 +1016,15 @@ function BigFootActionButton_OnEvent(self, event, ...)
         BigFootActionButton_HideGrid(self);
     elseif (event == "ACTIONBAR_UPDATE_COOLDOWN") then
         ActionButton_UpdateCooldown(self);
+    elseif (event == "ACTIONBAR_SLOT_CHANGED") then
+        self:Update();
+    --[[elseif (ViragDevTool_AddData) then
+        -- 向调试器写入信息
+        ViragDevTool_AddData({
+            self = self,
+            event = event,
+            args = {...},
+        }, "BigFootActionButton_OnEvent('"..event.."')");]]
     end
 end
 function BigFootActionButton_ShowGrid(button)
@@ -1596,7 +1605,7 @@ function BigFootBar_f7b216cf55af9a4d5e1d6041d1932933(self)
             BigFootBar_11e76fe10cb05184719f745e4db8a533(
                 BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
         end
-        ActionButton_UpdateState(BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
+        --ActionButton_UpdateState(BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
         BigFootActionButton_UpdateGrid(
             BigFootBar_99f3cf2c6f1fdfadb0fd4ab6e0843bf5);
     end
