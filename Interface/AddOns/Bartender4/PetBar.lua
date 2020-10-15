@@ -66,11 +66,6 @@ function PetBarMod:OnEnable()
 		self.bar:RegisterEvent("PET_SPECIALIZATION_CHANGED")
 	end
 
-	if UnitLevel("player") <10 then			--bf@178.com
-		self.bar:RegisterEvent("PLAYER_LEVEL_UP")
-		return;
-	end
-
 	self:ApplyConfig()
 	self:ToggleOptions()
 
@@ -102,7 +97,6 @@ function PetBarMod:SetGrid(grid)
 end
 
 function PetBarMod:ApplyConfig()
-	if UnitLevel("player") <10 then return end	--bf@178.com
 	if not self:IsEnabled() then return end
 	self.bar:ApplyConfig(self.db.profile)
 	self:ReassignBindings()
@@ -124,15 +118,6 @@ function PetBar:OnEvent(event, arg1)
 		self:ForAll("ShowGrid")
 	elseif event == "PET_BAR_HIDEGRID" then
 		self:ForAll("HideGrid")
-	elseif event == "PLAYER_LEVEL_UP" then		--bf@178.com
-		if UnitLevel("player") >=10 then
-			PetBarMod:ApplyConfig()
-			PetBarMod:ToggleOptions()
-			PetBarMod:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
-			PetBarMod:ReassignBindings()
-
-			self:UnregisterEvent("PLAYER_LEVEL_UP")
-		end
 	end
 end
 
