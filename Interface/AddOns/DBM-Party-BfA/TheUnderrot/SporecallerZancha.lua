@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2130, "DBM-Party-BfA", 8, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200904210712")
+mod:SetRevision("20201001003131")
 mod:SetCreatureID(131383)
 mod:SetEncounterID(2112)
 
@@ -28,7 +28,7 @@ local specWarnUpheavalNear			= mod:NewSpecialWarningClose(259718, nil, nil, nil,
 
 local timerFesteringHarvestCD		= mod:NewCDTimer(51, 259732, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 --local timerBoundlessRotCD			= mod:NewCDTimer(13, 259830, nil, nil, nil, 3)
-local timerVolatilePodsCD			= mod:NewCDTimer(31.3, 273271, nil, nil, nil, 3)
+local timerVolatilePodsCD			= mod:NewCDTimer(27.5, 273271, nil, nil, nil, 3)
 local timerShockwaveCD				= mod:NewCDTimer(14.6, 272457, nil, nil, nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerUpheavalCD				= mod:NewCDTimer(20, 259718, nil, nil, nil, 3)
 

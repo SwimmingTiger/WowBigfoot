@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2348, "DBM-Party-BfA", 11, 1178)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200812192304")
+mod:SetRevision("20201001003131")
 mod:SetCreatureID(144248)--Head Mechinist Sparkflux
 mod:SetEncounterID(2259)
 
@@ -33,7 +33,7 @@ local specWarnDiscomBomb			= mod:NewSpecialWarningDispel(285460, "RemoveMagic", 
 local timerDiscomBombCD				= mod:NewNextTimer(18.2, 285454, nil, nil, nil, 3)
 local timerFlameCannonCD			= mod:NewCDTimer(47.4, 285440, nil, nil, nil, 2)
 local timerSelfTrimmingHedgeCD		= mod:NewCDTimer(25.5, 294954, nil, nil, nil, 3)
-local timerPlantCD					= mod:NewCDTimer(46, 294853, nil, nil, nil, 1)
+local timerPlantCD					= mod:NewCDTimer(45.4, 294853, nil, nil, nil, 1)
 
 function mod:OnCombatStart(delay)
 	timerSelfTrimmingHedgeCD:Start(3.4-delay)

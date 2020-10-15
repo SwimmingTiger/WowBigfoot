@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2114, "DBM-Party-BfA", 7, 1001)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200904210712")
+mod:SetRevision("20201001003131")
 mod:SetCreatureID(129227)
 mod:SetEncounterID(2106)
 mod:DisableESCombatDetection()--ES fires for nearby trash even if boss isn't pulled
@@ -90,7 +90,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
-	if spellId == 257582 then
+	if spellId == 257582 and self:AntiSpam(3.5, args.destName) then
 		warnRagingGaze:CombinedShow(0.5, args.destName)--In case two adds are up
 		if args:IsPlayer() and self:AntiSpam(3.5, 2) then
 			specWarnRagingGaze:Show()
