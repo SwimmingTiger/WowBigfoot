@@ -1,0 +1,39 @@
+## Interface: 80300
+## Title: World Quest Tracker
+## Title-zhCN: [大脚][集]世界任务增强
+## Title-zhTW: [大腳][集]世界任務增強
+## Notes: |cffbc8f8fMake more easy to see world quests|r
+## Notes-zhCN: |cff00ff00WorldQuestTracker|r|n|cffbc8f8f追踪并在大地图上显示所有世界任务。|r
+## Notes-zhTW: |cff00ff00WorldQuestTracker|r|n|cffbc8f8f追踪并在大地图上显示所有世界任务。|r
+## SavedVariables: WQTrackerDB
+## SavedVariablesPerCharacter: WQTrackerDBChr
+## X-Curse-Packaged-Version: 398
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+locales\enUS.lua
+locales\zhCN.lua
+locales\zhTW.lua
+
+libs\libs.xml
+
+WorldQuestTracker.xml
+
+WorldQuestTracker_Initialize.lua
+WorldQuestTracker_IDs.lua
+
+WorldQuestTracker.lua
+
+WorldQuestTracker_Core.lua
+
+WorldQuestTracker_FrameAPI.lua
+WorldQuestTracker_MapAPI.lua
+WorldQuestTracker_GroupFinder.lua
+WorldQuestTracker_RareFinder.lua
+WorldQuestTracker_ZoneMap.lua
+WorldQuestTracker_WorldMap.lua
+WorldQuestTracker_Tracker.lua
+WorldQuestTracker_Taxi.lua
+
+WorldQuestTrackerMixin.xml

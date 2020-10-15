@@ -1,0 +1,13 @@
+## Interface: 80300
+## Title: MTG
+## Title-zhCN: [大脚][集]鱼人物品兑换助手
+## Title-zhTW: [大腳][集]魚人物品兌換助手
+## Notes: |cff00ff00MTG|r|n|cffbc8f8f搬运Mrrl's trade game|r
+## Author: JANY,Enhance By whatwhenwherewhowhy@NGA
+## Version: v4.0.2-42-20190819
+## SavedVariables: MTGDB,j_BuyRareItemOption,j_BuyItemOption,j_Markersize,j_CheckTacoFirst,MTGsettingDB
+## X-Website: https://nga.178.com/read.php?tid=17744227
+## X-Revision: BigFoot
+
+localization.lua
+MTG.lua

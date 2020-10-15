@@ -1,0 +1,15 @@
+﻿## Interface: 80300
+## Title:NewPowerBar
+## Title-zhCN: [大脚]职业能量监测
+## Title-zhTW: [大腳]職業能量監測
+## Notes-zhCN: |cff00ff00NewPowerBar|r|n|cffbc8f8f以额外框体显示战士、猎人、德鲁伊能量值。|r
+## Notes-zhTW: |cff00ff00NewPowerBar|r|n|cffbc8f8f以額外框體顯示戰士、獵人、德魯伊能量值。|r
+## Author: Aguan@BF
+## SavedVariables: NewPowerInfo_Global
+## SavedVariablesPerCharacter: NewPowerInfo_Character
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+NewPowerBar.xml
+NewPowerBar.lua

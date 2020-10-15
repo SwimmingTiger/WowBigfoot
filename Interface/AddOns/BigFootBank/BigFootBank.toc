@@ -1,0 +1,14 @@
+﻿## Interface: 80300
+## Title: [BF] BigFootBank
+## Title-zhCN: [大脚]黒市助手
+## Title-zhTW: [大腳]黒市助手
+## Notes: |cffbc8f8fAllow user to collect data in game and upload to server to share with other players.|r
+## Notes-zhCN: |cff00ff00BigFootBank|r|n|cffbc8f8f提供黑市物品刷新提示以及离线黑市功能。|r
+## Notes-zhTW: |cff00ff00BigFootBank|r|n|cffbc8f8f提供黑市物品刷新提示以及離線黑市功能。|r
+## Version: 5.02
+## SavedVariables: BigFootBankSaveData
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+BigFootBank.xml

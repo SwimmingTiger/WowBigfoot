@@ -1,0 +1,16 @@
+## Interface: 80300
+## Title: Wholly
+## Title-zhCN: [大脚][集]可接任务查询
+## Title-zhTW: [大腳][集]可接任務查詢
+## Notes: |cffbc8f8fShows quest database and map pins.|r
+## Notes-zhCN: |cff00ff00Wholly|r|n|cffbc8f8f在世界地图上显示可接任务。|r
+## Notes-zhTW: |cff00ff00Wholly|r|n|cffbc8f8f在世界地圖上顯示可接任務。|r
+## Author: Scott M Harrison
+## Version: 079
+## SavedVariablesPerCharacter: WhollyDatabase
+## Dependencies: Grail
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+Wholly.lua
+Wholly.xml

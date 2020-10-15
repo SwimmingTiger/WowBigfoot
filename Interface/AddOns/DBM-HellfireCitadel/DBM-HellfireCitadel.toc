@@ -1,0 +1,38 @@
+﻿## Interface: 80300
+## X-Min-Interface: 60200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Hellfire Citadel
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 地狱火堡垒
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 地獄火堡壘
+## Notes:|cff00ff00DBM-HellfireCitadel|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMHellfireCitadel_AllSavedVars
+## SavedVariablesPerCharacter: DBMHellfireCitadel_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: WOD
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 601
+## X-DBM-Mod-MapID: 1448
+## X-DBM-Mod-MinCoreRevision: 15211
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+HellfireAssault.lua
+IronReaver.lua
+Kormrok.lua
+HellfireCouncil.lua
+Kilrogg.lua
+Gorefiend.lua
+Iskar.lua
+Socrethar.lua
+Zakuun.lua
+Xhulhorac.lua
+Velhari.lua
+Mannoroth.lua
+Archimonde.lua
+HellfireCitadelTrash.lua

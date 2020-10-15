@@ -1,0 +1,20 @@
+## Interface: 80300
+## Title: |cff00ff00GearStatsSummary|r
+## Title-zhCN: [大脚][集]装备属性统计
+## Title-zhTW: [大腳][集]裝備屬性統計
+## Notes: |cffbc8f8fCompare your equipments bonus of all status with other players.|r
+## Notes-zhCN: |cff00ff00GearStatsSummary|r|n|cffbc8f8f统计自己与观察目标的装备属性。|r
+## Notes-zhTW: |cff00ff00GearStatsSummary|r|n|cffbc8f8f統計自己與觀察目標的裝備屬性。|r
+## Author-Origin: slashboy @ 九藜方舟 Dreamland  yyslash@gmail.com / lasthime @ 幻物梵天 艾森纳
+## Author: Henrui @ 幽暗沼泽 zhengruiw02@gmail.com
+## Version: GSS Realse 7
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+LibInspectLess-1.0.lua
+CorruptInfo.lua
+
+Localization.lua
+
+GearStatsSummary.xml

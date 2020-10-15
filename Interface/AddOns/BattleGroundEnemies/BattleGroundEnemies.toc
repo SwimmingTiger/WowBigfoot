@@ -1,0 +1,30 @@
+## Interface: 80300
+## Title: BattleGroundEnemies
+## Title-zhCN: [大脚][集]战场目标助手
+## Title-zhTW: [大腳][集]戰場目標助手
+## Notes:|cff00ff00BattleGroundEnemies|r
+## Version: v3.1.9.9
+## Author: Bullsei
+## SavedVariables: BattleGroundEnemiesDB
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+
+embeds.xml
+
+Locales\enUS.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+
+Data.lua
+Main.lua
+
+Objects\Auras.lua
+Objects\Buffs.lua
+Objects\Debuffs.lua
+Objects\DR.lua
+Objects\ObjectiveAndRespawn.lua
+Objects\Racial.lua
+Objects\Trinket.lua
+
+Testmode.lua
+Options.lua

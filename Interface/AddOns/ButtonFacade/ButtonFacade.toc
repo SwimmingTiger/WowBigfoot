@@ -1,0 +1,26 @@
+## Interface: 80300
+## Title: ButtonFacade
+## Title-zhCN: [大脚][集]动作条皮肤包
+## Title-zhTW: [大腳][集]動作條皮膚包
+## Notes: |cffbc8f8fLoads Masque for add-ons still using ButtonFacade's API. Do NOT disable this!|r
+## Notes-zhCN: |cff00ff00ButtonFacade|r|n|cffbc8f8f为动作条美化插件提供额外可以更换的皮肤包|r
+## Notes-zhTW: |cff00ff00ButtonFacade|r|n|cffbc8f8f為動作條美化插件提供額外可以更換的皮膚包|r
+## Author: StormFX
+## Version: 4.3.378
+## Dependencies: Masque
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+ButtonFacade.lua
+
+# Skins
+BF_ChineseStyle\Skins.lua
+ButtonFacade_HelloKitty\Skins.lua
+Masque_Caith\Caith.lua
+Masque_Serenity\Serenity.lua
+Masque_Darion\Darion.lua
+Masque_Entropy\Entropy.lua
+
+# group blizz
+Blizz.lua
+

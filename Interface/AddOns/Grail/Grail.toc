@@ -1,0 +1,31 @@
+## Interface: 80300
+## Title: Grail
+## Title-zhCN: [大脚][集]可接任务数据库
+## Title-zhTW: [大腳][集]可接任務數據庫
+## Notes: |cffbc8f8fKnows about quests.|r
+## Notes-zhCN: |cff00ff00Grail|r
+## Notes-zhTW: |cff00ff00Grail|r
+## Author: Scott M Harrison
+## Version: 110
+## SavedVariables: GrailDatabase
+## SavedVariablesPerCharacter: GrailDatabasePlayer,GrailWhenPlayer
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+Grail.lua
+
+Grail-Quests.lua
+Grail-Quests-enUS.lua
+Grail-Quests-zhCN.lua
+Grail-Quests-zhTW.lua
+
+Grail-NPCs.lua
+Grail-NPCs-enUS.lua
+Grail-NPCs-zhCN.lua
+Grail-NPCs-zhTW.lua
+
+Grail-Achievements\Grail-Achievements.lua
+Grail-Reputations\Grail-Reputations.lua
+Grail-Rewards\Grail-Rewards.lua
+Grail-When\Grail-When.lua

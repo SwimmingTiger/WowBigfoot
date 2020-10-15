@@ -1,0 +1,38 @@
+﻿## Interface: 80300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Brawlers
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 搏击俱乐部
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 鬥陣俱樂部
+## Notes:|cff00ff00DBM-Brawlers|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMBrawlers_AllSavedVars
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-No-Statistics: 1
+## X-DBM-Mod-Name: Brawlers
+## X-DBM-Mod-Name-zhCN: 搏击俱乐部
+## X-DBM-Mod-Name-zhTW: 鬥陣俱樂部
+## X-DBM-Mod-Sort: 417
+## X-DBM-Mod-MapID: 369,1043
+## X-DBM-Mod-MinCoreRevision: 12473
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+Brawlers.lua
+
+Rank1.lua
+Rank2.lua
+Rank3.lua
+Rank4.lua
+Rank5.lua
+Rank6.lua
+Rank7.lua
+
+BrawlRumble.lua
+BrawlLegacy.lua
+BrawlChallenges.lua

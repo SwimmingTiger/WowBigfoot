@@ -1,0 +1,30 @@
+﻿## Interface: 80300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Darkmoon Faire
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 暗月马戏团
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 暗月馬戲團
+## Notes:|cff00ff00DBM-DMF|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMDMF_AllSavedVars
+## SavedVariablesPerCharacter: DBMWorldDMF_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: OTHER
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-MapID: 974
+## X-DBM-Mod-Sort: 1501
+## X-DBM-Mod-MinCoreRevision: 12473
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+Cannon.lua
+Gnoll.lua
+Shot.lua
+Tonks.lua
+Rings.lua
+Rabbit.lua
+Moonfang.lua

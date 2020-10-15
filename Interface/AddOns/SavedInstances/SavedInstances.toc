@@ -1,0 +1,30 @@
+## Interface: 80300
+## Title: SavedInstances
+## Title-zhCN: [大脚][集]账号进度管家
+## Title-zhTW: [大腳][集]賬號進度管家
+## Notes: Tracks Raid, Instance, World Boss lockouts for all your characters, daily/weekly quests, currencies, trade cooldowns, and more!
+## Notes-zhCN: |cff00ff00SavedInstances|r|n|cffbc8f8f汇总显示账号下角色的副本进度,日常任务,代币等信息。|r
+## Notes-zhTW: |cff00ff00SavedInstances|r|n|cffbc8f8f匯總顯示賬號下角色的副本進度,日常任務,代幣等信息。|r
+## Author: oscarucb and the Saved Instances Community
+## Version: 8.3.4
+## SavedVariables: SavedInstancesDB
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+
+locale.lua
+
+Core.lua
+BonusRoll.lua
+Tradeskills.lua
+LFR.lua
+Emissary.lua
+WorldBosses.lua
+Quests.lua
+Currency.lua
+MythicPlus.lua
+Paragon.lua
+Progress.lua
+Warfront.lua
+SavedInstances.lua
+
+config.lua

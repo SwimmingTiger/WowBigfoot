@@ -1,0 +1,36 @@
+## Interface: 80300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0The Eternal Palace|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 永恒王宫
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 永恆宮殿
+## Notes:|cff00ff00DBM-EternalPalace|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMEternalPalace_AllSavedVars
+## SavedVariablesPerCharacter: DBMEternalPalace_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: BFA
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Name: The Eternal Palace
+## X-DBM-Mod-Name-zhCN: 永恒王宫
+## X-DBM-Mod-Name-zhTW: 永恆宮殿
+## X-DBM-Mod-Sort: 405
+## X-DBM-Mod-MapID: 2164
+## X-DBM-Mod-MinCoreRevision: 17286
+## X-DBM-Mod-MinExpansion: 7
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+AbyssalCommanderSivara.lua
+RadianceofAzshara.lua
+BlackwaterBehemoth.lua
+LadyPriscillaAshvane.lua
+Orgozoa.lua
+TheQueensCourt.lua
+Zaqul.lua
+QueenAzshara.lua
+EternalPalaceTrash.lua

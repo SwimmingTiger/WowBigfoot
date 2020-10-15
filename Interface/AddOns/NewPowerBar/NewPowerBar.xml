@@ -1,0 +1,82 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Texture name="NewPowerBarLineTemplate" virtual="true" file="Interface\DialogFrame\UI-DialogBox-Gold-Border">
+		<Size>
+			<AbsDimension x="9" y="5"/>
+		</Size>
+		<TexCoords left="0.555" right="0.69" top="0" bottom="1"/>
+	</Texture>
+	<Frame name = "PowerBlockTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentTexture" file="Interface\Addons\NewPowerBar\block">
+					<Size>
+						<AbsDimension x="242" y="93"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="13" y="-50"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+	<Frame name="NewPowerBarStructFrame">
+		<Size>
+			<AbsDimension x="10" y="120"/>
+		</Size>
+		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="5"/>
+			</EdgeSize>
+		</Backdrop>
+		<Animations>
+			<AnimationGroup parentKey="alphaOut">
+				<Alpha targetKey="$parent" change="-0.7" duration="2" order="1" startDelay="0"/>
+				<Scripts>
+					<OnFinished>
+						self:GetParent():SetAlpha(0.3)
+					</OnFinished>
+				</Scripts>
+			</AnimationGroup>
+		</Animations>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentPowerTexture" parentKey="powerValueBar" file="Interface\Addons\NewPowerBar\block">
+					<Size>
+						<AbsDimension x="9" y="1"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOM">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.16" top="0.2" bottom="0.3"/>
+				</Texture>
+				<FontString name="$parentPowerNum" parentKey="powerNum" inherits="GameFontHighlightSmall">
+					<Anchors>
+						<Anchor point="BOTTOM" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="30" y="-50"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+</Ui>

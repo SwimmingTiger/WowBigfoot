@@ -1,0 +1,19 @@
+﻿## Interface: 80300
+## Title: GladiatorlosSA
+## Title-zhCN: [大脚][集]竞技语音提示
+## Title-zhTW: [大腳][集]競技語音提示
+## Notes: |cffbc8f8fPVP Spell Sound Alert.|r
+## Notes-zhCN: |cff00ff00GladiatorlosSA|r|n|cffbc8f8f竞技技能语音提示插件。|r
+## Notes-zhTW: |cff00ff00GladiatorlosSA|r|n|cffbc8f8f競技技能語音提示插件。|r
+## Author: Abatorlos(of Spinebreaker), DuskAshes, superk521, zuhligan, Grit (Legion Update), Mini_Dragon, LordKuper
+## SavedVariables: GladiatorlosSADB
+## Version: 2.3.2
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+Locales\locales.xml
+
+GladiatorlosSA.lua
+spelllist.lua
+options.lua
