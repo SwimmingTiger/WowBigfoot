@@ -1014,8 +1014,8 @@ function BigFootActionButton_OnEvent(self, event, ...)
         BigFootActionButton_ShowGrid(self);
     elseif (event == "ACTIONBAR_HIDEGRID") then
         BigFootActionButton_HideGrid(self);
-    else
-        ActionButton_OnEvent(self, event, ...);
+    elseif (event == "ACTIONBAR_UPDATE_COOLDOWN") then
+        ActionButton_UpdateCooldown(self);
     end
 end
 function BigFootActionButton_ShowGrid(button)
