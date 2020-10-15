@@ -37,6 +37,15 @@ function zzzAddonCheck_Init_Decursive()
     end
 end
 
+local function zzzAddonCheck_Init_BugSack()
+    local patchVersion = '2020-10-15-09'
+    if BugSack and BugSack.db and BugSack.db.BugSackPatchVersion ~= patchVersion then
+        -- 使 BugSack 静音
+        BugSack.db.mute = true
+        BugSack.db.BugSackPatchVersion = patchVersion
+    end
+end
+
 local function zzzAddonCheck_Init_DBM()
     -- 为DBM选择夏一可语音包
     local patchVersion = '2020-06-27-11'
@@ -140,6 +149,9 @@ end
 
 local function LoaderEvents(frame, event, arg1)
     frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+    -- 使 BugSack 静音
+    zzzAddonCheck_Init_BugSack()
 
     -- 禁止Decursive在聊天窗口和屏幕中央显示信息
     zzzAddonCheck_Init_Decursive()
