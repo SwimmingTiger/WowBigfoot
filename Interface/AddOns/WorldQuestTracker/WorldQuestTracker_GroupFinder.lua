@@ -39,7 +39,6 @@ local GetNumQuestLogRewardCurrencies = GetNumQuestLogRewardCurrencies
 local GetQuestLogRewardInfo = GetQuestLogRewardInfo
 local GetQuestLogRewardCurrencyInfo = GetQuestLogRewardCurrencyInfo
 local GetQuestLogRewardMoney = GetQuestLogRewardMoney
-local GetQuestTagInfo = GetQuestTagInfo
 local GetNumQuestLogRewards = GetNumQuestLogRewards
 local GetQuestInfoByQuestID = C_TaskQuest.GetQuestInfoByQuestID
 
@@ -55,7 +54,7 @@ end
 --finder frame
 
 ff.Width = 240
-ff.Height = 188			--bf@178.com
+ff.Height = 170
 ff.ButtonWidth = 236
 ff.ButtonHeight = 20
 ff.ButtonVerticalPadding = 4
@@ -70,12 +69,12 @@ ff:EnableMouse (true)
 ff:SetMovable (true)
 ff:Hide()
 
-ff.RightClickClose = DF:CreateLabel (ff, L["right click to close this window"])
+ff.RightClickClose = DF:CreateLabel (ff, "right click to close this window")
 ff.RightClickClose:SetPoint ("bottom", ff, "bottom", 0, 2)
 ff.RightClickClose.color = "gray"
 
 --tick frame
-ff.TickFrame = CreateFrame ("frame", nil, UIParent)
+ff.TickFrame = CreateFrame ("frame", nil, UIParent, "BackdropTemplate")
 
 ff.SetEnabledFunc = function (_, _, value)
 	WorldQuestTracker.db.profile.groupfinder.enabled = value
@@ -165,7 +164,7 @@ ff.BuildMenuFunc = function()
 	GameCooltip:AddLine ("$div", nil, 1, nil, -5, -11)
 	--
 	
-	GameCooltip:AddLine (L["Don't Show if Already in Group"])
+	GameCooltip:AddLine ("Don't Show if Already in Group")
 	if (WorldQuestTracker.db.profile.groupfinder.dont_open_in_group) then
 		GameCooltip:AddIcon ([[Interface\BUTTONS\UI-CheckBox-Check]], 1, 1, 16, 16)
 	else
@@ -322,7 +321,7 @@ function WorldQuestTracker.OpenGroupFinderForQuest()
 				if (WorldQuestTracker.OpenSearchTime and WorldQuestTracker.OpenSearchTime+30 > GetTime()) then
 					LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon:SetPoint ("bottomleft", LFGListFrame.EntryCreation.Name, "topleft", 0, 20)
 					LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon:Show()
-					LFGListFrame.EntryCreation.Name.Instructions2.text = L["Enter the QuestID: "] .. ff.CurrentWorldQuest
+					LFGListFrame.EntryCreation.Name.Instructions2.text = "Enter the QuestID: " .. ff.CurrentWorldQuest
 					LFGListFrame.EntryCreation.Name.Instructions:SetText("")
 				end
 			end)
@@ -339,10 +338,10 @@ function WorldQuestTracker.OpenGroupFinderForQuest()
 		LFGListFrame.SearchPanel.SearchBox.Instructions:SetText ("")
 		LFGListFrame.SearchPanel.SearchBox:SetFocus (true)
 		
-		LFGListFrame.SearchPanel.SearchBox.Instructions2.text = L["Enter the QuestID: "] .. ff.CurrentWorldQuest
+		LFGListFrame.SearchPanel.SearchBox.Instructions2.text = "Enter the QuestID: " .. ff.CurrentWorldQuest
 		WorldQuestTracker.OpenSearchTime = GetTime()
 		
-		LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon.label = L["Enter the QuestID: "] .. ff.CurrentWorldQuest
+		LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon.label = "Enter the QuestID: " .. ff.CurrentWorldQuest
 		MicroButtonAlert_SetText (LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon, LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon.label)
 		LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon:Show()
 		LFGListFrame.SearchPanel.SearchBox.QuestIDBalloon:SetPoint ("bottomleft", LFGListFrame.SearchPanel.SearchBox, "topleft", 0, 20)
@@ -350,19 +349,19 @@ function WorldQuestTracker.OpenGroupFinderForQuest()
 end
 
 --> TEXT quest name
-ff.QuestNameText = WorldQuestTracker:CreateLabel (ff, L["Quest Name:"])
+ff.QuestNameText = WorldQuestTracker:CreateLabel (ff, "Quest Name:")
 ff.QuestName2Text = WorldQuestTracker:CreateLabel (ff, "")
 ff.QuestNameText:SetPoint ("topleft", ff, "topleft", 2, -ff.ButtonVerticalPadding - ff.TitleHeight)
 ff.QuestName2Text:SetPoint ("left", ff.QuestNameText, "right", 2, 0)
 
 --> TEXT quest ID
-ff.QuestIDText = WorldQuestTracker:CreateLabel (ff, L["Quest ID:"])
+ff.QuestIDText = WorldQuestTracker:CreateLabel (ff, "Quest ID:")
 ff.QuestID2Text = WorldQuestTracker:CreateLabel (ff, "")
 ff.QuestIDText:SetPoint ("topleft", ff.QuestNameText, "bottomleft", 0, -ff.ButtonVerticalPadding)
 ff.QuestID2Text:SetPoint ("left", ff.QuestIDText, "right", 2, 0)
 
 --> BUTTON open group finder window
-ff.OpenGroupFinderButton = WorldQuestTracker:CreateButton (ff, WorldQuestTracker.OpenGroupFinderForQuest, ff.ButtonWidth, ff.ButtonHeight, L["Search for a Group in Group Finder"], -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
+ff.OpenGroupFinderButton = WorldQuestTracker:CreateButton (ff, WorldQuestTracker.OpenGroupFinderForQuest, ff.ButtonWidth, ff.ButtonHeight, "Search for a Group in Group Finder", -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
 ff.OpenGroupFinderButton:SetPoint ("topleft", ff.QuestIDText, "bottomleft", 0, -ff.ButtonVerticalPadding)
 ff.OpenGroupFinderButton:SetClickFunction (function() ff:HideFrame (true) end, false, false, "right")
 
@@ -389,7 +388,7 @@ local InvitePlayersOnClick = function()
 	end)
 end
 
-ff.InvitePlayersButton = WorldQuestTracker:CreateButton (ff, InvitePlayersOnClick, ff.ButtonWidth, ff.ButtonHeight, L["Invite Nearby Players"], -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
+ff.InvitePlayersButton = WorldQuestTracker:CreateButton (ff, InvitePlayersOnClick, ff.ButtonWidth, ff.ButtonHeight, "Invite Nearby Players", -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
 ff.InvitePlayersButton:SetPoint ("top", ff.OpenGroupFinderButton, "bottom", 0, -ff.ButtonVerticalPadding)
 ff.InvitePlayersButton:SetClickFunction (function() ff:HideFrame (true) end, false, false, "right")
 
@@ -427,10 +426,10 @@ local BuildInviteMenu = function()
 		end
 		
 		if (not added) then
-			GameCooltip2:AddLine (L["No other players nearby."])
+			GameCooltip2:AddLine ("No other players nearby.")
 		end
 	else
-		GameCooltip2:AddLine (L["No other players nearby."])
+		GameCooltip2:AddLine ("No other players nearby.")
 	end
 end
 
@@ -471,13 +470,13 @@ local leave_func = function()
 	LeaveParty()
 end
 
-ff.LeaveButton = WorldQuestTracker:CreateButton (ff, leave_func, ff.ButtonWidth, ff.ButtonHeight, L["LeaveGroup"], -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
+ff.LeaveButton = WorldQuestTracker:CreateButton (ff, leave_func, ff.ButtonWidth, ff.ButtonHeight, "LeaveGroup", -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
 ff.LeaveButton:SetPoint ("top", ff.InvitePlayersButton, "bottom", 0, -ff.ButtonVerticalPadding)
 ff.LeaveButton:SetClickFunction (function() ff:HideFrame (true) end, false, false, "right")
 
 --> BUTTON open group finder window
 local ignore_current_quest = function()
-	DF:ShowPromptPanel (L["Don't Show Popups for the Quest: "] .. (ff.QuestName2Text:GetText() or "-") .. "?", function() 
+	DF:ShowPromptPanel ("Don't Show Popups for the Quest: " .. (ff.QuestName2Text:GetText() or "-") .. "?", function() 
 		if (ff.CurrentWorldQuest) then
 			WorldQuestTracker.db.profile.groupfinder.ignored_quests [ff.CurrentWorldQuest] = true
 			WorldQuestTracker:Msg ("Quest " .. (ff.QuestName2Text:GetText() or "-") .. " added to ignore list.")
@@ -486,7 +485,7 @@ local ignore_current_quest = function()
 	end, function() end)
 end
 
-ff.IgnoreQuestButton = WorldQuestTracker:CreateButton (ff, ignore_current_quest, ff.ButtonWidth, ff.ButtonHeight, L["Ignore Quest"], -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
+ff.IgnoreQuestButton = WorldQuestTracker:CreateButton (ff, ignore_current_quest, ff.ButtonWidth, ff.ButtonHeight, "Ignore Quest", -1, nil, nil, nil, nil, nil, WorldQuestTracker:GetTemplate ("button", "OPTIONS_BUTTON_TEMPLATE"))
 ff.IgnoreQuestButton:SetPoint ("top", ff.LeaveButton, "bottom", 0, -ff.ButtonVerticalPadding)
 ff.IgnoreQuestButton:SetClickFunction (function() ff:HideFrame (true) end, false, false, "right")
 
@@ -499,7 +498,7 @@ function WorldQuestTracker.RegisterGroupFinderFrameOnLibWindow()
 	DF:CreateTitleBar (ff, "Title")
 	
 	--gear button
-	ff.Options = CreateFrame ("button", "$parentTopRightOptionsButton", ff)
+	ff.Options = CreateFrame ("button", "$parentTopRightOptionsButton", ff, "BackdropTemplate")
 	ff.Options:SetPoint ("right", ff.CloseButton, "left", -2, 0)
 	ff.Options:SetSize (16, 16)
 	ff.Options:SetNormalTexture (DF.folder .. "icons")
@@ -642,7 +641,8 @@ function ff:PlayerEnteredWorldQuestZone (questID, npcID, npcName)
 			end
 		end
 		
-		ff:SetTitle (L["World Quest Tracker"])
+		
+		ff:SetTitle ("World Quest Tracker")
 		
 		ff.QuestName2Text.text = title
 		ff.QuestID2Text.text = questID
@@ -753,14 +753,16 @@ function WorldQuestTracker.PlayerIsInQuest (questName, questID)
 	
 	if (questName) then
 		for i = 1, numQuests do 
-			local questTitle, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle (i)
+			local questTitle = C_QuestLog.GetTitleForLogIndex(i)
 			if (questName == questTitle) then
 				isInQuest = true
 			end
 		end
 	else
-		for i = 1, numQuests do 
-			local questTitle, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, thisQuestID = GetQuestLogTitle (i)
+		for i = 1, numQuests do
+			local questInfo = C_QuestLog.GetInfo(i)
+			local thisQuestID = questInfo.questID
+
 			if (thisQuestID == questID) then
 				isInQuest = true
 			end
@@ -919,7 +921,10 @@ ff:SetScript ("OnEvent", function (self, event, arg1, questID, arg3)
 	
 	elseif (event == "QUEST_ACCEPTED") then
 		--> get quest data
-		local isInArea, isOnMap, numObjectives = GetTaskInfo (questID)
+
+if (true) then return end
+
+		local isInArea, isOnMap, numObjectives = C_TaskQuest.GetTaskInfo (questID)
 		local title, factionID, capped = C_TaskQuest.GetQuestInfoByQuestID (questID)
 		
 		-->  do the regular checks
@@ -931,7 +936,7 @@ ff:SetScript ("OnEvent", function (self, event, arg1, questID, arg3)
 				allAssaultQuests [questId] = true
 			end
 
-			local tagID, tagName, worldQuestType, rarity, isElite = GetQuestTagInfo (questID)
+			local tagID, tagName, worldQuestType, rarity, isElite = C_QuestLog.GetQuestTagInfo (questID)
 			local isWorldQuest = QuestMapFrame_IsQuestWorldQuest(questID)
 
 			if ((isWorldQuest and isInArea) or allAssaultQuests[questID] or tagID == 112 or (isElite and rarity == LE_WORLD_QUEST_QUALITY_EPIC)) then
@@ -1089,7 +1094,7 @@ end
 function ff.AddButtonToBBlock (block, questID)
 	local button = tremove (ff.BQuestTrackerFreeWidgets)
 	if (not button) then
-		button = CreateFrame ("button", nil, UIParent)
+		button = CreateFrame ("button", nil, UIParent, "BackdropTemplate")
 		button:SetFrameStrata ("FULLSCREEN")
 		button:SetSize (30, 30)
 		

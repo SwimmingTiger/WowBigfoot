@@ -429,6 +429,18 @@ local ButtonMetaFunctions = _G[DF.GlobalWidgetControlNames ["button"]]
 			return self.icon:GetTexture()
 		end
 	end
+
+	function ButtonMetaFunctions:SetBackdrop(...)
+		return self.button:SetBackdrop(...)
+	end
+
+	function ButtonMetaFunctions:SetBackdropColor(...)
+		return self.button:SetBackdropColor(...)
+	end
+
+	function ButtonMetaFunctions:SetBackdropBorderColor(...)
+		return self.button:SetBackdropBorderColor(...)
+	end
 	
 	function ButtonMetaFunctions:SetIcon (texture, width, height, layout, texcoord, overlay, textdistance, leftpadding, textheight, short_method)
 		if (not self.icon) then
@@ -559,17 +571,17 @@ local ButtonMetaFunctions = _G[DF.GlobalWidgetControlNames ["button"]]
 			button.textureBottomLeft:SetTexCoord (0, 8/128, 24/128, 32/128)
 			button.textureBottomRight:SetTexCoord (120/128, 1, 24/128, 32/128)
 			
-			button.textureTopLeft:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureTopRight:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureBottomLeft:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureBottomRight:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureLeft:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureRight:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureTop:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
-			button.textureBottom:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\default_button]])
+			button.textureTopLeft:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureTopRight:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureBottomLeft:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureBottomRight:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureLeft:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureRight:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureTop:SetTexture ([[Interface\AddOns\Details\images\default_button]])
+			button.textureBottom:SetTexture ([[Interface\AddOns\Details\images\default_button]])
 		
 		else
-			texture = texture or [[Interface\AddOns\WorldQuestTracker\images\default_button]]
+			texture = texture or "Interface\\AddOns\\Details\\images\\default_button"
 			self.button.texture = self.button:CreateTexture (nil, "artwork")
 			
 			if (not rect) then 
@@ -609,7 +621,7 @@ local ButtonMetaFunctions = _G[DF.GlobalWidgetControlNames ["button"]]
 		elseif (side_textures2) then
 			
 			local left = self.button:CreateTexture (nil, "overlay")
-			left:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\icons]])
+			left:SetTexture ([[Interface\AddOns\Details\images\icons]])
 			left:SetTexCoord (94/512, 123/512, 42/512, 87/512)
 			left:SetPoint ("left", self.button, 0, 0)
 			left:SetWidth (10)
@@ -617,7 +629,7 @@ local ButtonMetaFunctions = _G[DF.GlobalWidgetControlNames ["button"]]
 			self.button.left_border = left
 			
 			local right = self.button:CreateTexture (nil, "overlay")
-			right:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\icons]])
+			right:SetTexture ([[Interface\AddOns\Details\images\icons]])
 			right:SetTexCoord (65/512, 94/512, 42/512, 87/512)
 			right:SetPoint ("right", self.button, 0, 0)	
 			right:SetWidth (10)
@@ -1053,7 +1065,7 @@ function DF:NewButton (parent, container, name, member, w, h, func, param1, para
 		ButtonObject.container = container
 		ButtonObject.options = {OnGrab = false}
 
-	ButtonObject.button = CreateFrame ("button", name, parent)
+	ButtonObject.button = CreateFrame ("button", name, parent,"BackdropTemplate")
 	DF:Mixin (ButtonObject.button, DF.WidgetFunctions)
 	
 	build_button (ButtonObject.button)
@@ -1218,7 +1230,7 @@ function DF:NewColorPickButton (parent, name, member, callback, alpha, button_te
 	
 	--textura do fundo
 	local background = DF:NewImage (button, nil, color_button_width, color_button_height, nil, nil, nil, "$parentBck")
-	--background:SetTexture ([[Interface\AddOns\WorldQuestTracker\images\icons]])
+	--background:SetTexture ([[Interface\AddOns\Details\images\icons]])
 	background:SetPoint ("topleft", button.widget, "topleft", 1, -2)
 	background:SetPoint ("bottomright", button.widget, "bottomright", -1, 1)
 	background:SetTexCoord (0.337890625, 0.390625, 0.625, 0.658203125)
