@@ -1,6 +1,6 @@
 if GetLocale()~='zhCN' then return end
-local main= "8.3.0."
-local minor = "818"
+local main= "9.0.0."
+local minor = "819"
 BIGFOOT_VERSION = "zhCN"..main..minor;
 
 function GetMinorVersion()
@@ -8,6 +8,10 @@ function GetMinorVersion()
 end
 
 BigFootChangelog_ah();
+
+	BigFootChangelog_at("2020/10/15 (9.0.0.819)")
+	BigFootChangelog_ar("大脚插件","兼容至9.0前夕版本。")
+
 
 	BigFootChangelog_at("2020/09/15 (8.3.0.818)")
 	BigFootChangelog_ar("竞技语音","升级至最新版本(2.3.2)。")
@@ -1576,4 +1580,4 @@ BigFootChangelog_ah();
 BigFootChangelog_af();
 
 
-BF_VERSION_CHECKSUM = "59"
+BF_VERSION_CHECKSUM = "56"

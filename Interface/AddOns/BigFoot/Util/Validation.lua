@@ -89,7 +89,8 @@ local function isValid(message)
 	return false
 end
 
-e:RegisterEvent("PLAYER_LOGIN");
+-- 老虎会游泳：禁用大脚版本检查
+--e:RegisterEvent("PLAYER_LOGIN");
 
 function e:PLAYER_LOGIN()
 	if not isValid(BF_VERSION_CHECKSUM.."|"..BIGFOOT_VERSION) then
