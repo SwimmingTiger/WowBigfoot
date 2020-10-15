@@ -1,4 +1,4 @@
-## Interface: 80300
+## Interface: 90001
 ## Title: Master Plan
 ## Title-zhCN: [大脚][集]随从助手
 ## Title-zhTW: [大腳][集]隨從助手
@@ -7,22 +7,18 @@
 ## Notes-zhTW: |cff00ff00MasterPlan|r
 ## Author: foxlit
 ## X-Website: https://www.townlong-yak.com/master-plan/
-## SavedVariables: MasterPlanAG,SV_GarrisonMissionManager
-## SavedVariablesPerCharacter: MasterPlanPC,SVPC_GarrisonMissionManager
-## Version: 0.117
-## X-Version-Key: crystal
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot
 ## LoadOnDemand: 1
-
+## RequiredDeps: Blizzard_GarrisonUI, MasterPlanA
+## SavedVariablesPerCharacter: MasterPlanPC
+## Version: 0.118
+## X-Version-Key: exarch
 Libs/Evie.lua
 Libs/Reframe.lua
-
-PlanA\PlanA.lua
-
 Locale.lua
-
 Mark-50.lua
+Nine.lua
 GarrisonAPI-Data.lua
 GarrisonAPI.lua
 MasterPlan.lua
@@ -33,17 +29,3 @@ FollowerSummary.lua
 ShipMoI.lua
 LandingCache.lua
 LandingAlts.lua
-
-#GarrisonMissionManager
-LazyWidget.lua
-C_Garrison_cache.lua
-FindBestFollowersForMission.lua
-GarrisonMissionManager.lua
-MissionUI_Shared.lua
-MissionUI_Shared_UpgradeItems.lua
-MissionUI_Garrison.lua
-MissionUI_Shipyard.lua
-MissionUI_OrderHall.lua
-MissionUI_BFA.lua
-GarrisonBuilding.lua
-Broker.lua

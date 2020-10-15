@@ -1,0 +1,9 @@
+## Interface: 90001
+## Title: Master Plan A
+## Title-zhCN: [大脚][集]随从助手组件
+## Title-zhTW: [大腳][集]隨從助手组件
+## Notes: A vital part of any Master Plan.|n|n|cff36e5ff"Stay cool; the alphabet has 28 more letters."
+## SavedVariables: MasterPlanAG
+## Globe-Main: MasterPlan
+## Version: A
+..\MasterPlan\PlanA\PlanA.xml
