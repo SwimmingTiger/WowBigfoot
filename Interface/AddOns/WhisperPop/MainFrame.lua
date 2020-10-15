@@ -5,6 +5,10 @@
 -- 2010-9-28
 ------------------------------------------------------------
 
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
+
 local L = WHISPERPOP_LOCALE
 local WHISPERPOPHOLDTIME = 0.1;					--小喇叭刷新flash
 local function SetFrameMobile(frame)

@@ -47,6 +47,10 @@
 
 -----------------------------------------------------------
 
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
+
 local MAJOR_VERSION = 1
 local MINOR_VERSION = 10
 

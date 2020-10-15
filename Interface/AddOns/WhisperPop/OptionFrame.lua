@@ -5,6 +5,10 @@
 -- 2010-9-28
 ------------------------------------------------------------
 
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
+
 local L = WHISPERPOP_LOCALE
 BINDING_HEADER_WHISPERPOP_TITLE = L["title"]
 BINDING_NAME_WHISPERPOP_TOGGLE = L["toggle frame"]

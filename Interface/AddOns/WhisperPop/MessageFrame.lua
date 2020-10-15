@@ -5,6 +5,10 @@
 -- 2010-9-28
 ------------------------------------------------------------
 
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
+
 local FRAME_WIDTH = 320
 local INDENT_LEFT = 8
 local INDENT_RIGHT = 28
