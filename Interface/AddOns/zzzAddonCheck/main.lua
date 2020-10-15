@@ -1,6 +1,12 @@
 local LoaderFrame = CreateFrame("FRAME")
 LoaderFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+if BigFoot_DelayCall == nil then
+    BigFoot_DelayCall = function()
+        -- do nothing
+    end
+end
+
 local function IsAddOnLoadable(name)
     return GetAddOnEnableState(nil, name) == 2
 end
