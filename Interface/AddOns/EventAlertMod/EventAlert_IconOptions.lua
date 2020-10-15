@@ -1,9 +1,14 @@
+if LibDebug then LibDebug() end
 -- Prevent tainting global _.
 local _
 local _G = _G
 
+
 function EventAlert_Icon_Options_Frame_OnLoad()
 	-- UIPanelWindows["EA_Icon_Options_Frame"] = {area = "center", pushable = 0};
+	Lib_ZYF:SetBackdrop(EA_Icon_Options_Frame,{bgFile="interface/dialogframe/ui-dialogbox-gold-background", edgeFile="interface/dialogframe/ui-dialogbox-gold-border", tile = true, 	tileSize = 32, edgeSize = 32, insets = { left = 11, right = 12, top = 11, bottom = 11, },})
+	Lib_ZYF:SetBackdropColor(EA_Icon_Options_Frame,1,1,1,3/4)
+	Lib_ZYF:SetBackdropBorderColor(EA_Icon_Options_Frame,1,1,1,1)
 end
 
 function EventAlert_Icon_Options_Frame_Init()
@@ -14,10 +19,8 @@ function EventAlert_Icon_Options_Frame_Init()
 	EA_Icon_Options_Frame_IconYOffset:SetValue(EA_Position.yOffset);
 	EA_Icon_Options_Frame_IconRedDebuff:SetValue((EA_Position.RedDebuff * 100) - 50);
 	EA_Icon_Options_Frame_IconGreenDebuff:SetValue((EA_Position.GreenDebuff * 100) - 50);
-	--[[	bf@178.com
 	EA_Icon_Options_Frame_IconExecution:SetValue(EA_Position.Execution);
 	EA_Icon_Options_Frame_PlayerLv2BOSS:SetChecked(EA_Position.PlayerLv2BOSS);
-	]]
 	EA_Icon_Options_Frame_SCD_UseCooldown:SetChecked(EA_Position.SCD_UseCooldown);
 	EA_Icon_Options_Frame_SpecFlag_HolyPower:SetChecked(EA_Config.SpecPowerCheck.HolyPower);
 	EA_Icon_Options_Frame_SpecFlag_RunicPower:SetChecked(EA_Config.SpecPowerCheck.RunicPower);
@@ -26,7 +29,7 @@ function EventAlert_Icon_Options_Frame_Init()
 	EA_Icon_Options_Frame_SpecFlag_LunarPower:SetChecked(EA_Config.SpecPowerCheck.LunarPower);
 	EA_Icon_Options_Frame_SpecFlag_ComboPoint:SetChecked(EA_Config.SpecPowerCheck.ComboPoint);
 	EA_Icon_Options_Frame_SpecFlag_LifeBloom:SetChecked(EA_Config.SpecPowerCheck.LifeBloom);
-	EA_Icon_Options_Frame_SpecFlag_LightForce:SetChecked(EA_Config.SpecPowerCheck.LightForce);
+	EA_Icon_Options_Frame_SpecFlag_Chi:SetChecked(EA_Config.SpecPowerCheck.Chi);
 	EA_Icon_Options_Frame_SpecFlag_Energy:SetChecked(EA_Config.SpecPowerCheck.Energy);
 	EA_Icon_Options_Frame_SpecFlag_Rage:SetChecked(EA_Config.SpecPowerCheck.Rage);
 	EA_Icon_Options_Frame_SpecFlag_Focus:SetChecked(EA_Config.SpecPowerCheck.Focus);
@@ -70,11 +73,12 @@ function EventAlert_Icon_Options_Frame_ToggleAlertFrame()
 	end
 end
 
+
 function EventAlert_Icon_Options_Frame_SetAlertFrameText(eaf, spellName, toSetTextAndShow)
 	if (eaf ~= nil) then
 		if (toSetTextAndShow) then
 			if (EA_Config.ShowName == true) then
-				eaf.spellName:SetText(spellName);
+				eaf.spellName:SetText(spellName);				
 			else
 				eaf.spellName:SetText("");
 			end
@@ -84,11 +88,11 @@ function EventAlert_Icon_Options_Frame_SetAlertFrameText(eaf, spellName, toSetTe
 		if (EA_Config.ShowTimer == true) then
 			if (EA_Config.ChangeTimer == true) then
 				eaf.spellTimer:SetPoint("CENTER", eaf, "CENTER", 0, 0);
-				eaf.spellTimer:SetFont("Fonts\\FRIZQT__.TTF", EA_Config.TimerFontSize, "OUTLINE");
+				eaf.spellTimer:SetFont(EA_FONTS, EA_Config.TimerFontSize, "OUTLINE");
 				if (toSetTextAndShow) then eaf.spellTimer:SetText("TIME\nLEFT") end;
 			else
 				eaf.spellTimer:SetPoint("BOTTOM", eaf, "TOP", 0, 0);
-				eaf.spellTimer:SetFont("Fonts\\FRIZQT__.TTF", EA_Config.TimerFontSize, "OUTLINE");
+				eaf.spellTimer:SetFont(EA_FONTS, EA_Config.TimerFontSize, "OUTLINE");
 				if (toSetTextAndShow) then eaf.spellTimer:SetText("TIME LEFT") end;
 			end
 		else
@@ -113,19 +117,22 @@ function EventAlert_Icon_Options_Frame_PaintAlertFrame()
 			EA_Anchor_Frame2:SetPoint("CENTER", EA_Anchor_Frame1, xOffset, yOffset);
 			EA_Anchor_Frame3:ClearAllPoints();
 			EA_Anchor_Frame3:SetPoint("CENTER", EA_Anchor_Frame1, -1 * xOffset, yOffset);
-			EA_Anchor_Frame3:SetBackdropColor(1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
+			Lib_ZYF:SetBackdropColor(EA_Anchor_Frame3,1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
+			--EA_Anchor_Frame3:SetVertexColor(1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
 			EA_Anchor_Frame4:ClearAllPoints();
 			EA_Anchor_Frame4:SetPoint("CENTER", EA_Anchor_Frame3, -1 * xOffset, yOffset);
-			EA_Anchor_Frame4:SetBackdropColor(1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
+			Lib_ZYF:SetBackdropColor(EA_Anchor_Frame4,1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
+			--EA_Anchor_Frame4:SetVertexColor(1.0, EA_Position.RedDebuff, EA_Position.RedDebuff);
 
 			if EA_Position.Tar_NewLine then
 				-- DEFAULT_CHAT_FRAME:AddMessage("\124cffFFFF00EventAlert2\124r EA_Position.Tar_NewLine = True");
 				EA_Anchor_Frame5:ClearAllPoints();
 				EA_Anchor_Frame5:SetPoint(EA_Position.TarAnchor, EA_Position.Tar_xOffset, EA_Position.Tar_yOffset);
-				EA_Anchor_Frame5:SetBackdropColor(EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
+				Lib_ZYF:SetBackdropColor(EA_Anchor_Frame5,EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
 				EA_Anchor_Frame6:ClearAllPoints();
 				EA_Anchor_Frame6:SetPoint("CENTER", EA_Anchor_Frame5, xOffset, yOffset);
-				EA_Anchor_Frame6:SetBackdropColor(EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
+				--EA_Anchor_Frame6:SetBackdropColor(EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
+				Lib_ZYF:SetBackdropColor(EA_Anchor_Frame6,EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
 				EA_Anchor_Frame7:ClearAllPoints();
 				EA_Anchor_Frame7:SetPoint("CENTER", EA_Anchor_Frame5, -1 * xOffset, yOffset);
 				EA_Anchor_Frame8:ClearAllPoints();
@@ -134,10 +141,10 @@ function EventAlert_Icon_Options_Frame_PaintAlertFrame()
 				-- DEFAULT_CHAT_FRAME:AddMessage("\124cffFFFF00EventAlert2\124r EA_Position.Tar_NewLine = False");
 				EA_Anchor_Frame5:ClearAllPoints();
 				EA_Anchor_Frame5:SetPoint("CENTER", EA_Anchor_Frame1, -1 * xOffset, -1 * yOffset);
-				EA_Anchor_Frame5:SetBackdropColor(EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
+				Lib_ZYF:SetBackdropColor(EA_Anchor_Frame5,EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
 				EA_Anchor_Frame6:ClearAllPoints();
 				EA_Anchor_Frame6:SetPoint("CENTER", EA_Anchor_Frame5, -1 * xOffset, -1 * yOffset);
-				EA_Anchor_Frame6:SetBackdropColor(EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
+				Lib_ZYF:SetBackdropColor(EA_Anchor_Frame6,EA_Position.GreenDebuff, 1.0, EA_Position.GreenDebuff);
 				EA_Anchor_Frame7:ClearAllPoints();
 				EA_Anchor_Frame7:SetPoint("CENTER", EA_Anchor_Frame6, -1 * xOffset, -1 * yOffset);
 				EA_Anchor_Frame8:ClearAllPoints();
@@ -199,7 +206,7 @@ function EventAlert_Icon_Options_Frame_PaintAlertFrame()
 		if (EA_Config.SpecPowerCheck.Energy) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10030, "", false);  -- Rogue Energy
 		end
-	elseif (EA_playerClass == EA_CLASS_WARLOCK) then -- æ”¯æ´ä¸‰ç³»è¡“å£«
+	elseif (EA_playerClass == EA_CLASS_WARLOCK) then -- ¤ä´©¤T¨t³N¤h
 		if (EA_Config.SpecPowerCheck.SoulShards) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10070, "", false);  -- Warlock Soul Shards
 		elseif (EA_Config.SpecPowerCheck.BurningEmbers) then
@@ -207,34 +214,35 @@ function EventAlert_Icon_Options_Frame_PaintAlertFrame()
 		elseif (EA_Config.SpecPowerCheck.DemonicFury) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10150, "", false);  -- Warlock Demonic Fury
 		end
-	elseif (EA_playerClass == EA_CLASS_MONK) then	--  æ”¯æ´æ­¦åƒ§çœŸæ°£
-		if (EA_Config.SpecPowerCheck.LightForce) then
+	elseif (EA_playerClass == EA_CLASS_MONK) then	--  ¤ä´©ªZ¹¬¯u®ð
+		if (EA_Config.SpecPowerCheck.Chi) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10120, "", false);  -- Monk Light Force (Chi)
 		end
-	elseif (EA_playerClass == EA_CLASS_PRIEST) then	--  æ”¯æ´æš—ç‰§æš—å½±å¯¶ç (ç˜‹ç‹‚)
+	elseif (EA_playerClass == EA_CLASS_PRIEST) then	--  ¤ä´©·tªª·t¼vÄ_¯](ºÆ¨g)
 		if (EA_Config.SpecPowerCheck.Insanity) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10130, "", false);  -- Shadwo Priest Insanity
 		end
-	elseif (EA_playerClass == EA_CLASS_WARRIOR) then --  æ”¯æ´æˆ°å£«æ€’æ°£
+	elseif (EA_playerClass == EA_CLASS_WARRIOR) then --  ¤ä´©¾Ô¤h«ã®ð
 		if (EA_Config.SpecPowerCheck.Rage) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10010, "", false);  -- Warrior Rage
 		end
-	elseif (EA_playerClass == EA_CLASS_HUNTER) then --  æ”¯æ´çµäººé›†ä¸­å€¼
+	
+	elseif (EA_playerClass == EA_CLASS_HUNTER) then --  ¤ä´©Ây¤H¶°¤¤­È
 		if (EA_Config.SpecPowerCheck.Focus) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10020, "", false);  -- Hunter Focus
 		end
 		if (EA_Config.SpecPowerCheck.PetFocus) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10021, "", false);  -- Hunter Pet Focus
 		end
-	elseif (EA_playerClass == EA_CLASS_MAGE) then --  æ”¯æ´ç§˜æ³•å……èƒ½
+	elseif (EA_playerClass == EA_CLASS_MAGE) then --  ¤ä´©¯µªk¥R¯à
 		if (EA_Config.SpecPowerCheck.ArcaneCharges) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10160, "", false);  -- Mage Arcane Charges
 		end
-	elseif (EA_playerClass == EA_CLASS_SHAMAN) then --  æ”¯æ´å¢žå¼·è–©å…ƒç´ è–©çš„å…ƒèƒ½(æ¼©æ¸¦)
+	elseif (EA_playerClass == EA_CLASS_SHAMAN) then --  ¤ä´©¼W±jÂÄ¤¸¯ÀÂÄªº¤¸¯à(ºx´õ)
 		if (EA_Config.SpecPowerCheck.Maelstrom) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10110, "", false);  -- Shaman Maelstrom
 		end
-	elseif (EA_playerClass == EA_CLASS_DEMONHUNTER) then
+	elseif (EA_playerClass == EA_CLASS_DEMONHUNTER) then --  ¤ä´©´cÅ]Ây¤HÅ]«ã
 		if (EA_Config.SpecPowerCheck.Fury) then
 			EventAlert_Icon_Options_Frame_SetAlertFrameText(EAFrameSpec_10170, "", false);  -- Demonhunter Fury
 		end
@@ -244,28 +252,31 @@ function EventAlert_Icon_Options_Frame_PaintAlertFrame()
 	end
 end
 
-function EventAlert_Icon_Options_Frame_AdjustTimerFontSize()
-	--è‹¥è¨ˆæ™‚é¡¯ç¤ºåœ¨æ¡†æž¶å…§
-	if (EA_Config.ChangeTimer == true) then
-		-- è‹¥ä½¿ç”¨äº†å°æ•¸é»žå€’æ•¸
-		if (EA_Config.UseFloatSec > 0) then
-			EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.4		--æ¡†æž¶å…§å€’æ•¸å¤§å°æ¯”ä¾‹(æœ‰å°æ•¸é»ž)
-		else
-			EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.5		--æ¡†æž¶å…§å€’æ•¸å¤§å°æ¯”ä¾‹(ç„¡å°æ•¸é»ž)
-		end
-		EA_Config.StackFontSize = (EA_Config.IconSize ) * 0.3			--å †ç–Šè¨ˆæ•¸å¤§å°æ¯”ä¾‹
-	else
-		EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.65			--æ¡†æž¶å¤–å€’æ•¸å¤§å°æ¯”ä¾‹
-		EA_Config.StackFontSize = (EA_Config.IconSize ) * 0.45			--å †ç–Šè¨ˆæ•¸å¤§å°æ¯”ä¾‹
-	end
 
-	EA_Config.SNameFontSize = EA_Config.IconSize * 0.3
+function EventAlert_Icon_Options_Frame_AdjustTimerFontSize()
+	
+	if (EA_Config.ChangeTimer == true) then	--­Y­p®ÉÅã¥Ü¦b®Ø¬[¤º
+		-- ­Y¨Ï¥Î¤F¤p¼ÆÂI­Ë¼Æ
+		if (EA_Config.UseFloatSec > 0) then
+			EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.4		--®Ø¬[¤º­Ë¼Æ¤j¤p¤ñ¨Ò(¦³¤p¼ÆÂI)
+		else
+			EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.35		--®Ø¬[¤º­Ë¼Æ¤j¤p¤ñ¨Ò(µL¤p¼ÆÂI)
+		end
+		EA_Config.StackFontSize = (EA_Config.IconSize ) * 0.35			--°ïÅ|­p¼Æ¤j¤p¤ñ¨Ò
+	else	--­Y­p®ÉÅã¥Ü¦b®Ø¬[¥~
+		EA_Config.TimerFontSize = (EA_Config.IconSize ) * 0.60			--®Ø¬[¥~­Ë¼Æ¤j¤p¤ñ¨Ò
+		EA_Config.StackFontSize = (EA_Config.IconSize ) * 0.45			--°ïÅ|­p¼Æ¤j¤p¤ñ¨Ò
+	end
+	
+	
+	
+	EA_Config.SNameFontSize = EA_Config.IconSize * 0.3					--¦WºÙ¤j¤p¤ñ¨Ò
 	--if EA_Config.SNameFontSize < 10 then EA_Config.SNameFontSize = 10 end;
 
-	EventAlert_PositionFrames();
-	EventAlert_TarPositionFrames();
-	EventAlert_ScdPositionFrames();
-	EventAlert_SpecialFrame_Update()
+	--EventAlert_PositionFrames();
+	--EventAlert_TarPositionFrames();
+	--EventAlert_ScdPositionFrames();
+	--EventAlert_SpecialFrame_Update()
 end
 
 function EventAlert_Icon_Options_Frame_ResetFrame()
@@ -306,6 +317,7 @@ function EventAlert_Icon_Options_Frame_ResetFrame()
 		-- EventAlert_Icon_Options_Frame_ToggleAlertFrame();
 	end
 end
+
 
 function EventAlert_Icon_Options_Frame_MouseDown(button)
 	if button == "LeftButton" then
@@ -413,3 +425,53 @@ function EventAlert_Icon_Options_Frame_Anchor_OnMouseUp3()
 	EA_Position.Scd_xOffset = EA_x6Ofs;
 	EA_Position.Scd_yOffset = EA_y6Ofs;
 end
+
+
+-- function EventAlert_Icon_Options_Frame_DirectSelect_OnLoad(DropDown, DropTypeIndex)
+-- 	local function MyDropDownClick(self)
+-- 		EventAlert_Icon_Options_Frame_DirectSelect_OnClick(self, DropDown, DropTypeIndex);
+-- 	end
+-- 
+-- 	local function MyDropDownInit()
+-- 		local selectedValue = UIDropDownMenu_GetSelectedValue(DropDown);
+-- 		if selectedValue == nil then selectedValue = 0 end;
+-- 		local function AddItem(text, value)
+-- 			local info = {};
+-- 			info.text = text;
+-- 			info.func = MyDropDownClick;
+-- 			info.value = value;
+-- 			info.checked = false;
+-- 			if (info.value == selectedValue) then
+-- 				info.checked = true;
+-- 			end
+-- 			-- info.checked = checked
+-- 			UIDropDownMenu_AddButton(info)
+-- 		end
+-- 		AddItem(EA_XICON_DIRLEFT, 1);
+-- 		AddItem(EA_XICON_DIRRIGHT, 2);
+-- 		AddItem(EA_XICON_DIRUP, 3);
+-- 		AddItem(EA_XICON_DIRDOWN, 4);	
+-- 	end
+-- 
+-- 	UIDropDownMenu_Initialize(DropDown, MyDropDownInit);
+-- 	if (DropTypeIndex == 1) then
+-- 		UIDropDownMenu_SetSelectedID(DropDown,  EA_Position.IconDropDown1);
+-- 	elseif (DropTypeIndex == 2) then
+-- 		UIDropDownMenu_SetSelectedID(DropDown,  EA_Position.IconDropDown2);
+-- 	elseif (DropTypeIndex == 3) then
+-- 		UIDropDownMenu_SetSelectedID(DropDown,  EA_Position.IconDropDown3);
+-- 	end
+-- end
+-- 
+-- function EventAlert_Icon_Options_Frame_DirectSelect_OnClick(self, DropDown, DropTypeIndex)
+-- 	local SelValue = self.value;
+-- 	if SelValue == nil then SelValue = 0 end;
+-- 	UIDropDownMenu_SetSelectedValue(DropDown, SelValue);
+-- 	if (DropTypeIndex == 1) then
+-- 		EA_Position.IconDropDown1 = SelValue;
+-- 	elseif (DropTypeIndex == 2) then
+-- 		EA_Position.IconDropDown2 = SelValue;
+-- 	elseif (DropTypeIndex == 3) then
+-- 		EA_Position.IconDropDown3 = SelValue;
+-- 	end
+-- end

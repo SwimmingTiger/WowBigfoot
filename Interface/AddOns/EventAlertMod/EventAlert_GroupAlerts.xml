@@ -1,5 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 <Frame name="EA_Group_Events_Frame" toplevel="true" frameStrata="HIGH" movable="true" enableMouse="true" hidden="true" parent="EA_Options_Frame" enableKeyboard="true">
 
 		<Size>
@@ -8,30 +7,18 @@
 
 		<Anchors>
 			<Anchor point="LEFT" relativepoint="RIGHT"/>
-		</Anchors>
-
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32"/>
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-		</Backdrop>
+		</Anchors>	
 
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture name="$parent_Header" file="Interface\DialogFrame\UI-DialogBox-Header">
+				<Texture name="$parent_Header" file="Interface/DialogFrame/UI-DialogBox-Header">
 					<Size>
 						<AbsDimension x="500" y="64"/>
 					</Size>
 					<Anchors>
 						<Anchor point="TOP">
 							<Offset>
-								<AbsDimension x="0" y="12"/>
+								<AbsDimension x="0" y="24"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -169,17 +156,7 @@
 				<Size>
 				    <AbsDimension x="280" y="375"/>
 				</Size>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="" tile="false">
-					<BackgroundInsets>
-						<AbsInset left="0" right="0" top="0" bottom="0" />
-					</BackgroundInsets>
-					<TileSize>
-						<AbsValue val="0" />
-					</TileSize>
-					<EdgeSize>
-						<AbsValue val="0" />
-					</EdgeSize>
-				</Backdrop>
+				
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent">
 						<Offset>
@@ -196,7 +173,7 @@
 		                                </Frames>
 					</Frame>
 				</ScrollChild>
-			</ScrollFrame>	
+			</ScrollFrame>
 
 			<EditBox name="$parent_SpellEditBox" letters="6" multiLine="false" numeric="true" ignoreArrows="false" autoFocus="false">
 				<Size>

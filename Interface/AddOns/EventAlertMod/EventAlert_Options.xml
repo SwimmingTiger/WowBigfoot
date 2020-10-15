@@ -1,5 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	<Script file="EventAlert_Options.lua" />
 
 	<EditBox name="EA_SpellEditBoxTemplate" letters="6" multiLine="false" numeric="true" ignoreArrows="false" autoFocus="false" virtual="true" >
@@ -8,7 +7,7 @@
 		</Size>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+				<Texture file="Interface/ChatFrame/UI-ChatInputBorder-Left">
 					<Size>
 						<AbsDimension x="40" y="25"></AbsDimension>
 					</Size>
@@ -21,7 +20,7 @@
 					</Anchors>
 					<TexCoords left="0" right="0.2" top="0" bottom="1.0"></TexCoords>
 				</Texture>
-				<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+				<Texture file="Interface/ChatFrame/UI-ChatInputBorder-Right">
 					<Size>
 						<AbsDimension x="40" y="25"></AbsDimension>
 					</Size>
@@ -52,7 +51,7 @@
 		</Size>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+				<Texture file="Interface/ChatFrame/UI-ChatInputBorder-Left">
 					<Size>
 						<AbsDimension x="40" y="25"></AbsDimension>
 					</Size>
@@ -65,7 +64,7 @@
 					</Anchors>
 					<TexCoords left="0" right="0.2" top="0" bottom="1.0"></TexCoords>
 				</Texture>
-				<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+				<Texture file="Interface/ChatFrame/UI-ChatInputBorder-Right">
 					<Size>
 						<AbsDimension x="40" y="25"></AbsDimension>
 					</Size>
@@ -97,26 +96,16 @@
 		<Anchors>
 			<Anchor point="CENTER" />
 		</Anchors>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
+		
 		<Frames>
 			<Button name="$parent_ToggleIconOptions" inherits="OptionsButtonTemplate" text="">
 				<Size>
-					<AbsDimension x="180" y="21" />
+					<AbsDimension x="200" y="50" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOP" relativeTo="$parent">
 						<Offset>
-							<AbsDimension x="0" y="-30" />
+							<AbsDimension x="0" y="-5" />
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -130,7 +119,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<CheckButton name="$parent_ShowFrame" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShowFrame" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent">
 						<Offset>
@@ -158,7 +147,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ShowName" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShowName" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowFrame" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -187,7 +176,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ShowTimer" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShowTimer" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowName" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -216,7 +205,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ChangeTimer" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ChangeTimer" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowTimer" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -246,7 +235,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ShowFlash" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShowFlash" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowTimer" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -274,7 +263,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_DoAlertSound" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_DoAlertSound" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowFlash" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -302,7 +291,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_AlertSoundSelect" inherits="Lib_UIDropDownMenuTemplate">
+			<CheckButton name="$parent_AlertSoundSelect" inherits="UIDropDownMenuTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_DoAlertSound" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -311,6 +300,9 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+					<OnLoad>
+						EventAlert_Options_AlertSoundSelect_OnLoad();
+					</OnLoad>
 					<OnShow>
 						EventAlert_Options_AlertSoundSelect_OnLoad();
 					</OnShow>
@@ -323,7 +315,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_AllowESC" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_AllowESC" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_DoAlertSound" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -351,7 +343,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_AltAlerts" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_AltAlerts" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_AllowESC" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -505,7 +497,7 @@
 					</OnLoad>
 					<OnClick>
 						PlaySound(SOUNDKIT.GS_TITLE_OPTION_OK);
-						EA_Options_Frame:Hide();
+						HideUIPanel(EA_Options_Frame);
 						EventAlert_Options_CloseAnchorFrames();
 					</OnClick>
 				</Scripts>
@@ -533,14 +525,14 @@
 		</Frames>
 		<Layers>
 			<Layer>
-				<Texture name="$parent_Header" file="Interface\DialogFrame\UI-DialogBox-Header">
+				<Texture name="$parent_Header" file="Interface\DialogFrame\UI-DialogBox-Header" >
 					<Size>
 						<AbsDimension x="350" y="64" />
 					</Size>
 					<Anchors>
 						<Anchor point="TOP">
 							<Offset>
-								<AbsDimension x="0" y="12" />
+								<AbsDimension x="0" y="24" />
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -602,17 +594,7 @@
 				<Offset x="-100" y="100" />
 			</Anchor>
 		</Anchors> -->
-		<Backdrop bgFile="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
+		
 		<Frames>
 			<Frame name="$parent_SpellIcon">
 				<Size>
@@ -635,16 +617,17 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<!-- <NormalTexture file=""/> -->
-				<!-- <HighlightTexture file=""/> -->
-				<!-- <PushedTexture file=""/> -->
+				<NormalTexture file="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop.blp"/>
+				<HighlightTexture file="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop.blp"/>
+				<PushedTexture file="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop.blp"/> 
+				<DisabledTexture file="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop.blp"/> 
 				<Scripts>
 					<OnLeave>
 						GameTooltip:Hide();
 					</OnLeave>
 				</Scripts>
 			</Button>
-			<CheckButton name="$parent_Stack" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Stack" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent">
 						<Offset>
@@ -656,6 +639,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPELLCOND_STACK);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_SPELLCOND_STACK);
@@ -713,7 +698,7 @@
 				</Scripts>
 				<FontString inherits="ChatFontNormal" />
 			</EditBox>
-			<CheckButton name="$parent_Self" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Self" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Stack" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -725,6 +710,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPELLCOND_SELF);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_SPELLCOND_SELF);
@@ -734,7 +721,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_OverGrow" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_OverGrow" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Self" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -746,6 +733,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPELLCOND_OVERGROW);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_SPELLCOND_OVERGROW);
@@ -803,7 +792,7 @@
 				</Scripts>
 				<FontString inherits="ChatFontNormal" />
 			</EditBox>
-			<CheckButton name="$parent_RedSecText" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_RedSecText" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_OverGrow" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -815,6 +804,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPELLCOND_REDSECTEXT);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_SPELLCOND_REDSECTEXT);
@@ -872,7 +863,7 @@
 				</Scripts>
 				<FontString inherits="ChatFontNormal" />
 			</EditBox>
-			<CheckButton name="$parent_OrderWtd" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_OrderWtd" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_RedSecText" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -884,6 +875,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPELLCOND_ORDERWTD);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_SPELLCOND_ORDERWTD);
@@ -958,7 +951,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_CANCEL);
 					</OnLoad>
 					<OnClick>
-						EA_SpellCondition_Frame:Hide();
+						HideUIPanel(EA_SpellCondition_Frame);
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -1029,18 +1022,7 @@
 				<Offset x="-100" y="100" />
 			</Anchor>
 		</Anchors> -->
-		<Backdrop bgFile="Interface\AddOns\EventAlertMod\Images\UI-Panel-Backdrop" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-		<!-- <Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true"> -->
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
+		
 		<Frames>
 			<Slider name="$parent_IconSize" inherits="OptionsSliderTemplate">
 				<Anchors>
@@ -1098,20 +1080,20 @@
 					</OnLeave>
 				</Scripts>
 			</Slider>
-			<CheckButton name="$parent_Talent1" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Talent1" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_IconAlpha" relativePoint="TOPRIGHT">
 						<Offset>
 							<AbsDimension x="0" y="20" />
-						</Offset>
+						</Offset>						
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>
+					<OnLoad>						
 						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT1)
 					</OnLoad>
 					<OnShow>
-						if (GetNumSpecializations() >= 1) then
+						if (GetNumSpecializations() >= 1) then 
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT1.."("..unpack({GetSpecializationInfo(1)},2,2)..")")
 						else
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT1.."(No Spec.)")
@@ -1124,13 +1106,13 @@
 						else
 							EA_GroupEventSetting_Frame_Talent1:SetChecked(false);
 						end
-
+						
 						EA_GroupEventSetting_Frame_Talent2:SetChecked(false);
 						EA_GroupEventSetting_Frame_Talent3:SetChecked(false);
 						EA_GroupEventSetting_Frame_Talent4:SetChecked(false);
 					</OnClick>
 					<OnEnter>
-
+						
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_GRPCFG_TALENT);
 					</OnEnter>
@@ -1139,7 +1121,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_Talent2" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Talent2" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Talent1" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -1152,7 +1134,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT2);
 					</OnLoad>
 					<OnShow>
-						if (GetNumSpecializations() >= 2) then
+						if (GetNumSpecializations() >= 2) then 
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT2.."("..unpack({GetSpecializationInfo(2)},2,2)..")")
 						else
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT2.."(No Spec.)")
@@ -1160,14 +1142,14 @@
 						end
 					</OnShow>
 					<OnClick>
-
-
+						
+						
 						if (EA_GroupEventSetting_Frame_Talent2:GetChecked() == true) then
 							EA_GroupEventSetting_Frame_Talent2:SetChecked(true);
 						else
 							EA_GroupEventSetting_Frame_Talent2:SetChecked(false);
 						end
-
+						
 						EA_GroupEventSetting_Frame_Talent1:SetChecked(false);
 						EA_GroupEventSetting_Frame_Talent3:SetChecked(false);
 						EA_GroupEventSetting_Frame_Talent4:SetChecked(false);
@@ -1181,7 +1163,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_Talent3" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Talent3" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Talent2" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -1194,17 +1176,17 @@
 						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT3);
 					</OnLoad>
 					<OnShow>
-						if (GetNumSpecializations() >= 3) then
+						if (GetNumSpecializations() >= 3) then 
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT3.."("..unpack({GetSpecializationInfo(3)},2,2)..")")
-
+							
 						else
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT3.."(No Spec.)")
 							EA_GroupEventSetting_Frame_Talent3:Hide()
 						end
 					</OnShow>
-					<OnClick>
-
-						if (GetNumSpecializations() >= 3) then
+					<OnClick>						
+						
+						if (GetNumSpecializations() >= 3) then 
 							if (EA_GroupEventSetting_Frame_Talent3:GetChecked() == true) then
 								EA_GroupEventSetting_Frame_Talent3:SetChecked(true)
 							else
@@ -1216,8 +1198,8 @@
 						else
 							EA_GroupEventSetting_Frame_Talent3:SetChecked(false);
 						end
-
-
+						
+						
 					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -1228,7 +1210,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_Talent4" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_Talent4" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Talent3" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -1238,19 +1220,19 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT4);
+						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT4);						
 					</OnLoad>
 					<OnShow>
-						if (GetNumSpecializations() >= 4) then
+						if (GetNumSpecializations() >= 4) then 
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT4.."("..unpack({GetSpecializationInfo(4)},2,2)..")")
 						else
 							_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_TALENT4.."(No Spec.)")
 							EA_GroupEventSetting_Frame_Talent4:Hide()
 						end
 					</OnShow>
-					<OnClick>
-
-						if (GetNumSpecializations() == 4) then
+					<OnClick>					
+						
+						if (GetNumSpecializations() == 4) then 
 							if (EA_GroupEventSetting_Frame_Talent4:GetChecked() == true) then
 								EA_GroupEventSetting_Frame_Talent4:SetChecked(true)
 							else
@@ -1262,7 +1244,7 @@
 						else
 							EA_GroupEventSetting_Frame_Talent4:SetChecked(false);
 						end
-
+											
 					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -1295,7 +1277,7 @@
 				<Scripts>
 				</Scripts>
 			</EditBox>
-			<CheckButton name="$parent_HideOnLeaveCombat" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_HideOnLeaveCombat" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Talent1" relativePoint="TOPRIGHT">
 						<Offset>
@@ -1307,6 +1289,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_HIDEONLEAVECOMBAT);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_GRPCFG_HIDEONLEAVECOMBAT);
@@ -1316,7 +1300,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_HideOnLostTarget" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_HideOnLostTarget" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_HideOnLeaveCombat" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -1328,6 +1312,8 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_HIDEONLOSTTARGET);
 					</OnLoad>
+					<OnClick>
+					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 						GameTooltip:SetText(EA_TTIP_GRPCFG_HIDEONLOSTTARGET);
@@ -1337,22 +1323,37 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-
+			
+			<!---Glow Effect Option -->
+			<CheckButton name="$parent_GlowWhenTrue" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_HideOnLostTarget" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						_G[self:GetName().."Text"]:SetText(EA_XGRPALERT_GLOWWHENTRUE);
+					</OnLoad>
+					<OnClick>
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+						GameTooltip:SetText(EA_TTIP_GRPCFG_GLOWWHENTRUE);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+			
 			<ScrollFrame name="$parent_SpellScrollFrame" inherits="UIPanelScrollFrameTemplate">
 				<Size>
 				    <AbsDimension x="680" y="340"/>
 				</Size>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Gold-Background" edgeFile="" tile="false">
-					<BackgroundInsets>
-						<AbsInset left="0" right="0" top="0" bottom="0" />
-					</BackgroundInsets>
-					<TileSize>
-						<AbsValue val="0" />
-					</TileSize>
-					<EdgeSize>
-						<AbsValue val="0" />
-					</EdgeSize>
-				</Backdrop>
+				
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent">
 						<Offset>
@@ -1369,7 +1370,7 @@
 		                                </Frames>
 					</Frame>
 				</ScrollChild>
-			</ScrollFrame>
+			</ScrollFrame>	
 
 			<Button name="EAGE_SpellsFrame_NewSpellBtn" inherits="OptionsButtonTemplate" text="EA_XGRPALERT_NEWSPELLBTN">
 				<Size>
@@ -1407,7 +1408,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_CANCEL);
 					</OnLoad>
 					<OnClick>
-						EA_GroupEventSetting_Frame:Hide();
+						HideUIPanel(EA_GroupEventSetting_Frame);
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -1428,7 +1429,7 @@
 					</OnLoad>
 					<OnClick>
 						EAFun_GroupEvent_SaveFrameToGroupEvent();
-						EA_GroupEventSetting_Frame:Hide();
+						HideUIPanel(EA_GroupEventSetting_Frame);
 					</OnClick>
 				</Scripts>
 			</Button>

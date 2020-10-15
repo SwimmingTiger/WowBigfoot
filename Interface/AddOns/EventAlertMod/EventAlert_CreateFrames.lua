@@ -1,7 +1,8 @@
-
+if LibDebug then LibDebug() end
 -- Prevent tainting global _.
 local _
 local _G = _G
+local CreateFrame = CreateFrame
 
 --常用函數設為區域變數以提昇效能
 local print = print
@@ -15,13 +16,13 @@ local format = format
 local CreateFrame = CreateFrame
 local UnitBuff = UnitBuff
 local UnitDebuf = UnitDebuff
+local UnitAura = UnitAura
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitLevel = UnitLevel
 local UnitClass = UnitClass
-local UnitID = UnitID
 local UnitSpellHaste = UnitSpellHaste
 local UnitName = UnitName
 local UnitIsCorpse = UnitIsCorpse
@@ -30,7 +31,6 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitExists = UnitExists
 local GetTime = GetTime
 local GetActiveSpecGroup = GetActiveSpecGroup
-local GetActiveTalentGroup = GetActiveTalentGroup
 local GetShapeshiftForm = GetShapeshiftForm
 local GetShapeshiftFormID = GetShapeshiftFormID
 local GetSpecialization = GetSpecialization
@@ -109,7 +109,7 @@ function EventAlert_CreateFrames()
 		CreateFrames_EventsFrame_CreateSpellList(5);
 		CreateFrames_EventsFrame_RefreshSpellList(5);
 		EA_SCD_Events_Frame:SetHeight(EA_OptHeight);
-
+		
 	-- Create GroupEventChecks alert frames.
 		CreateFrames_EventsFrame_CreateSpellList(6);
 		CreateFrames_EventsFrame_RefreshSpellList(6);
@@ -117,11 +117,13 @@ function EventAlert_CreateFrames()
 
 	-- Create Execution alert frames.
 		local eaexf = CreateFrame("FRAME", "EventAlert_ExecutionFrame", UIParent);
-		eaexf:SetFrameStrata("BACKGROUND");
 		eaexf:ClearAllPoints();
+		eaexf:SetFrameStrata("BACKGROUND");
 		eaexf:SetPoint("TOP", UIParent, "TOP", 0, -50);
 		eaexf:SetHeight(256);
 		eaexf:SetWidth(256);
+		
+		
 		eaexf:Hide();
 
 	EA_Class_Events_Frame_SpellScrollFrame:SetHeight(EA_OptHeight - 175);
@@ -130,21 +132,26 @@ function EventAlert_CreateFrames()
 	EA_Target_Events_Frame_SpellScrollFrame:SetHeight(EA_OptHeight - 100);
 	EA_SCD_Events_Frame_SpellScrollFrame:SetHeight(EA_OptHeight - 100);
 	EA_Group_Events_Frame_SpellScrollFrame:SetHeight(EA_OptHeight - 100);
-
+	
 	CreateFrames_CreateMinimapOptionFrame()
 end
 
+
 function CreateFrames_CreateAnchorFrame(AnchorFrameName, typeIndex)
-		local eaaf = CreateFrame("FRAME", AnchorFrameName, UIParent, "BackdropTemplate");
-		eaaf:SetFrameStrata("LOW");
+		local eaaf = CreateFrame("FRAME", AnchorFrameName, UIParent);
 		eaaf:ClearAllPoints();
-		eaaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Nature_Polymorph_Cow"});
+		eaaf:SetFrameStrata("DIALOG");
+		-- eaaf:SetFrameStrata("LOW");
+		
+		Lib_ZYF:SetBackdrop(eaaf,{bgFile = "Interface/Icons/Spell_Nature_Polymorph_Cow"})
+		
 
 		eaaf.spellName = eaaf:CreateFontString(AnchorFrameName.."_Name","OVERLAY");
 		eaaf.spellName:SetFontObject(ChatFontNormal);
 		eaaf.spellName:SetPoint("BOTTOM", 0, -15);
 
-		eaaf.spellTimer = eaaf:CreateFontString(AnchorFrameName.."_Timer","OVERLAY");
+		--eaaf.spellTimer = eaaf:CreateFontString(AnchorFrameName.."_Timer","OVERLAY");
+		eaaf.spellTimer = eaaf:CreateFontString(AnchorFrameName.."_Timer","HIGHT");
 		eaaf.spellTimer:SetFontObject(ChatFontNormal);
 		eaaf.spellTimer:SetPoint("TOP", 0, 15);
 
@@ -167,15 +174,16 @@ function CreateFrames_CreateSpellFrame(index, typeIndex)
 	local sFramePrefix = "EAFrame_";
 	if typeIndex == 2 then sFramePrefix = "EATarFrame_" end;
 	if typeIndex == 3 then sFramePrefix = "EAScdFrame_" end;
-
+	
 	local eaf = _G[sFramePrefix..index];
-	if (eaf == nil) then
+	if (eaf == nil) then 
+		
 		eaf = CreateFrame("FRAME", sFramePrefix..index, EA_Main_Frame);
 		CooldownFramePrefix = "Cooldown_"
 		eaf.cooldown = CreateFrame("Cooldown", sFramePrefix..CooldownFramePrefix..index, eaf, "CooldownFrameTemplate");
-		if ((typeIndex == 3) and EA_Position.SCD_UseCooldown) then
+		if (typeIndex == 3) and (EA_Position.SCD_UseCooldown) then			
 			eaf.useCooldown = true
-		else
+		else			
 			eaf.useCooldown = false
 		end
 		--[[
@@ -187,9 +195,9 @@ function CreateFrames_CreateSpellFrame(index, typeIndex)
 			eaf.useCooldown = false;
 		end
 		]]--
-		eaf.spellName = eaf:CreateFontString(sFramePrefix..index.."_Name","OVERLAY");
-		eaf.spellTimer = eaf:CreateFontString(sFramePrefix..index.."_Timer","OVERLAY");
-		eaf.spellStack = eaf:CreateFontString(sFramePrefix..index.."_Stack","OVERLAY");
+		eaf.spellName = eaf:CreateFontString(sFramePrefix..index.."_Name","HIGH");
+		eaf.spellTimer = eaf:CreateFontString(sFramePrefix..index.."_Timer","HIGH");
+		eaf.spellStack = eaf:CreateFontString(sFramePrefix..index.."_Stack","HIGH");
 	end
 	eaf.noCooldownCount = true;
 
@@ -197,8 +205,8 @@ function CreateFrames_CreateSpellFrame(index, typeIndex)
 		tinsert(UISpecialFrames,sFramePrefix..index);
 	end
 
-	eaf:SetFrameStrata("LOW");
 	eaf:ClearAllPoints();
+	eaf:SetFrameStrata("HIGH");
 	eaf.redsectext = false;
 	eaf.whitesectext = false;
 	eaf.overgrow = false;
@@ -212,77 +220,83 @@ function CreateFrames_CreateSpellFrame(index, typeIndex)
 
 	eaf.spellStack:SetFontObject(ChatFontNormal);
 	eaf.spellStack:SetPoint("BOTTOMRIGHT", 0, 15);
-
-	local spellId = tonumber(index);
-	local name, rank, icon = GetSpellInfo(spellId);
-	if rank == nil then rank = "nil" end;
+	
+	local spellId = tonumber(index)	
+	local name = GetSpellInfo(spellId)
+	local icon = GetSpellTexture(spellId)
+	
 	if typeIndex == 1 then
-		if EA_SPELLINFO_SELF[spellId] == nil then EA_SPELLINFO_SELF[spellId] = {name, rank, icon, count, duration, expirationTime, unitCaster, isDebuff} end;
+		if EA_SPELLINFO_SELF[spellId] == nil then EA_SPELLINFO_SELF[spellId] = {name,  icon, count, duration, expirationTime, unitCaster, isDebuff} end;
 		EA_SPELLINFO_SELF[spellId].name = name;
-		EA_SPELLINFO_SELF[spellId].rank = rank;
+		
 		if (spellId == 48517) then          -- Druid / Eclipse (Solar): replace the Icon as Wrath (Rank 1)
-			_, _, icon, _, _, _, _, _, _ = GetSpellInfo(5176);
-		elseif (spellId == 48518) then      -- Druid / Eclipse (Lunar): replace the Icon as Starfire (Rank 1)
-			_, _, icon, _, _, _, _, _, _ = GetSpellInfo(2912);
+			icon = GetSpellTexture(5176)
+		elseif (spellId == 48518) then      -- Druid / Eclipse (Lunar): replace the Icon as Starfire (Rank 1)			
+			icon = GetSpellTexture(2912)
 		elseif (spellId == 8921) then       -- Druid / Moonfire: always use the starfall picture
 			icon = "Interface/Icons/Spell_Nature_Starfall";
 		end
 		EA_SPELLINFO_SELF[spellId].icon = icon;
 	elseif typeIndex == 2 then
-		if EA_SPELLINFO_TARGET[spellId] == nil then EA_SPELLINFO_TARGET[spellId] = {name, rank, icon, count, duration, expirationTime, unitCaster, isDebuff} end;
-		EA_SPELLINFO_TARGET[spellId].name = name;
-		EA_SPELLINFO_TARGET[spellId].rank = rank;
-		EA_SPELLINFO_TARGET[spellId].icon = icon;
+		if EA_SPELLINFO_TARGET[spellId] == nil then EA_SPELLINFO_TARGET[spellId] = {name,  icon, count, duration, expirationTime, unitCaster, isDebuff} end;
+		EA_SPELLINFO_TARGET[spellId].name = name
+		
+		EA_SPELLINFO_TARGET[spellId].icon = icon
 	elseif typeIndex == 3 then
-		if EA_SPELLINFO_SCD[spellId] == nil then EA_SPELLINFO_SCD[spellId] = {name, rank, icon} end;
-		EA_SPELLINFO_SCD[spellId].name = name;
-		EA_SPELLINFO_SCD[spellId].rank = rank;
-		EA_SPELLINFO_SCD[spellId].icon = icon;
-
+		if EA_SPELLINFO_SCD[spellId] == nil then EA_SPELLINFO_SCD[spellId] = {name, icon} end;
+		
+		EA_SPELLINFO_SCD[spellId].name = name		
+		EA_SPELLINFO_SCD[spellId].icon = icon
+		
 		for k,v in pairs(EA_ScdItems[EA_playerClass][spellId]) do
 			if EA_SPELLINFO_SCD[spellId] then
 				EA_SPELLINFO_SCD[spellId][k] = v
 			end
-		end
+		end 
 	end
 end
 
+-- function CreateFrames_CreateSpecialFrame(index)
 function CreateFrames_SpecialFrames_Show(index)
 	local sFramePrefix = "EAFrameSpec_";
 
 	local eaf = _G[sFramePrefix..index];
-	if (eaf ~= nil) then
+	if (eaf ~= nil) then 
 		-- 已建立特殊能力框架，直接更新
-		local iPowerType = floor((index - 1000000) / 10)
+		
+		local iPowerType = floor((index - 1000000) / 10)		
+		
 		if (index == EA_SpecPower.LifeBloom.frameindex[1]) then
-			EventAlert_UpdateLifeBloom("player");
+			EventAlert_UpdateLifeBloom("player");		
 		elseif (index == EA_SpecPower.ComboPoint.frameindex[1]) then
-			EventAlert_UpdateComboPoint()
+			EventAlert_UpdateComboPoint()		
 		elseif (iPowerType == EA_SpecPower.Runes.powerId) then
+			
 			EventAlert_UpdateRunes()
 		else
 			EventAlert_UpdateSinglePower(iPowerType)
-		end
+		end		
 		return
 	end
-
+	
+	
 	-- 尚未建立特殊能力框架，以下是第一次執行
 	eaf = CreateFrame("FRAME", sFramePrefix..index, EA_Main_Frame);
-	eaf.spellName = eaf:CreateFontString(sFramePrefix..index.."_Name","OVERLAY");
-	eaf.spellTimer = eaf:CreateFontString(sFramePrefix..index.."_Timer","OVERLAY");
-	eaf.spellStack = eaf:CreateFontString(sFramePrefix..index.."_Stack","OVERLAY");
-
-	if not(eaf.texture) then
-		eaf.texture = eaf:CreateTexture()
+	eaf.spellName = eaf:CreateFontString(sFramePrefix..index.."_Name","HIGH");
+	eaf.spellTimer = eaf:CreateFontString(sFramePrefix..index.."_Timer","HIGH");
+	eaf.spellStack = eaf:CreateFontString(sFramePrefix..index.."_Stack","HIGH");
+	
+	if not(eaf.texture) then 
+		eaf.texture = eaf:CreateTexture() 
 		eaf.texture:SetAllPoints(eaf)
 	end
-
+		
 	if (EA_Config.AllowESC == true) then
 		tinsert(UISpecialFrames,sFramePrefix..index);
 	end
 
-	eaf:SetFrameStrata("LOW");
 	eaf:ClearAllPoints();
+	eaf:SetFrameStrata("HIGH");
 	eaf.spellName:SetFontObject(ChatFontNormal);
 	eaf.spellName:SetPoint("TOP", eaf, "BOTTOM", 0, -EA_Config.IconSize * 0.1);
 
@@ -293,89 +307,96 @@ function CreateFrames_SpecialFrames_Show(index)
 	eaf.spellStack:SetPoint("BOTTOMRIGHT", eaf, "BOTTOMRIGHT", 0, EA_Config.IconSize * 0.1);
 
 	eaf:SetWidth(EA_Config.IconSize);
-	eaf:SetHeight(EA_Config.IconSize);
-
+	eaf:SetHeight(EA_Config.IconSize);	
+	
 	if index == EA_SpecPower.Rage.frameindex[1] then
 		-- 戰士/熊D怒氣的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_Warrior_Rampage"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Ability_Warrior_Rampage"})		
+		
 	elseif index == EA_SpecPower.Focus.frameindex[1] then
 		-- 獵人集中值的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_Marksmanship"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Ability_Marksmanship"})
 	elseif index == EA_SpecPower.Focus.frameindex[2] then
-		-- 寵物集中值的圖案
+		-- 寵物集中值的圖案				
 		--eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_Marksmanship"});
-		local specIcon = select(3,GetSpellInfo(982))
+		local specIcon = GetSpellTexture(982)
 		eaf.texture:SetTexture(specIcon)
 	elseif index == EA_SpecPower.Energy.frameindex[1] then
 		-- 盜賊/貓D/武僧能量的圖案
 		--eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Nature_Healingway"});
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Trade_Engineering"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Trade_Engineering"})
+		
 	elseif index == EA_SpecPower.RunicPower.frameindex[1] then
 		-- 死亡騎士符文能量的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Arcane_Rune"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Spell_Arcane_Rune"})
 	elseif index == EA_SpecPower.SoulShards.frameindex[1] then
 		-- 術士靈魂碎片的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Inv_Misc_Gem_Amethyst_02"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Inv_Misc_Gem_Amethyst_02"})
 	elseif index == EA_SpecPower.LunarPower.frameindex[1] then
 		-- 鳥D星能的圖案
 		--eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_Druid_Eclipse"});
 		--local specIcon = select(3,GetSpellInfo(77492))
-		local specIcon = select(3,GetSpellInfo(197524))
-		eaf.texture:SetTexture(specIcon)
+		local specIcon = GetSpellTexture(197524)
+		eaf.texture:SetTexture(specIcon)	
 	elseif index == EA_SpecPower.HolyPower.frameindex[1] then
 		-- 聖騎士的聖能圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Holy_PowerwordBarrier"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Spell_Holy_PowerwordBarrier"})
 	elseif index == EA_SpecPower.LightForce.frameindex[1] then
 		-- 武僧真氣的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_Monk_HealthSphere"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Ability_Monk_HealthSphere"})
 	elseif index == EA_SpecPower.Insanity.frameindex[1] then
 		-- 暗牧瘋狂值的圖案
-		--eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Priest_Insanity"});
+		--eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Priest_Insanity"});			
 		--local specIcon = select(3,GetSpellInfo(77486))
 		local specIcon = 1386550
 		eaf.texture:SetTexture(specIcon)
 	elseif index == EA_SpecPower.BurningEmbers.frameindex[1] then
 		-- 術士燃火餘燼的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Inv_Misc_Embers"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Inv_Misc_Embers"})
 	elseif index == EA_SpecPower.DemonicFury.frameindex[1] then
 		-- 術士惡魔之怒的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Spell_Fire_FelFlameRing"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Spell_Fire_FelFlameRing"})
 	elseif index == EA_SpecPower.LifeBloom.frameindex[1] then
 		-- 補D生命之花的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/INV_Misc_Herb_FelBlossom"});
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/INV_Misc_Herb_FelBlossom"})
 	elseif index == EA_SpecPower.ComboPoint.frameindex[1] then
 		-- 盜賊/貓D連擊點的圖案
-		eaf:SetBackdrop({bgFile = "Interface/Icons/Ability_WhirlWind"});
-	elseif index == EA_SpecPower.ArcaneCharges.frameindex[1] then
+		Lib_ZYF:SetBackdrop(eaf,{bgFile = "Interface/Icons/Ability_WhirlWind"})
+	elseif index == EA_SpecPower.ArcaneCharges.frameindex[1] then		
 		-- 秘法充能圖案
-		--eaf:SetBackdrop({bgFile = "Interface/Icons/Arcane_Charges"});
-		local specIcon = select(3,GetSpellInfo(30451))
+		--eaf:SetBackdrop({bgFile = "Interface/Icons/Arcane_Charges"});			
+		local specIcon = GetSpellTexture(30451)
 		eaf.texture:SetTexture(specIcon)
-	elseif index == EA_SpecPower.Maelstrom.frameindex[1] then
-		-- 薩滿元能圖案
-		local specIcon = select(3,GetSpellInfo(556))
+	elseif index == EA_SpecPower.Maelstrom.frameindex[1] then		
+		-- 薩滿元能圖案		
+		local specIcon = GetSpellTexture(556)
 		specIcon = 136010
 		eaf.texture:SetTexture(specIcon)
-	elseif index == EA_SpecPower.Fury.frameindex[1] then
+	elseif index == EA_SpecPower.Fury.frameindex[1] then		
 		-- 惡魔獵人魔怒圖案
 		local specIcon
 		specIcon = 1305156
 		eaf.texture:SetTexture(specIcon)
-	elseif index == EA_SpecPower.Pain.frameindex[1] then
+	elseif index == EA_SpecPower.Pain.frameindex[1] then		
 		-- 惡魔獵人魔痛圖案
-		local specIcon
-		local specIcon = select(3,GetSpellInfo(203747))
+		
+		local specIcon = GetSpellTexture(203747)
 		eaf.texture:SetTexture(specIcon)
 	end
+	
 end
 
 function CreateFrames_SpecialFrames_Hide(index)
+	
 	local sFramePrefix = "EAFrameSpec_";
 	local eaf = _G[sFramePrefix..index];
 	if (eaf ~= nil) then
 		eaf:Hide();
 	end
 end
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 
 --------------------------------------------------------------------------------
 -- Create ScrollListFrame And Items(Icon, CheckButton, EditBox, ConfigButton, FontString)
@@ -394,7 +415,8 @@ function CreateFrames_EventsFrame_CreateScrollFrame(ParentFrameObj, ScrollFrameH
 		scc:SetHeight(ScrollFrameHeight);
 		-- panel3:SetHorizontalScroll(-50);
 		-- panel3:SetVerticalScroll(50);
-		panel3:SetBackdrop({bgFile="Interface\\DialogFrame\\UI-DialogBox-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
+		--panel3:SetBackdrop({bgFile="Interface\\DialogFrame\\UI-DialogBox-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
+		Lib_ZYF:SetBackdrop(panel3,{bgFile="Interface\\DialogFrame\\UI-DialogBox-Background-Dark", edgeFile="", tile = false, tileSize = 0, edgeSize = 0.01, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
 		panel3:SetScript("OnVerticalScroll", function()  end);
 		panel3:EnableMouse(true);
 		panel3:SetVerticalScroll(0);
@@ -402,7 +424,7 @@ function CreateFrames_EventsFrame_CreateScrollFrame(ParentFrameObj, ScrollFrameH
 end
 
 function CreateFrames_CreateSpellListIcon(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, IconPath)
-	SpellID = tonumber(SpellID);
+	SpellID = tonumber(SpellID);	
 	local SpellIcon = _G[FrameNamePrefix..SpellID];
 	if (SpellIcon == nil) then
 		SpellIcon = CreateFrame("Frame", FrameNamePrefix..SpellID, ParentFrameObj);
@@ -411,12 +433,14 @@ function CreateFrames_CreateSpellListIcon(SpellID, FrameNamePrefix, ParentFrameO
 	SpellIcon:SetHeight(25);
 	SpellIcon:SetPoint("TOPLEFT", LocOffsetX, LocOffsetY);
 	--SpellIcon:SetBackdrop({bgFile = IconPath});
-
+	
 	--for 7.0
 	if not SpellIcon.texture then SpellIcon.texture = SpellIcon:CreateTexture() end
 	SpellIcon.texture:SetAllPoints(SpellIcon)
-	SpellIcon.texture:SetTexture(IconPath)
-	SpellIcon:Show();
+	
+	SpellIcon.texture:SetTexture(IconPath)	
+	
+	SpellIcon:Show()
 end
 
 local function ChkboxGetChecked(self)
@@ -448,14 +472,17 @@ local function ChkboxGetChecked(self)
 	end
 end
 
+
 local function ChkboxGameToolTip(self)
 	local iTooltipSpellID = self.TooltipSpellID;
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	GameTooltip:SetSpellByID(iTooltipSpellID);
 end
 
-function CreateFrames_CreateSpellListChkbox(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, SpellName, SpellRank, FrameIndex, EditboxObj)
-	SpellID = tonumber(SpellID);
+
+function CreateFrames_CreateSpellListChkbox(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, SpellName, FrameIndex, EditboxObj)
+	
+	SpellID = tonumber(SpellID);	
 	local iTooltipSpellID = SpellID;
 
 	local fValue = true;
@@ -476,16 +503,16 @@ function CreateFrames_CreateSpellListChkbox(SpellID, FrameNamePrefix, ParentFram
 
 	local SpellChkbox = _G[FrameNamePrefix..SpellID];
 	if (SpellChkbox == nil) then
-		SpellChkbox = CreateFrame("CheckButton", FrameNamePrefix..SpellID, ParentFrameObj, "InterfaceOptionsCheckButtonTemplate");
+		SpellChkbox = CreateFrame("CheckButton", FrameNamePrefix..SpellID, ParentFrameObj, "OptionsCheckButtonTemplate");
 	end
 	SpellChkbox:SetPoint("TOPLEFT", LocOffsetX + 25, LocOffsetY);
 	SpellChkbox:SetChecked(fValue);
 
-	if (SpellRank == "") then
+	--if (SpellRank == "") then
 		_G[SpellChkbox:GetName().."Text"]:SetText(SpellName.." ["..SpellID.."]");
-	else
-		_G[SpellChkbox:GetName().."Text"]:SetText(SpellName.."("..SpellRank..") ["..SpellID.."]");
-	end
+	--else
+		--_G[SpellChkbox:GetName().."Text"]:SetText(SpellName.."("..SpellRank..") ["..SpellID.."]");
+	--end
 
 	SpellChkbox.SpellID = SpellID;
 	SpellChkbox.TooltipSpellID = iTooltipSpellID;
@@ -497,6 +524,43 @@ function CreateFrames_CreateSpellListChkbox(SpellID, FrameNamePrefix, ParentFram
 	SpellChkbox:SetScript("OnEnter", ChkboxGameToolTip);
 	SpellChkbox:Show();
 end
+
+-- function CreateFrames_CreateSpellListEditbox(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, EditWidth, SpellText)
+--  SpellID = tonumber(SpellID);
+--
+--  local SpellEditBox = _G[FrameNamePrefix..SpellID];
+--  if (SpellEditBox == nil) then
+--      SpellEditBox = CreateFrame("EditBox", FrameNamePrefix..SpellID, ParentFrameObj);
+--      SpellEditBox:SetPoint("TOPLEFT", LocOffsetX, LocOffsetY);
+--      SpellEditBox:SetFontObject(ChatFontNormal);
+--      SpellEditBox:SetWidth(EditWidth);
+--      SpellEditBox:SetHeight(25);
+--      SpellEditBox:SetMaxLetters(0);
+--      SpellEditBox:SetAutoFocus(false);
+--      SpellEditBox:SetText(SpellText);
+--
+--         local function ShowEditBoxGameToolTip()
+--          SpellEditBox:SetTextColor(0, 1, 1);
+--          GameTooltip:SetOwner(SpellEditBox, "ANCHOR_RIGHT");
+--          GameTooltip:SetSpellByID(SpellID);
+--         end
+--         local function HideEditBoxGameToolTip()
+--          SpellEditBox:SetTextColor(1, 1, 1);
+--          SpellEditBox:HighlightText(0,0);
+--          SpellEditBox:ClearFocus();
+--          GameTooltip:Hide();
+--         end
+--      SpellEditBox:SetScript("OnEnter", ShowEditBoxGameToolTip);
+--      SpellEditBox:SetScript("OnLeave", HideEditBoxGameToolTip);
+--  else
+--      if (not SpellEditBox:IsShown()) then
+--          SpellEditBox:SetPoint("TOPLEFT", LocOffsetX, LocOffsetY);
+--          SpellEditBox:Show();
+--      end
+--  end
+-- end
+
+
 
 -- function CreateFrames_CfgBtn_SaveSpellCondition(FrameIndex, SpellID)
 function CreateFrames_CfgBtn_SaveSpellCondition(self)
@@ -519,7 +583,17 @@ function CreateFrames_CfgBtn_SaveSpellCondition(self)
 		Chk_Stack = false;
 		SC_Stack = nil;
 	end
+
 	SC_Self = EA_SpellCondition_Frame_Self:GetChecked()
+	
+	
+	--CHKBOX 的勾選資訊回傳函數 GetChecked() : true表示打勾, false(nil)表示無打勾
+	--if (SC_Self == 1) then 
+	--	SC_Self = true;
+	--else
+	--	SC_Self = false;
+	--end
+
 	Chk_OverGrow, SC_OverGrow = CreateFrames_CfgBtnFun_GetChkText(EA_SpellCondition_Frame_OverGrow, EA_SpellCondition_Frame_OverGrowEditBox);
 	if ((not Chk_OverGrow) or (SC_OverGrow == nil) or (SC_OverGrow <= 0) or (SC_OverGrow >= 100)) then
 		Chk_OverGrow = false;
@@ -539,6 +613,7 @@ function CreateFrames_CfgBtn_SaveSpellCondition(self)
 
 	-- // Save Checkbox and TextEdit Value To SaveVariables
 	local function CreateFrames_CfgBtnFun_SaveToItem(EAItem)
+		
 		EAItem.stack = SC_Stack;
 		EAItem.self = SC_Self;
 		EAItem.overgrow = SC_OverGrow;
@@ -561,24 +636,22 @@ function CreateFrames_CfgBtn_SaveSpellCondition(self)
 end
 
 local function EACFFun_EventsFrame_CheckSpellID(spellID, ReCheckSpell)
-	local EA_name, EA_rank, EA_icon = GetSpellInfo(spellID);
-	if EA_name == nil then EA_name = "" end;
-	if EA_rank == nil then EA_rank = "" end;
-
+	local EA_name, EA_icon =  GetSpellInfo(spellID), GetSpellTexture(spellID)
+	if EA_name == nil then EA_name = "" end
+	
 	if (ReCheckSpell) then
 		if (spellID == 33151) then
-			EA_rank = "";
+			EA_rank = ""
 		elseif (spellID == 48517) then      -- Druid / Eclipse (Solar): replace the Icon as Wrath (Rank 1)
-			_, _, EA_icon = GetSpellInfo(5176);
+			EA_icon = GetSpellTexture(5176)
 		elseif (spellID == 48518) then      -- Druid / Eclipse (Lunar): replace the Icon as Starfire (Rank 1)
-			_, _, EA_icon = GetSpellInfo(2912);
+			EA_icon = GetSpellTexture(2912)
 		elseif (spellID == 8921) then       -- Druid / Moonfire: always use the starfall picture
-			EA_icon = "Interface/Icons/Spell_Nature_Starfall";
+			EA_icon = "Interface/Icons/Spell_Nature_Starfall"
 		end
 	end
-	return EA_name, EA_rank, EA_icon;
+	return EA_name, EA_icon
 end
-
 -- function CreateFrames_CfgBtn_LoadSpellCondition(FrameIndex, SpellID)
 function CreateFrames_CfgBtn_LoadSpellCondition(self)
 	-- Get saved condition of spell
@@ -586,19 +659,23 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 	local SpellID = self.SpellID;
 	local ReCheckSpell = false;
 	if (FrameIndex == 1) then ReCheckSpell = true end;
-	local SpellName, SpellRank, SpellIconPath = EACFFun_EventsFrame_CheckSpellID(SpellID, ReCheckSpell);
-	if (SpellRank ~= nil and SpellRank ~= "") then SpellName = SpellName.."("..SpellRank..")" end;
-
+	local SpellName,  SpellIconPath = EACFFun_EventsFrame_CheckSpellID(SpellID, ReCheckSpell);
+	
+	
 	--EA_SpellCondition_Frame_SpellIcon:SetBackdrop({bgFile = SpellIconPath});
-
-	--for 7.0
+	
+	--for 7.0 
 	if not EA_SpellCondition_Frame_SpellIcon.texture then
-		EA_SpellCondition_Frame_SpellIcon.texture = EA_SpellCondition_Frame_SpellIcon:CreateTexture()
+		EA_SpellCondition_Frame_SpellIcon.texture = EA_SpellCondition_Frame_SpellIcon:CreateTexture()		
 	end
 	EA_SpellCondition_Frame_SpellIcon.texture:SetAllPoints(EA_SpellCondition_Frame_SpellIcon)
 	EA_SpellCondition_Frame_SpellIcon.texture:SetTexture(SpellIconPath)
 	-----------------------------------------------------------------------
-	EA_SpellCondition_Frame_SpellNameText:SetText(SpellName);
+	
+	EA_SpellCondition_Frame_SpellNameText:SetText(SpellName.."\n["..SpellID.."]");
+	
+	
+	
 	local iTextWidth = EA_SpellCondition_Frame_SpellNameText:GetTextWidth();
 	EA_SpellCondition_Frame_SpellNameText:SetWidth(iTextWidth);
 	local function SNTGameToolTip()
@@ -606,12 +683,15 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 		GameTooltip:SetSpellByID(SpellID);
 	end
 	EA_SpellCondition_Frame_SpellNameText:SetScript("OnEnter", SNTGameToolTip);
+	EA_SpellCondition_Frame_SpellIcon:SetScript("OnEnter", SNTGameToolTip);
 
 
 	-- // Get Checkbox and TextEdit Value From SaveVariables
+	
 	local SC_Stack, SC_Self, SC_OverGrow, SC_RedSecText, SC_OrderWtd = nil, nil, nil, nil, nil;
 	local Chk_Stack, Chk_OverGrow, Chk_RedSecText, Chk_OrderWtd = false, false, false, false;
 	local function CreateFrames_CfgBtnFun_GetFromSave(EAItem)
+		
 		SC_Stack = EAItem.stack;
 		SC_Self = EAItem.self;
 		SC_OverGrow = EAItem.overgrow;
@@ -635,9 +715,7 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 	else
 		Chk_Stack = true;
 	end
-	if (SC_Self == nil) then
-		SC_Self =  true;
-	end
+	
 	if (SC_OverGrow == nil or SC_OverGrow <=0) then
 		Chk_OverGrow = false;
 		SC_OverGrow = 100;
@@ -659,7 +737,7 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 
 
 	-- Set SpellCondition Stack Checkbox & Editbox
-	local function CreateFrames_CfgBtnFun_SetChkText(ChkBox, TextEdit, ChkValue, NumValue)
+	local function CreateFrames_CfgBtnFun_SetChkText(ChkBox, TextEdit, ChkValue, NumValue)		
 		ChkBox:SetChecked(ChkValue);
 		if (ChkValue) then
 			TextEdit:SetText(NumValue);
@@ -667,7 +745,7 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 			TextEdit:SetText("");
 		end
 	end
-	CreateFrames_CfgBtnFun_SetChkText(EA_SpellCondition_Frame_Stack, EA_SpellCondition_Frame_StackEditBox, Chk_Stack, SC_Stack);
+	CreateFrames_CfgBtnFun_SetChkText(EA_SpellCondition_Frame_Stack, EA_SpellCondition_Frame_StackEditBox, Chk_Stack, SC_Stack)
 	EA_SpellCondition_Frame_Self:SetChecked(SC_Self);
 	CreateFrames_CfgBtnFun_SetChkText(EA_SpellCondition_Frame_OverGrow, EA_SpellCondition_Frame_OverGrowEditBox, Chk_OverGrow, SC_OverGrow);
 	CreateFrames_CfgBtnFun_SetChkText(EA_SpellCondition_Frame_RedSecText, EA_SpellCondition_Frame_RedSecTextEditBox, Chk_RedSecText, SC_RedSecText);
@@ -675,7 +753,6 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 
 	EA_SpellCondition_Frame:ClearAllPoints();
 	EA_SpellCondition_Frame:SetPoint("LEFT", EA_Options_Frame, "RIGHT", 0, 0);
-	EA_SpellCondition_Frame:SetFrameLevel(self:GetFrameLevel()+5)	--bf@178.com
 	EA_SpellCondition_Frame:Show();
 	EA_SpellCondition_Frame_Save.FrameIndex = FrameIndex;
 	EA_SpellCondition_Frame_Save.SpellID = SpellID;
@@ -684,6 +761,7 @@ function CreateFrames_CfgBtn_LoadSpellCondition(self)
 	-- 	CreateFrames_CfgBtn_SaveSpellCondition(FrameIndex, SpellID);
 	-- end);
 end
+
 
 function CreateFrames_CreateSpellListCfgBtn(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, FrameIndex)
 	SpellID = tonumber(SpellID);
@@ -718,6 +796,7 @@ function CreateFrames_CreateSpellListCfgBtn(SpellID, FrameNamePrefix, ParentFram
 	SpellCfgBtn:Show();
 end
 
+
 local function CreateFrames_CfgBtn_GroupFrame_OnMouseDown(self)
 	self:StartMoving();
 end
@@ -734,11 +813,6 @@ local function CreateFrames_CfgBtn_GroupFrame_OnMouseUp(self)
 	self.GC.IconRelatePoint = EA_relativePoint;
 	self.GC.LocX = EA_xOfs;
 	self.GC.LocY = EA_yOfs;
-
-	-- bf@178.com
-    local eaf = _G['EAGrpFrame_'..iGroupID]
-    eaf:ClearAllPoints()
-    eaf:SetPoint(EA_point, UIParent, EA_relativePoint, EA_xOfs, EA_yOfs)
 end
 
 local function CreateFrames_CfgBtn_ShowGroupFramePos(self)
@@ -750,42 +824,45 @@ local function CreateFrames_CfgBtn_ShowGroupFramePos(self)
 		eaf = CreateFrame("Frame", FrameNamePrefix..iGroupID, UIParent);
 		eaf:SetMovable(true);
 		eaf:EnableMouse(true);
-		eaf.spellName = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Name","OVERLAY");
-		eaf.spellTimer = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Timer","OVERLAY");
-		eaf.spellStack = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Stack","OVERLAY");
+		eaf.spellName = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Name","HIGH");
+		eaf.spellTimer = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Timer","HIGH");
+		eaf.spellStack = eaf:CreateFontString(FrameNamePrefix..iGroupID.."_Stack","HIGH");
 		eaf:SetScript("OnMouseDown", CreateFrames_CfgBtn_GroupFrame_OnMouseDown);
 		eaf:SetScript("OnMouseUp", CreateFrames_CfgBtn_GroupFrame_OnMouseUp);
-		eaf:SetFrameStrata("LOW");
 		eaf:ClearAllPoints();
-
-        eaf.GroupID = iGroupID	-- bf@178.com
-
+		eaf:SetFrameStrata("DIALOG");
+		-- eaf:SetFrameStrata("LOW");
+	
 		eaf.spellName:SetFontObject(ChatFontNormal);
 		eaf.spellName:SetPoint("BOTTOM", 0, -15);
-
+	
 		eaf.spellTimer:SetFontObject(ChatFontNormal);
 		eaf.spellTimer:SetPoint("TOP", 0, EA_Config.TimerFontSize*1.1);
-
+	
 		eaf.spellStack:SetFontObject(ChatFontNormal);
 		eaf.spellStack:SetPoint("BOTTOMRIGHT", 0, 15);
-
+		
 		eaf.texture = eaf:CreateTexture()
 		eaf.texture:SetAllPoints(eaf)
-
+		
 		eaf:Hide();
 	end
 
 	if (eaf:IsShown()) then
 		eaf:Hide();
 	else
-		eaf.GC = aGroupChecks;
 		if eaf.GC == nil then eaf.GC = { } end;
+		eaf.GC = aGroupChecks;
 		--eaf:SetBackdrop({bgFile = eaf.GC.Spells[1].SpellIconPath});
-
+		
 		--for 7.0
 		--if not(eaf.texture) then eaf.texture = eaf:CreateTexture() end
 		--eaf.texture:SetAllPoints(eaf)
+		
+		
 		eaf.texture:SetTexture(eaf.GC.Spells[1].SpellIconPath)
+		----------------------------------------------------------
+		
 		if (eaf.GC.IconAlpha ~= nil) then eaf:SetAlpha(eaf.GC.IconAlpha) end;
 		eaf:SetPoint(eaf.GC.IconPoint, UIParent, eaf.GC.IconRelatePoint, eaf.GC.LocX, eaf.GC.LocY);
 		eaf:SetWidth(eaf.GC.IconSize);
@@ -800,7 +877,6 @@ local function CreateFrames_CfgBtn_ShowGroupFramePos(self)
 		eaf:Show();
 	end
 end
-
 function CreateFrames_CreateSpellListCfgBtn2(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY, FrameIndex)
 	SpellID = tonumber(SpellID);
 
@@ -818,18 +894,38 @@ function CreateFrames_CreateSpellListCfgBtn2(SpellID, FrameNamePrefix, ParentFra
 	SpellCfgBtn:Show();
 end
 
+-- function CreateFrames_CreateSpellListFontStr(SpellID, FrameNamePrefix, ParentFrameObj, LocOffsetX, LocOffsetY)
+--  SpellID = tonumber(SpellID);
+--
+--  local SpellFontStr = _G[FrameNamePrefix..SpellID];
+--  if (SpellFontStr == nil) then
+--      SpellFontStr = ParentFrameObj:CreateFontString(FrameNamePrefix..SpellID, "ARTWORK", "GameFontNormal");
+--      SpellFontStr:SetPoint("TOPRIGHT", LocOffsetX, LocOffsetY);
+--      SpellFontStr:SetWidth(60);
+--      SpellFontStr:SetHeight(25);
+--      SpellFontStr:SetText("["..tostring(SpellID).."]");
+--  else
+--      if (not SpellFontStr:IsShown()) then
+--          SpellFontStr:SetPoint("TOPRIGHT", LocOffsetX, LocOffsetY);
+--          SpellFontStr:Show();
+--      end
+--  end
+-- end
+
 -- function CreateFrames_CfgBtn_LoadGroupEvent(GroupID)
 function CreateFrames_CfgBtn_LoadGroupEvent(self)
 	local GroupID = self.GroupID;
 	EA_GroupEventSetting_Frame:ClearAllPoints();
 	EA_GroupEventSetting_Frame:SetPoint("TOPLEFT", EA_Options_Frame, "TOPLEFT", -50, -20);
-	EA_GroupEventSetting_Frame:SetFrameLevel(self:GetFrameLevel()+1)	--bf@178.com
 	EA_GroupEventSetting_Frame:Show();
 	local iGroupID = self.GroupID;
 	local eaf = _G["EAGrpAnchorFrame_"..GroupID];
 	if (eaf ~= nil) then eaf:Hide() end;
 	EAFun_GroupEvent_LoadGroupEventToFrame(GroupID);
 end
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 
 --------------------------------------------------------------------------------
 -- CreateSpellList, ClearSpellList, RefreshSpellList
@@ -839,7 +935,6 @@ local function EACFFun_EventsFrame_CreateSpellList(EAItems, typeIndex)
 		CreateFrames_CreateSpellFrame(index, typeIndex);
 	end
 end
-
 function CreateFrames_EventsFrame_CreateSpellList(FrameIndex)
 	if (FrameIndex == 1) then
 		EACFFun_EventsFrame_CreateSpellList(EA_Items[EA_playerClass], 1);
@@ -892,7 +987,6 @@ local function EACFFun_EventsFrame_ClearSpellList(EAItems, FrameNamePrefix)
 	end
 	collectgarbage();
 end
-
 local function EACFFun_EventsFrame_ClearSpellFrame(EAItems, FrameNamePrefix)
 	local eaf = nil;
 	for iGrpIndex, aGrpChecks in ipairs (EAItems) do
@@ -900,12 +994,11 @@ local function EACFFun_EventsFrame_ClearSpellFrame(EAItems, FrameNamePrefix)
 		if (eaf ~= nil) then
 			eaf:UnregisterAllEvents();
 			eaf:Hide();
-			eaf = nil;
+			eaf = nil;	
 		end
 	end
 	collectgarbage();
 end
-
 function CreateFrames_EventsFrame_ClearSpellList(FrameIndex)
 	if (FrameIndex == 1) then
 		EACFFun_EventsFrame_ClearSpellList(EA_Items[EA_playerClass], "EA_ClassFrame");
@@ -938,14 +1031,13 @@ local function EACFFun_EventsFrame_RefreshSpellList(FrameIndex, EAItems, FrameNa
 	end
 	for index, value in pairsByKeys(EAItems) do
 		-- local EA_name, EA_rank, EA_icon = GetSpellInfo(index);
-		local EA_name, EA_rank, EA_icon = EACFFun_EventsFrame_CheckSpellID(index, ReCheckSpell);
+		local EA_name, EA_icon = EACFFun_EventsFrame_CheckSpellID(index, ReCheckSpell);
 		CreateFrames_CreateSpellListIcon(index, FrameNamePrefix.."_Icon_", ParentFrameObj, LocOffsetX, LocOffsetY, EA_icon);
-		CreateFrames_CreateSpellListChkbox(index, FrameNamePrefix.."_ChkBtn_", ParentFrameObj, LocOffsetX, LocOffsetY, EA_name, EA_rank, FrameIndex, EditboxObj);
+		CreateFrames_CreateSpellListChkbox(index, FrameNamePrefix.."_ChkBtn_", ParentFrameObj, LocOffsetX, LocOffsetY, EA_name, FrameIndex, EditboxObj);
 		if (CanCfg) then CreateFrames_CreateSpellListCfgBtn(index, FrameNamePrefix.."_CfgBtn_", ParentFrameObj, LocOffsetX, LocOffsetY, FrameIndex) end;
 		LocOffsetY = LocOffsetY - 25;
 	end
 end
-
 function CreateFrames_EventsFrame_RefreshSpellList(FrameIndex)
 	if (FrameIndex == 1) then
 		EACFFun_EventsFrame_RefreshSpellList(FrameIndex, EA_Items[EA_playerClass], "EA_ClassFrame", EA_Class_Events_Frame_SpellScrollFrameList, 0, 0, EA_Class_Events_Frame_SpellEditBox);
@@ -961,10 +1053,11 @@ function CreateFrames_EventsFrame_RefreshSpellList(FrameIndex)
 		local LocOffsetY = 0;
 		local EA_name, EA_rank, EA_icon = "", "", "";
 		for iGrpIndex, aGrpChecks in ipairs (EA_GrpItems[EA_playerClass]) do
-			EA_name, _, EA_icon = EACFFun_EventsFrame_CheckSpellID(aGrpChecks.Spells[1].SpellIconID, false);
+			EA_name, EA_icon = EACFFun_EventsFrame_CheckSpellID(aGrpChecks.Spells[1].SpellIconID, false);
 			EA_rank = EA_XGRPALERT_TALENTS;
 			if (aGrpChecks.ActiveTalentGroup ~= nil) then
-				if (aGrpChecks.ActiveTalentGroup == 1) then
+				
+				if (aGrpChecks.ActiveTalentGroup == 1) then 
 					EA_rank = EA_XGRPALERT_TALENT1
 				elseif (aGrpChecks.ActiveTalentGroup == 2) then
 					EA_rank = EA_XGRPALERT_TALENT2
@@ -972,10 +1065,10 @@ function CreateFrames_EventsFrame_RefreshSpellList(FrameIndex)
 					EA_rank = EA_XGRPALERT_TALENT3
 				elseif (aGrpChecks.ActiveTalentGroup == 4) then
 					EA_rank = EA_XGRPALERT_TALENT4
-				end
+				end								
 			end
 			CreateFrames_CreateSpellListIcon(iGrpIndex, "EA_GroupFrame_Icon_", EA_Group_Events_Frame_SpellScrollFrameList, 0, LocOffsetY, EA_icon);
-			CreateFrames_CreateSpellListChkbox(iGrpIndex, "EA_GroupFrame_ChkBtn_", EA_Group_Events_Frame_SpellScrollFrameList, 0, LocOffsetY, EA_name, EA_rank, FrameIndex, EA_Group_Events_Frame_SpellEditBox);
+			CreateFrames_CreateSpellListChkbox(iGrpIndex, "EA_GroupFrame_ChkBtn_", EA_Group_Events_Frame_SpellScrollFrameList, 0, LocOffsetY, EA_name, FrameIndex, EA_Group_Events_Frame_SpellEditBox);
 			CreateFrames_CreateSpellListCfgBtn(iGrpIndex, "EA_GroupFrame_CfgBtn_", EA_Group_Events_Frame_SpellScrollFrameList, 0, LocOffsetY, FrameIndex);
 			CreateFrames_CreateSpellListCfgBtn2(iGrpIndex, "EA_GroupFrame_CfgBtn2_", EA_Group_Events_Frame_SpellScrollFrameList, -25, LocOffsetY, FrameIndex);
 			LocOffsetY = LocOffsetY - 25;
@@ -983,26 +1076,47 @@ function CreateFrames_EventsFrame_RefreshSpellList(FrameIndex)
 	end
 end
 
-local GC_PowerType={[0]="MANA", [1]="RAGE", [2]="FOCUS", [3]="ENERGY", [4]="COMBO_POINTS", [5]="RUNES", [6]="RUNIC_POWER", [7]="SOUL_SHARDS", [8]="LUNAR_POWER",
-	[9]="HOLY_POWER", [10]="ALT_POWER", [11]="MAELSTROM", [12]="LIGHT_FORCE", [13]="INSANITY", [14]="BURNING_EMBERS", [15]="DEMONIC_FURY", [16]="ARCANE_CHARGES", [17]="FURY",[18]="PAIN"};
+
+local GC_PowerType={
+		[0]="MANA",
+		[1]="RAGE",
+		[2]="FOCUS",
+		[3]="ENERGY",
+		[4]="COMBO_POINTS",
+		[5]="RUNES", 
+		[6]="RUNIC_POWER", 
+		[7]="SOUL_SHARDS", 
+		[8]="LUNAR_POWER", 
+		[9]="HOLY_POWER", 
+		[10]="ALT_POWER", 
+		[11]="MAELSTROM",
+		[12]="CHI",
+		[13]="INSANITY", 
+		[14]="BURNING_EMBERS", 
+		[15]="DEMONIC_FURY", 
+		[16]="ARCANE_CHARGES", 
+		[17]="FURY",
+		[18]="PAIN",
+		};
 function CreateFrames_CreateGroupCheckFrame(iGroupIndex)
-	local aGroupChecks = EA_GrpItems[EA_playerClass][iGroupIndex];
-	if not aGroupChecks.Spells then
-		return
-	end
+	
+	local GetSpellInfo = GetSpellInfo
+	local GetSpellTexture = GetSpellTexture
+	
 	local FrameNamePrefix = "EAGrpFrame_";
+	local aGroupChecks = EA_GrpItems[EA_playerClass][iGroupIndex];
 	local eaf = _G[FrameNamePrefix..iGroupIndex];
 	if (eaf == nil) then
 		eaf = CreateFrame("Frame", FrameNamePrefix..iGroupIndex, UIParent);
-		eaf.spellName = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Name","OVERLAY");
-		eaf.spellTimer = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Timer","OVERLAY");
-		eaf.spellStack = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Stack","OVERLAY");
+		eaf.spellName = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Name","HIGH");
+		eaf.spellTimer = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Timer","HIGH");
+		eaf.spellStack = eaf:CreateFontString(FrameNamePrefix..iGroupIndex.."_Stack","HIGH");
 	end
 	-- eaf.noCooldownCount = true;
-	-- eaf:SetFrameStrata("HIGH");
 	-- eaf:SetFrameStrata("DIALOG");
-	eaf:SetFrameStrata("LOW");
 	eaf:ClearAllPoints();
+	eaf:SetFrameStrata("HIGH");
+	-- eaf:SetFrameStrata("LOW");
 
 	eaf.spellName:SetFontObject(ChatFontNormal);
 	eaf.spellName:SetPoint("BOTTOM", 0, -15);
@@ -1012,62 +1126,61 @@ function CreateFrames_CreateGroupCheckFrame(iGroupIndex)
 
 	eaf.spellStack:SetFontObject(ChatFontNormal);
 	eaf.spellStack:SetPoint("BOTTOMRIGHT", 0, 15);
-
-	eaf.GC = aGroupChecks;
+	
 	if eaf.GC == nil then eaf.GC = { } end;
+	eaf.GC = aGroupChecks;
 
-	local aGroupFrameEvents = {};
-	local aGroupFrameIndexs = {};
-	local sEventType, iEventSeq, sname, iconpath = "", 0, "", "";
+        local aGroupFrameEvents = {};
+        local aGroupFrameIndexs = {};
+        local sEventType, iEventSeq, sname, iconpath = "", 0, "", "";
+	
 	for iInd_i, aValue_i in ipairs(aGroupChecks.Spells) do
-		sname, _, iconpath = GetSpellInfo(aValue_i.SpellIconID);
+		sname    = GetSpellInfo(aValue_i.SpellIconID)
+		iconpath = GetSpellTexture(aValue_i.SpellIconID)
 		eaf.GC.Spells[iInd_i].SpellName = sname;
 		eaf.GC.Spells[iInd_i].SpellIconPath = iconpath;
 		eaf.GC.Spells[iInd_i].SpellResult = false;
-		if aValue_i.Checks then
-			for iInd_j, aValue_j in ipairs(aValue_i.Checks) do
-				eaf.GC.Spells[iInd_i].Checks[iInd_j].CheckResult = false;
-				if (iInd_j == 1) then eaf.GC.Spells[iInd_i].Checks[iInd_j].CheckAndOp = true end;
-				if aValue_j.SubChecks then
-					for iInd_k, aValue_k in ipairs(aValue_j.SubChecks) do
-						if (iInd_k == 1) then eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].SubCheckAndOp = true end;
-						sEventType = aValue_k.EventType;
-						if aGroupFrameEvents[sEventType] == nil then aGroupFrameEvents[sEventType] = 0 end;
-						aGroupFrameEvents[sEventType] = aGroupFrameEvents[sEventType] + 1;
-						iEventSeq = aGroupFrameEvents[sEventType];
-						if aGroupFrameIndexs[sEventType] == nil then aGroupFrameIndexs[sEventType] = {} end;
-						if aGroupFrameIndexs[sEventType][iGroupIndex] == nil then aGroupFrameIndexs[sEventType][iGroupIndex] = {} end;
-						if aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq] == nil then aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq] = {} end;
-						aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].Spells = iInd_i;
-						aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].Checks = iInd_j;
-						aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].SubChecks = iInd_k;
-						if (sEventType == "UNIT_POWER_UPDATE") then
-							eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].PowerType = GC_PowerType[aValue_k.PowerTypeNum];
-						end
-						eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].SubCheckResult = false;
-
-						-- // Parameters Transfrom, From EAM 4.7.01 -> 4.7.02
-						if (aValue_k.PowerLessThan ~= nil) then
-							if (aValue_k.PowerLessThan) then aValue_k.PowerCompType = 2 else aValue_k.PowerCompType = 4 end;
-							aValue_k.PowerLessThan = nil;
-						end
-						if (aValue_k.HealthLessThan ~= nil) then
-							if (aValue_k.HealthLessThan) then aValue_k.HealthCompType = 2 else aValue_k.HealthCompType = 4 end;
-							aValue_k.HealthLessThan = nil;
-						end
-						if (aValue_k.StackLessThan ~= nil) then
-							if (aValue_k.StackLessThan) then aValue_k.StackCompType = 2 else aValue_k.StackCompType = 4 end;
-							aValue_k.StackLessThan = nil;
-						end
-						if (aValue_k.TimeLessThan ~= nil) then
-							if (aValue_k.TimeLessThan) then aValue_k.TimeCompType = 2 else aValue_k.TimeCompType = 4 end;
-							aValue_k.TimeLessThan = nil;
-						end
-						if (aValue_k.ComboLessThan ~= nil) then
-							if (aValue_k.ComboLessThan) then aValue_k.ComboCompType = 2 else aValue_k.ComboCompType = 4 end;
-							aValue_k.ComboLessThan = nil;
-						end
-					end
+		for iInd_j, aValue_j in ipairs(aValue_i.Checks) do
+			eaf.GC.Spells[iInd_i].Checks[iInd_j].CheckResult = false;
+			if (iInd_j == 1) then eaf.GC.Spells[iInd_i].Checks[iInd_j].CheckAndOp = true end;
+			for iInd_k, aValue_k in ipairs(aValue_j.SubChecks) do
+				if (iInd_k == 1) then eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].SubCheckAndOp = true end;
+				sEventType = aValue_k.EventType;
+				if aGroupFrameEvents[sEventType] == nil then aGroupFrameEvents[sEventType] = 0 end;
+				aGroupFrameEvents[sEventType] = aGroupFrameEvents[sEventType] + 1;
+				iEventSeq = aGroupFrameEvents[sEventType];
+				if aGroupFrameIndexs[sEventType] == nil then aGroupFrameIndexs[sEventType] = {} end;
+				if aGroupFrameIndexs[sEventType][iGroupIndex] == nil then aGroupFrameIndexs[sEventType][iGroupIndex] = {} end;
+				if aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq] == nil then aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq] = {} end;
+				aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].Spells = iInd_i;
+				aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].Checks = iInd_j;
+				aGroupFrameIndexs[sEventType][iGroupIndex][iEventSeq].SubChecks = iInd_k;
+				
+				if (sEventType == "UNIT_POWER_UPDATE") then
+					eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].PowerType = GC_PowerType[aValue_k.PowerTypeNum];
+				end
+				eaf.GC.Spells[iInd_i].Checks[iInd_j].SubChecks[iInd_k].SubCheckResult = false;
+				
+				-- // Parameters Transfrom, From EAM 4.7.01 -> 4.7.02
+				if (aValue_k.PowerLessThan ~= nil) then
+					if (aValue_k.PowerLessThan) then aValue_k.PowerCompType = 2 else aValue_k.PowerCompType = 4 end;
+					aValue_k.PowerLessThan = nil;
+				end
+				if (aValue_k.HealthLessThan ~= nil) then
+					if (aValue_k.HealthLessThan) then aValue_k.HealthCompType = 2 else aValue_k.HealthCompType = 4 end;
+					aValue_k.HealthLessThan = nil;
+				end
+				if (aValue_k.StackLessThan ~= nil) then
+					if (aValue_k.StackLessThan) then aValue_k.StackCompType = 2 else aValue_k.StackCompType = 4 end;
+					aValue_k.StackLessThan = nil;
+				end
+				if (aValue_k.TimeLessThan ~= nil) then
+					if (aValue_k.TimeLessThan) then aValue_k.TimeCompType = 2 else aValue_k.TimeCompType = 4 end;
+					aValue_k.TimeLessThan = nil;
+				end
+				if (aValue_k.ComboLessThan ~= nil) then
+					if (aValue_k.ComboLessThan) then aValue_k.ComboCompType = 2 else aValue_k.ComboCompType = 4 end;
+					aValue_k.ComboLessThan = nil;
 				end
 			end
 		end
@@ -1093,11 +1206,15 @@ function CreateFrames_CreateGroupCheckFrame(iGroupIndex)
 	eaf:SetWidth(0);
 	eaf:SetHeight(0);
 end
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
 
 --------------------------------------------------------------------------------
 -- Select All, LoadDefault, Add Spell, Del Spell
 --------------------------------------------------------------------------------
 local function EACFFun_EventsFrame_SelAll(EAItems, FrameName, Status)
+	local tonumber = tonumber
 	for index, value in pairsByKeys(EAItems) do
 		index = tonumber(index);
 		EAItems[index].enable = Status;
@@ -1105,7 +1222,6 @@ local function EACFFun_EventsFrame_SelAll(EAItems, FrameName, Status)
 		if (f2 ~= nil) then f2:SetChecked(Status) end;
 	end
 end
-
 function CreateFrames_EventsFrame_SelAll(FrameIndex, Status)
 	if (FrameIndex == 1) then
 		EACFFun_EventsFrame_SelAll(EA_Items[EA_playerClass], "EA_ClassFrame_ChkBtn_", Status);
@@ -1146,10 +1262,9 @@ local function EACFFun_GetSpellButton_ByFrame(FrameIndex)
 		return EA_Group_Events_Frame_SpellEditBox;
 	end
 end
-
 function CreateFrames_EventsFrame_AddSpell(FrameIndex)
-	if (FrameIndex <= 5) then
-
+	if (FrameIndex <= 5) then		
+	
 		local SpellButton = EACFFun_GetSpellButton_ByFrame(FrameIndex);
 		SpellButton:ClearFocus();
 		--local spellID = SpellButton:GetText();
@@ -1167,11 +1282,11 @@ function CreateFrames_EventsFrame_AddSpell(FrameIndex)
 				if (FrameIndex==3 and EA_Items[EA_CLASS_OTHER][spellID] == nil) then EA_Items[EA_CLASS_OTHER][spellID] = {enable=true,name=sname} end;
 				if (FrameIndex==4 and EA_TarItems[EA_playerClass][spellID] == nil) then EA_TarItems[EA_playerClass][spellID] = {enable=true,name=sname,self=true} end;
 				if (FrameIndex==5 and EA_ScdItems[EA_playerClass][spellID] == nil) then EA_ScdItems[EA_playerClass][spellID] = {enable=true,name=sname,duration=tonumber(duration)} end;
-
-				local typeIndex = 1;
+				
+				local typeIndex = 1;		
 				if (FrameIndex == 4) then typeIndex = 2 end;
 				if (FrameIndex == 5) then typeIndex = 3 end;
-				if (FrameIndex == 3) then
+				if (FrameIndex == 3) then 
 					CreateFrames_CreateSpellFrame(spellID, 1);
 					CreateFrames_CreateSpellFrame(spellID, 2);
 				else
@@ -1190,7 +1305,7 @@ end
 
 --------------------------------------------------------------------------------
 local function EACFFun_EventsFrame_DelSpell(FrameIndex, spellID, EAItems, FrameName)
-	spellID = tonumber(spellID);
+	local spellID = tonumber(spellID);
 	local TempPlayerClass = {};
 	local IsCurrSpell = false;
 	for index,value in pairsByKeys(EAItems) do
@@ -1252,9 +1367,10 @@ function CreateFrames_EventsFrame_DelSpell(FrameIndex)
 	end
 end
 
+--------------------------------------------------------------------------------
 local function EACFFun_EventsFrame_RemoveAll(FrameIndex, EAItems, FrameName)
 	CreateFrames_EventsFrame_ClearSpellList(FrameIndex);
-
+	
 	for index,value in pairsByKeys(EAItems) do
 		if index ~= nil and index ~= "" then
 			local spellID = tonumber(index);
@@ -1264,13 +1380,12 @@ local function EACFFun_EventsFrame_RemoveAll(FrameIndex, EAItems, FrameName)
 			eaf = nil;
 		end
 	end
-
+	
 	-- clear all spells
 	EAItems = wipe(EAItems);
-
+	
 	CreateFrames_EventsFrame_RefreshSpellList(FrameIndex);
 end
-
 function CreateFrames_EventsFrame_RemoveAllSpells(FrameIndex)
 	if (FrameIndex == 1) then
 		EACFFun_EventsFrame_RemoveAll(FrameIndex, EA_Items[EA_playerClass], "EAFrame_");
@@ -1285,64 +1400,86 @@ function CreateFrames_EventsFrame_RemoveAllSpells(FrameIndex)
 	end
 end
 
+--------------------------------------------------------------------------------
+
 function CreateFrames_CreateMinimapOptionFrame()
-
-	local eaf = CreateFrame("BUTTON","EA_MinimapOption",Minimap, "BackdropTemplate")
-
-	eaf:SetWidth(30)
-	eaf:SetHeight(30)
-	eaf:SetPoint("TOPRIGHT",Minimap,"BOTTOMRIGHT",10,-60)
+	
+	local eaf = CreateFrame("BUTTON","EA_MinimapOption",Minimap)
+	eaf:ClearAllPoints()
+	eaf:SetWidth(40)
+	eaf:SetHeight(40)
+	--eaf:SetPoint("TOPRIGHT",Minimap,"BOTTOMLEFT",10,-40)
+	eaf:SetPoint("CENTER",Minimap,"BOTTOMLEFT",-30,-20)
 	eaf:SetAlpha(0.7)
-	eaf:SetBackdrop({bgFile = "Interface/Icons/Trade_Engineering"})
+	if eaf.Backdrop == nil then
+		eaf.Backdrop =  CreateFrame("Frame",nil,eaf,"BackdropTemplate")
+		eaf.Backdrop:SetAllPoints()
+		eaf.Backdrop.backdropInfo ={bgFile = "Interface/Icons/Trade_Engineering"}
+		eaf.Backdrop:ApplyBackdrop()
+	end
+	
 	--啟用滑鼠相關功能
-	eaf:EnableMouse(true)
+	eaf:EnableMouse(true)	
 	--啟用可移動框架功能
-	eaf:SetMovable(true)
+	eaf:SetMovable(true)						
 	--註冊滑鼠左鍵按下事件
 	eaf:RegisterForClicks("LeftButtonDown")
 	--註冊滑鼠右鍵拖曳事件
 	eaf:RegisterForDrag("RightButton")
-
-	eaf:SetScript("OnClick", function(self,button)
-									if not(EA_Options_Frame:IsVisible()) then
+	
+	eaf:SetScript("OnClick", function(self,button)																	
+									if not(EA_Options_Frame:IsVisible()) then			
 										EA_Options_Frame:Show()
-									else
+									else						
 										EA_Options_Frame:Hide()
 									end
 							end
 				)
-	eaf:SetScript("OnDragStart", function(self,button)
+	eaf:SetScript("OnDragStart", function(self,button)																	
 									eaf:StartMoving()
 							end
-				)
-	eaf:SetScript("OnDragStop", function(self,button)
+				)					
+	eaf:SetScript("OnDragStop", function(self,button)																	
 									eaf:StopMovingOrSizing()
 							end
-				)
+				)					
 	eaf:SetScript("OnReceiveDrag", function(self)
 									--self 為拖曳後新位置的框架物件
 									local newX = self:GetLeft()
 									local newY = self:GetTop()
 									return
 							end
-				)
-	eaf:SetScript("OnEnter", function()
-								eaf:SetAlpha(1)
+				)									
+	eaf:SetScript("OnEnter", function()	
+								eaf:SetAlpha(1)	
 								GameTooltip:SetOwner(eaf,"BOTTOM_LEFT")
 								local t=""
 								t = t..EA_XCMD_CMDHELP["TITLE"].."\n"
 								t = t..EA_XCMD_CMDHELP["OPT"].."\n"
 								t = t..EA_XCMD_CMDHELP["HELP"].."\n"
+							
 								for k,v in pairs(EA_XCMD_CMDHELP) do
-									if v[1] then t = t..v[1].."\n"..v[2].."\n" end
+									if v[1] then t = t..v[1].."\n"..v[2].."\n" end									
 								end
+								
+								t = t.."/eam SCDRemoveWhenCooldown".."\n"
+								t = t.."/eam SCDNocombatStillKeep".."\n"
+								t = t.."/eam SCDGlowWhenUsable".."\n"
+								t = t.."/eam ShowEAconfig".."\n"
+								t = t.."/eam ShowEAposition".."\n"
+								t = t.."/eam MiniMap".."\n"
+								t = t.."/eam UpdateInterval (0.1~1s)".."\n"
+								t = t.."/eam IconAppendSpellTip".."\n"
+								t = t.."/eam NewLineByIconCount (2~n)".."\n"
+								t = t.."P.S.All command letter is Case-Insensitive"
 								GameTooltip:SetText(t)
+								
 							end	)
-	eaf:SetScript("OnLeave", function()
+	eaf:SetScript("OnLeave", function()	
 								eaf:SetAlpha(0.8)
 								GameTooltip:Hide()
 							end	)
-
+							
 	if EA_Config.OPTION_ICON == true then
 		EA_MinimapOption:Show()
 	else

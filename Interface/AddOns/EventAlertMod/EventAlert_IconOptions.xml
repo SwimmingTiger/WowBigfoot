@@ -1,5 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	<Script file="EventAlert_IconOptions.lua" />
 	<Frame name="EA_Icon_Options_Frame" hidden="true" parent="EA_Options_Frame" toplevel="true" movable="true" frameStrata="HIGH" enableMouse="true" enableKeyboard="true">
 		<Size>
@@ -8,19 +7,9 @@
 		<Anchors>
 			<Anchor relativepoint="RIGHT" point="LEFT" />
 		</Anchors>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
+		
 		<Frames>
-			<CheckButton name="$parent_LockFrame" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_LockFrame" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
@@ -48,7 +37,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ShareSettings" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShareSettings" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_LockFrame" relativePoint="TOPRIGHT">
 						<Offset>
@@ -124,7 +113,7 @@
 						self:SetValueStep(5.0);
 					</OnLoad>
 					<OnValueChanged>
-						EA_Position.xOffset = floor(self:GetValue())
+						EA_Position.xOffset = floor(self:GetValue()) 
 						_G[self:GetName().."Text"]:SetText(EA_XICON_HORSPACE.."("..(EA_Position.xOffset+100)..")");
 						EventAlert_Icon_Options_Frame_PaintAlertFrame();
 					</OnValueChanged>
@@ -227,7 +216,6 @@
 					</OnLeave>
 				</Scripts>
 			</Slider>
-			<!--
 			<Slider name="$parent_IconExecution" inherits="OptionsSliderTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_IconGreenDebuff" relativePoint="BOTTOMLEFT">
@@ -257,7 +245,7 @@
 					</OnLeave>
 				</Scripts>
 			</Slider>
-			<CheckButton name="$parent_PlayerLv2BOSS" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_PlayerLv2BOSS" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_IconExecution" relativePoint="TOPRIGHT">
 						<Offset>
@@ -285,10 +273,9 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			-->
-			<CheckButton name="$parent_SCD_UseCooldown" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SCD_UseCooldown" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_IconGreenDebuff" relativePoint="BOTTOMLEFT">
+					<Anchor point="TOPLEFT" relativeTo="$parent_IconExecution" relativePoint="BOTTOMLEFT">
 						<Offset>
 							<AbsDimension x="-40" y="-15" />
 						</Offset>
@@ -314,7 +301,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_HolyPower" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_HolyPower" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SCD_UseCooldown" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -327,9 +314,9 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_HOLYPOWER);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.HolyPower = self:GetChecked()
-
+						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -341,7 +328,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_RunicPower" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_RunicPower" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_HolyPower" relativePoint="TOPRIGHT">
 						<Offset>
@@ -354,8 +341,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_RUNICPOWER);
 					</OnLoad>
 					<OnClick>
-
-						EA_Config.SpecPowerCheck.RunicPower = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.RunicPower = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -367,7 +354,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_SoulShards" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_SoulShards" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_HolyPower" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -380,7 +367,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_SOULSHARDS);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.SoulShards = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
@@ -393,7 +380,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_LunarPower" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_LunarPower" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_SoulShards" relativePoint="TOPRIGHT">
 						<Offset>
@@ -405,7 +392,7 @@
 					<OnLoad>
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_LUNARPOWER);
 					</OnLoad>
-					<OnClick>
+					<OnClick>						
 						EA_Config.SpecPowerCheck.LunarPower = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
@@ -418,7 +405,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_ComboPoint" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_ComboPoint" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_SoulShards" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -431,7 +418,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_COMBOPOINT);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.ComboPoint = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.ComboPoint = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -443,7 +431,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_LifeBloom" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_LifeBloom" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_ComboPoint" relativePoint="TOPRIGHT">
 						<Offset>
@@ -456,8 +444,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_LIFEBLOOM);
 					</OnLoad>
 					<OnClick>
-
-						EA_Config.SpecPowerCheck.LifeBloom = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.LifeBloom = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -469,7 +457,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_LightForce" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Chi" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_ComboPoint" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -479,25 +467,25 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_LIGHTFORCE);
+						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_CHI);
 					</OnLoad>
 					<OnClick>
-
-						EA_Config.SpecPowerCheck.LightForce = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.Chi = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:SetText(EA_TTIP_SPECFLAG_CHECK_LIGHTFORCE);
+						GameTooltip:SetText(EA_TTIP_SPECFLAG_CHECK_CHI);
 					</OnEnter>
 					<OnLeave>
 						GameTooltip:Hide();
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Energy" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Energy" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_LightForce" relativePoint="TOPRIGHT">
+					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Chi" relativePoint="TOPRIGHT">
 						<Offset>
 							<AbsDimension x="100" y="0" />
 						</Offset>
@@ -508,7 +496,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_ENERGY);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.Energy = self:GetChecked()
+						EA_Config.SpecPowerCheck.Energy = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -520,9 +508,9 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Rage" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Rage" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_LightForce" relativePoint="BOTTOMLEFT">
+					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Chi" relativePoint="BOTTOMLEFT">
 						<Offset>
 							<AbsDimension x="0" y="0" />
 						</Offset>
@@ -533,7 +521,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_RAGE);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.Rage = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
@@ -546,7 +534,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Focus" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Focus" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Rage" relativePoint="TOPRIGHT">
 						<Offset>
@@ -559,10 +547,10 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_FOCUS);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.Focus = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
-						EventAlert_UpdateFocus();
+						EventAlert_UpdateFocus();						
 					</OnClick>
 					<OnEnter>
 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -573,7 +561,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Insanity" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Insanity" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Rage" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -586,7 +574,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_INSANITY);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.Insanity = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
@@ -599,7 +587,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_ArcaneCharges" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_ArcaneCharges" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Insanity" relativePoint="TOPRIGHT">
 						<Offset>
@@ -612,7 +600,7 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_ARCANECHARGES);
 					</OnLoad>
 					<OnClick>
-
+						
 						EA_Config.SpecPowerCheck.ArcaneCharges  = self:GetChecked()
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
@@ -625,7 +613,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Maelstrom" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Maelstrom" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Insanity" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -638,7 +626,9 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_MAELSTROM);
 					</OnLoad>
 					<OnClick>
+						
 						EA_Config.SpecPowerCheck.Maelstrom  = self:GetChecked()
+						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -650,7 +640,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Runes" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Runes" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Maelstrom" relativePoint="TOPRIGHT">
 						<Offset>
@@ -663,7 +653,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_RUNES);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.Runes  = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.Runes  = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -675,7 +666,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Fury" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Fury" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_RunicPower" relativePoint="TOPRIGHT">
 						<Offset>
@@ -688,7 +679,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_FURY);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.Fury = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.Fury = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -700,7 +692,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Pain" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Pain" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Fury" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -713,7 +705,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_PAIN);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.Pain = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.Pain = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 					</OnClick>
 					<OnEnter>
@@ -725,7 +718,7 @@
 					</OnLeave>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_SpecFlag_Focus_Pet" inherits="InterfaceOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SpecFlag_Focus_Pet" inherits="OptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_SpecFlag_Pain" relativePoint="BOTTOMLEFT">
 						<Offset>
@@ -738,7 +731,8 @@
 						_G[self:GetName().."Text"]:SetText(EA_XOPT_SPECFLAG_FOCUS_PET);
 					</OnLoad>
 					<OnClick>
-						EA_Config.SpecPowerCheck.FocusPet = self:GetChecked()
+						
+						EA_Config.SpecPowerCheck.FocusPet = self:GetChecked()						
 						EventAlert_SpecialFrame_Update();
 						EventAlert_UpdateFocus();
 					</OnClick>

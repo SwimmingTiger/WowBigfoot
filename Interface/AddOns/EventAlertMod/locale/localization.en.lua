@@ -46,19 +46,21 @@ EA_TTIP_SPECFLAG_CHECK_RAGE = "Show Rage in the left 1st position of Self-Buffs"
 EA_TTIP_SPECFLAG_CHECK_FOCUS = "Show Focus in the left 1st position of Self-Buffs";					--  支援集中值(獵人)
 EA_TTIP_SPECFLAG_CHECK_FOCUS_PET = "Show Focus in the left 2nd position of Self-Buffs";				--  支援寵物集中值(獵人)
 EA_TTIP_SPECFLAG_CHECK_ENERGY = "Show Energy in the left 1st position of Self-Buffs";				--  支援能量(賊,貓D,武僧)
-EA_TTIP_SPECFLAG_CHECK_LIGHTFORCE = "Show Chi of Monk in the left 1st position of Self-Buffs";		--  支援武僧真氣
+EA_TTIP_SPECFLAG_CHECK_CHI = "Show Chi of Monk in the left 1st position of Self-Buffs";		--  支援武僧真氣
 EA_TTIP_SPECFLAG_CHECK_INSANITY = "Show Insanity in the left 1st position of Self-Buffs";			--  支援暗影瘋狂(暗牧)
 EA_TTIP_SPECFLAG_CHECK_DEMONICFURY = "Show Demonic Fury in the left 1st position of Self-Buffs";	--  支援惡魔之怒
 EA_TTIP_SPECFLAG_CHECK_BURNINGEMBERS = "Show Burning Embers in the left 1st position of Self-Buffs";--  支援燃火餘燼
 EA_TTIP_SPECFLAG_CHECK_ARCANECHARGES = "Show Arcane Charges in the left 1st position of Self-Buffs";--  Support Mage's Arcane Charges
 EA_TTIP_SPECFLAG_CHECK_MAELSTROM = "Show Maelstrom in the left 1st position of Self-Buffs";			--  Support Shaman's Maelstrom
-EA_TTIP_SPECFLAG_CHECK_FURY = "Show Fury in the left 1st position of Self-Buffs";					--  Support Demonhunter's Fury
-EA_TTIP_SPECFLAG_CHECK_PAIN = "Show Pain in the left 1st position of Self-Buffs";					--  Support Demonhunter's Pain
+EA_TTIP_SPECFLAG_CHECK_FURY = "Show Fury in the left 1st position of Self-Buffs";					--  Support Demonhunter's Fury 
+EA_TTIP_SPECFLAG_CHECK_PAIN = "Show Pain in the left 1st position of Self-Buffs";					--  Support Demonhunter's Pain 
 
 EA_TTIP_GRPCFG_ICONALPHA = "Change the alpha value of this Icon";
 EA_TTIP_GRPCFG_TALENT = "Only active at this spec.";
 EA_TTIP_GRPCFG_HIDEONLEAVECOMBAT = "Hide when leave of combat";
 EA_TTIP_GRPCFG_HIDEONLOSTTARGET = "Hide when lost of target";
+
+EA_TTIP_GRPCFG_GLOWWHENTRUE = "Glow when condition is true"
 
 EA_XOPT_ICONPOSOPT = "Icon Position Options";
 EA_XOPT_SHOW_ALTFRAME = "Show Alert Frame";
@@ -153,6 +155,9 @@ EA_XGRPALERT_TALENT2 = "3rd SPEC";
 EA_XGRPALERT_TALENT2 = "4th SPEC";
 EA_XGRPALERT_HIDEONLEAVECOMBAT = "Hide NoCombat"
 EA_XGRPALERT_HIDEONLOSTTARGET = "Hide NoTarget"
+
+EA_XGRPALERT_GLOWWHENTRUE = "Glow Icon"
+
 EA_XGRPALERT_TALENTS = "All Talent";
 EA_XGRPALERT_NEWSPELLBTN = "Add Spell";
 EA_XGRPALERT_NEWCHECKBTN = "Add Check";
@@ -181,7 +186,7 @@ EA_XGRPALERT_UNITTYPES = {
 	[5]={text="Boss 1", value="boss1"},
 	[6]={text="Boss 2", value="boss2"},
 	[7]={text="Boss 3", value="boss3"},
-	[8]={text="Boss 4", value="boss4"},
+	[8]={text="Boss 4", value="boss4"}, 
 	[9]={text="Party 1", value="party1"},
 	[10]={text="Party 2", value="party2"},
 	[11]={text="Party 3", value="party3"},
@@ -254,6 +259,7 @@ EA_XCMD_DEBUG_P2 = "Spell-ID";
 EA_XCMD_DEBUG_P3 = "Stack";
 EA_XCMD_DEBUG_P4 = "Duration";
 
+
 EA_XCMD_CMDHELP = {
 	["TITLE"] = "\124cffFFFF00EventAlertMod\124r \124cff00FF00Commands\124r(/eventalertmod or /eam):",
 	["OPT"] = "\124cff00FF00/eam options(/eam opt)\124r - Toggle the options window on or off",
@@ -292,7 +298,7 @@ EA_XCMD_CMDHELP = {
 	},
 }
 
-EA_XSPECINFO_MANA = "Mana";
+EA_XSPECINFO_MANA = "Mana"
 EA_XSPECINFO_COMBOPOINT = "Combo Point";
 EA_XSPECINFO_RUNICPOWER	= "Runic Power";
 EA_XSPECINFO_RUNES	= "Runes";
@@ -304,7 +310,7 @@ EA_XSPECINFO_ENERGY= "Energy";
 EA_XSPECINFO_RAGE= "Rage";
 EA_XSPECINFO_FOCUS= "Focus";
 EA_XSPECINFO_FOCUS_PET= "Pet Focus";
-EA_XSPECINFO_LIGHTFORCE= "Chi";						--5.1   support Chi of Monk.
+EA_XSPECINFO_CHI= "Chi";						--5.1   support Chi of Monk.
 EA_XSPECINFO_ARCANE_CHARGES= "Arcane Charges";		--7.0   support Arcane Charges of Arcane Mage.
 EA_XSPECINFO_MAELSTROM= "Maelstrom";				--7.0   support Maelstrom of Shaman.
 EA_XSPECINFO_FURY= "Fury";							--7.0   support Fury of Demonhunter
@@ -318,12 +324,12 @@ EA_XOPT_SPECFLAG_SOULSHARDS = EA_XSPECINFO_SOULSHARDS;
 EA_XOPT_SPECFLAG_LUNARPOWER = EA_XSPECINFO_LUNARPOWER;
 EA_XOPT_SPECFLAG_COMBOPOINT = EA_XSPECINFO_COMBOPOINT;
 EA_XOPT_SPECFLAG_LIFEBLOOM = "LifeBloom";
-EA_XOPT_SPECFLAG_INSANITY = EA_XSPECINFO_INSANITY;
+EA_XOPT_SPECFLAG_INSANITY = EA_XSPECINFO_INSANITY;									
 EA_XOPT_SPECFLAG_RAGE = EA_XSPECINFO_RAGE;
 EA_XOPT_SPECFLAG_ENERGY = EA_XSPECINFO_ENERGY;
 EA_XOPT_SPECFLAG_FOCUS = EA_XSPECINFO_FOCUS;
 EA_XOPT_SPECFLAG_FOCUS_PET = EA_XSPECINFO_FOCUS_PET;
-EA_XOPT_SPECFLAG_LIGHTFORCE = EA_XSPECINFO_LIGHTFORCE;
+EA_XOPT_SPECFLAG_CHI = EA_XSPECINFO_CHI;		
 EA_XOPT_SPECFLAG_ARCANECHARGES = EA_XSPECINFO_ARCANECHARGES;
 EA_XOPT_SPECFLAG_MAELSTROM = EA_XSPECINFO_MAELSTROM;
 EA_XOPT_SPECFLAG_FURY = EA_XSPECINFO_FURY;
@@ -341,12 +347,12 @@ EA_XGRPALERT_POWERTYPES = {
 	[8]={text=EA_XSPECINFO_SOULSHARDS, value=EA_SPELL_POWER_SOUL_SHARDS},
 	[9]={text=EA_XSPECINFO_LUNARPOWER, value=EA_SPELL_POWER_LUNAR_POWER},
 	[10]={text=EA_XSPECINFO_HOLYPOWER, value=EA_SPELL_POWER_HOLY_POWER},
-	[11]={text=EA_XSPECINFO_LIGHTFORCE, value=EA_SPELL_POWER_LIGHT_FORCE},
-	[12]={text=EA_XSPECINFO_INSANITY, value=EA_SPELL_POWER_INSANITY},
+	[11]={text=EA_XSPECINFO_CHI, value=EA_SPELL_POWER_CHI},		
+	[12]={text=EA_XSPECINFO_INSANITY, value=EA_SPELL_POWER_INSANITY},			
 	[13]={text=EA_XSPECINFO_ARCANECHARGES, value=EA_SPELL_POWER_ARCANE_CHARGES},
 	[14]={text=EA_XSPECINFO_MAELSTROM, value=EA_SPELL_POWER_MAELSTROM},
 	[15]={text=EA_XSPECINFO_FURY, value=EA_SPELL_POWER_FURY},
-	[16]={text=EA_XSPECINFO_PAIN, value=EA_SPELL_POWER_PAIN},
+	[16]={text=EA_XSPECINFO_PAIN, value=EA_SPELL_POWER_PAIN},	
 };
 
 end		-- End Of If
