@@ -14,3 +14,9 @@ if not GameTooltip_AddNewbieTip then
         end
     end
 end
+
+if not GetQuestGreenRange then
+    GetQuestGreenRange = function()
+        return UnitQuestTrivialLevelRange("player")
+    end
+end
