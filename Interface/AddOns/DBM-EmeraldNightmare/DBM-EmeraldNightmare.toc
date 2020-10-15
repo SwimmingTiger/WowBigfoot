@@ -1,0 +1,32 @@
+﻿## Interface: 90001
+## X-Min-Interface: 70000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Emerald Nightmare
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 翡翠梦魇
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 翡翠夢魘
+## Notes:|cff00ff00DBM-EmeraldNightmare|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMEmeraldNightmare_AllSavedVars
+## SavedVariablesPerCharacter: DBMEmeraldNightmare_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 506
+## X-DBM-Mod-MapID: 1520
+## X-DBM-Mod-MinCoreRevision: 14737
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+Nythendra.lua
+Ilgynoth.lua
+Renferal.lua
+Ursok.lua
+NightmareDragons.lua
+Cenarius.lua
+Xavius.lua
+NightmareTrash.lua

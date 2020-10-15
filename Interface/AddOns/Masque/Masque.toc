@@ -1,0 +1,30 @@
+## Interface: 90001
+## Title: Masque
+## Title-zhCN: [大脚][集]动作条美化
+## Title-zhTW: [大腳][集]動作條美化
+## Notes: |cffbc8f8fA dynamic button skinning add-on.|r
+## Notes-zhCN: |cff00ff00Masque|r|n|cffbc8f8f一款可以对界面进行美化并提供换肤功能的插件|r
+## Notes-zhTW: |cff00ff00Masque|r|n|cffbc8f8f一款可以對界面進行美化並提供換膚功能的插件|r
+## Author: StormFX, JJSheets
+## Version: 4.3.378
+## SavedVariables: MasqueDB
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+# Locales
+Core\Locales.lua
+
+# Add-On
+Masque.lua
+
+# Skins
+Skins\Skins.lua
+Skins\Blizzard.lua
+Skins\Dream.lua
+Skins\Zoomed.lua
+
+# Core
+Core\Button.lua
+Core\Groups.lua
+Core\Options.lua

@@ -1,0 +1,15 @@
+## Interface: 90001
+## Title: HandyNotes: Visions Of N'Zoth
+## Title-zhCN: [大脚][集]地图标记_恩佐斯的幻象
+## Title-zhTW: [大腳][集]地圖標記_恩佐斯的幻象
+## Notes: Visions Of N'Zoth Notes
+## Notes-zhCN: |cff00ff00HandyNotes_VisionsOfNZoth|r
+## Notes-zhTW: |cff00ff00HandyNotes_VisionsOfNZoth|r
+## Version: 40
+## RequiredDeps: HandyNotes
+## SavedVariables: HandyNotes_VisionsOfNZothDB
+## X-Revision: BigFoot
+
+core\core.xml
+plugin.xml
+

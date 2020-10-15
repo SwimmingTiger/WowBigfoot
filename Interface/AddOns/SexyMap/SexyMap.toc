@@ -1,0 +1,38 @@
+## Interface: 90001
+## Title: SexyMap
+## Title-zhCN: [大脚][集]小地图美化
+## TItle-zhTW: [大腳][集]小地圖美化
+## Notes: |cffbc8f8fSpice up your minimap with some sexy options.|r
+## Notes-zhCN: |cff00ff00SexyMap|r|n|cffbc8f8f为你的小地图增趣添彩，并包含一些性感选项。|r
+## Notes-zhTW: |cff00ff00SexyMap|r|n|cffbc8f8f讓你有更香豔的一些性感小地圖設定。|r
+## Author: Funkydude
+## Version: v9.0.0
+## SavedVariables: SexyMap2DB, SexyMap82
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+Libs\LibDDI-1.0\lib.lua
+
+# Localization
+localization\enUS.lua
+localization\zhTW.lua
+localization\zhCN.lua
+
+# Core
+SexyMap.lua
+
+# Utility, doesn't actually have menu options
+Shapes.lua
+
+# Other modules
+Buttons.lua
+BorderPresets.lua
+Borders.lua
+Clock.lua
+Coordinates.lua
+HudMap.lua
+Movers.lua
+Ping.lua
+ZoneText.lua
+

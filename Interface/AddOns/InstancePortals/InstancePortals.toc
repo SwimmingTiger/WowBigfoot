@@ -1,0 +1,17 @@
+## Interface: 90001
+## X-Min-Interface: 80000
+## Title: Instance Portals
+## Title-zhCN: [大脚][集]副本入口位置
+## Title-zhTW: [大腳][集]副本入口位置
+## Notes: Displays dungeon & raid portals on the world map
+## Notes-zhCN: |cff00ff00InstancePortals|r
+## Notes-zhTW: |cff00ff00InstancePortals|r
+## Version: 25
+## SavedVariablesPerCharacter: IPUITrackInstancePortals IPUITrackInstancePortalsOnContinents
+## X-Revision: BigFoot
+
+IPPinDB.lua
+IPInstanceDB.lua
+IPInstancePortalPinTemplate.xml
+IPCore.lua
+InstancePortals.xml

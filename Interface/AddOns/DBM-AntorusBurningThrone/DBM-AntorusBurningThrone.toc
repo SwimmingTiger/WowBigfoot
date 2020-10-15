@@ -1,0 +1,37 @@
+## Interface: 90001
+## X-Min-Interface: 70300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Antorus, the Burning Throne|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 安托鲁斯，燃烧王座
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 安托洛斯，燃燒王座
+## Notes-zhCN: |cff00ff00DBM-AntorusBurningThrone|r
+## Notes-zhTW: |cff00ff00DBM-AntorusBurningThrone|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMAntorusBurningThrone_AllSavedVars
+## SavedVariablesPerCharacter: DBMAntorusBurningThrone_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 501
+## X-DBM-Mod-MapID: 1712
+## X-DBM-Mod-MinCoreRevision: 14737
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+Garothi.lua
+HoundsofSargeras.lua
+AntorusWarCouncil.lua
+Eonar.lua
+Hasabel.lua
+Imonar.lua
+Kingaroth.lua
+Varimathras.lua
+ShivarraCoven.lua
+Aggramar.lua
+ArgustheUnmaker.lua
+AntorusTrash.lua

@@ -1,0 +1,17 @@
+## Interface: 90001
+## Title: Meeting Stone
+## Title-zhCN: |cffff565e[网易]|r 集合石
+## Title-zhTW: |cffff565e[網易]|r 集合石
+## Notes-zhCN: |cff00ff00MeetingStone|r|n|cffbc8f8f帮助您更好的组建队伍。|r
+## Notes-zhTW: |cff00ff00MeetingStone|r|n|cffbc8f8f幫助您更好的組建隊伍。|r
+## Version: 80300.01
+## SavedVariables: MEETINGSTONE_UI_DB
+## SavedVariablesPerCharacter: MEETINGSTONE_CHARACTER_DB
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+## X-WoWBox-Ver: 1
+## Dependencies: BigFoot
+## X-Revision: BigFoot
+## LoadOnDemand: 1
+
+Load.xml

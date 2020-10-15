@@ -1,0 +1,35 @@
+﻿## Interface: 90001
+## X-Min-Interface: 70100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r The Nighthold
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 暗夜要塞
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 暗夜堡
+## Notes:|cff00ff00DBM-Nighthold|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMNighthold_AllSavedVars
+## SavedVariablesPerCharacter: DBMNighthold_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: LEG
+## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-Mod-Sort: 505
+## X-DBM-Mod-MapID: 1530
+## X-DBM-Mod-MinCoreRevision: 14737
+## X-Revision: BigFoot
+
+localization.en.lua
+localization.cn.lua
+localization.tw.lua
+
+Skorpyron.lua
+ChronoAnomaly.lua
+Trilliax.lua
+Aluriel.lua
+Tichondrius.lua
+Krosus.lua
+Telarn.lua
+Etraeus.lua
+Elisande.lua
+Guldan.lua
+NightholdTrash.lua

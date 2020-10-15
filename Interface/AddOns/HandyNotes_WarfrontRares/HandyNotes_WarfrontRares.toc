@@ -1,0 +1,19 @@
+## Interface: 90001
+## Title: HandyNotes_WarfrontRares
+## Title-zhCN: [大脚][集]地图标记_战争前线
+## Title-zhTW: [大腳][集]地圖標記_戰爭前線
+## Notes: Warfront Rares
+## Notes-zhCN: |cff00ff00HandyNotes_WarfrontRares|r
+## Notes-zhTW: |cff00ff00HandyNotes_WarfrontRares|r
+## Version: 0.5.4
+## OptionalDeps: Ace3
+## RequiredDeps: HandyNotes
+## X-Embeds: Ace3
+## SavedVariables: HandyNotesArathiDB
+## X-Revision: BigFoot
+
+localization\enUS.lua
+localization\zhCN.lua
+#localization\zhTW.lua
+
+HandyNotes_WarfrontRares.lua

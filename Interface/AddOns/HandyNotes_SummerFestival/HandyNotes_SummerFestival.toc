@@ -1,0 +1,18 @@
+## Interface: 90001
+## Title: HandyNotes_SummerFestival
+## Title-zhCN: [大脚][集]地图标记_仲夏火焰节
+## Title-zhTW: [大腳][集]地圖標記_火焰節
+## Notes: Displays the locations of Summer Festival bonfires.
+## Notes-zhCN: |cff00ff00HandyNotes_SummerFestival|r
+## Notes-zhTW: |cff00ff00HandyNotes_SummerFestival|r
+## Author: Ethan Centaurai
+## Version: v1.6.1-2-gd05b89c
+## X-Category: Map & Minimap
+## SavedVariables: HandyNotes_SummerFestivalDB
+## RequiredDeps: HandyNotes
+## X-Revision: BigFoot
+
+Core.lua
+
+Alliance.lua
+Horde.lua
