@@ -272,10 +272,10 @@ function GSA:CanTalkHere()
 	--Disable By Location
 	local _,currentZoneType = IsInInstance()
 	local _,_,_,_,_,_,_,instanceMapID = GetInstanceInfo()
-	local isPvP = UnitIsWarModeDesired("player")
+	local isPvP = C_PvP.IsWarModeDesired()
 	playerCurrentZone = currentZoneType
 	if (not ((currentZoneType == "none" and gsadb.field and not gsadb.onlyFlagged) or 												-- World
-		--(currentZoneType == "none" and gsadb.field and (gsadb.onlyFlagged and UnitIsWarModeDesired("player"))) or
+		--(currentZoneType == "none" and gsadb.field and (gsadb.onlyFlagged and C_PvP.IsWarModeDesired())) or
 		(currentZoneType == "pvp" and gsadb.battleground and not self:CheckForEpicBG(instanceMapID)) or 	-- Battleground
 		(currentZoneType == "pvp" and gsadb.epicbattleground and self:CheckForEpicBG(instanceMapID)) or		-- Epic Battleground
 		(currentZoneType == "arena" and gsadb.arena) or 													-- Arena
