@@ -28,7 +28,9 @@ local setmetatable = setmetatable
 local tonumber, tostring = tonumber, tostring
 local type = type
 
-local CreateFrame = _G.CreateFrame
+local CreateFrame = function(frameType, name, parent, template, ...)
+	return _G.CreateFrame(frameType, name, parent, template or "BackdropTemplate", ...)
+end
 local GameTooltip = _G.GameTooltip
 local UIParent = _G.UIParent
 
