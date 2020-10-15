@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2331, "DBM-Party-BfA", 11, 1178)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200928001620")
+mod:SetRevision("20201013203549")
 mod:SetCreatureID(150396, 144249, 150397)
 mod:SetEncounterID(2260)
 mod:SetBossHPInfoToHighest()
@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 			if self.vb.zapCount % 3 == 0 then
 				--14.8, 3.5, 3.5, 28.6, 3.5, 3.5, 23.4, 3.5, 3.5, 23.3, 3.5, 3.5
 				--14.8, 3.5, 3.5, 28.2, 3.5, 3.5
-				timerGigaZapCD:Start(self.vb.zapCount == 3 and 28 or 23.3)
+				timerGigaZapCD:Start(self.vb.zapCount == 3 and 26.9 or 23.3)
 			else
 				timerGigaZapCD:Start(3.5)
 			end
@@ -164,7 +164,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(_, _, spellId)
 		--timerRecalibrateCD:Start(2)--Cast start event hidden in P2, and not the most important mechanic of fight that it needs hacks to work around
 		timerMagnetoArmCD:Start(34)
 	elseif spellId == 292807 then--Cancel Skull Aura (Annihilo-tron 5000 activating on pull)
-		timerHardModeCD:Start(33.3)
+		timerHardModeCD:Start(32.2)
 	elseif spellId == 292750 then--H.A.R.D.M.O.D.E.
 		specWarnHardMode:Show()
 		specWarnHardMode:Play("stilldanger")

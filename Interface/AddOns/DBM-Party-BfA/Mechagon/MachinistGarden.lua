@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2348, "DBM-Party-BfA", 11, 1178)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20201001003131")
+mod:SetRevision("20201013203549")
 mod:SetCreatureID(144248)--Head Mechinist Sparkflux
 mod:SetEncounterID(2259)
 
@@ -39,7 +39,7 @@ function mod:OnCombatStart(delay)
 	timerSelfTrimmingHedgeCD:Start(3.4-delay)
 	timerPlantCD:Start(5.9-delay)
 	timerDiscomBombCD:Start(8.3-delay)
-	timerFlameCannonCD:Start(13.1-delay)
+	timerFlameCannonCD:Start(12.1-delay)
 end
 
 function mod:SPELL_CAST_START(args)
