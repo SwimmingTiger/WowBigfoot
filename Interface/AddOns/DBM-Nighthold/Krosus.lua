@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1713, "DBM-Nighthold", nil, 786)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17634 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(101002)
 mod:SetEncounterID(1842)
-mod:SetZone()
 --mod:SetUsedIcons(8, 7, 6, 3, 2, 1)
 mod:SetHotfixNoticeRev(15740)
 mod.respawnTime = 29--or 30
@@ -37,14 +36,11 @@ local specWarnFelBurst				= mod:NewSpecialWarningInterrupt(206351, "HasInterrupt
 
 local timerSearingBrand				= mod:NewTargetTimer(20, 206677, nil, "Tank", nil, 5)
 local timerFelBeamCD				= mod:NewNextCountTimer(16, 205368, 173303, nil, nil, 3)--Short text "Beam"
-local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, DBM_CORE_ORB, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)--Shor timer text "Orb"
+local timerOrbDestroCD				= mod:NewNextCountTimer(16, 205344, DBM_CORE_L.ORB, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 3, 4)--Shor timer text "Orb"
 local timerBurningPitchCD			= mod:NewNextCountTimer(16, 205420, nil, nil, 2, 5)
-local timerSlamCD					= mod:NewNextCountTimer(30, 205862, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
+local timerSlamCD					= mod:NewNextCountTimer(30, 205862, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)
 
 local berserkTimer					= mod:NewBerserkTimer(360)--technically not a berserk, but raid instantly wipes during final bridge smash, at 6 minutes.
-
-local countdownBigSlam				= mod:NewCountdown(90, 205862)
-local countdownOrbDestro			= mod:NewCountdownFades("AltTwo5", 205344)
 
 mod:AddRangeFrameOption(5, 206351)
 mod:AddSetIconOption("SetIconOnAdds", "ej12914", true, true)
@@ -109,7 +105,6 @@ function mod:OnCombatStart(delay)
 	self.vb.firstBeam = 0
 	warnSlamSoon:Countdown(90)
 	timerSlamCD:Start(-delay, 1)
-	countdownBigSlam:Start(-delay)
 	berserkTimer:Start(-delay)
 	if self:IsMythic() then
 		timerFelBeamCD:Start(6-delay, 1)
@@ -211,7 +206,6 @@ function mod:SPELL_CAST_START(args)
 		if self.vb.slamCount % 3 == 0 then
 			specWarnSlam:Show()
 			specWarnSlam:Play("justrun")
-			countdownBigSlam:Start()
 			warnSlamSoon:Countdown(90)
 		else
 			warnSlam:Show(self.vb.slamCount)
@@ -260,7 +254,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellOrbDestro:Schedule(4, 1)
 			yellOrbDestro:Schedule(3, 2)
 			yellOrbDestro:Schedule(2, 3)
-			countdownOrbDestro:Start()
 		else
 			warnExpelOrbDestro:Show(self.vb.orbCount, args.destName)
 		end
@@ -273,8 +266,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 205344 then
 		if args:IsPlayer() then
 			yellOrbDestro:Cancel()
-			countdownOrbDestro:Cancel()
-		end		
+		end
 	end
 end
 
@@ -308,4 +300,3 @@ function mod:OnBWSync(msg)
 		DBM:Debug("Recieved Right Beam Sync")
 	end
 end
-	

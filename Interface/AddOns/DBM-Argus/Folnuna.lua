@@ -1,12 +1,10 @@
 local mod	= DBM:NewMod(2010, "DBM-Argus", nil, 959)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17471 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(124514)
 mod:SetEncounterID(2081)
 --mod:SetReCombatTime(20)
-mod:SetZone()
---mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
@@ -24,8 +22,8 @@ local specWarnInfectedClaws				= mod:NewSpecialWarningStack(247361, nil, 6, nil,
 local specWarnInfectedClawsOther		= mod:NewSpecialWarningTaunt(247361, nil, nil, nil, 1, 2)
 local specWarnSlumberingGasp			= mod:NewSpecialWarningDodge(247379, nil, nil, nil, 2, 2)
 
---local timerInfectedClawsCD				= mod:NewAITimer(13.4, 247361, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerSlumberingGaspCD				= mod:NewCDTimer(54.7, 247379, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
+--local timerInfectedClawsCD				= mod:NewAITimer(13.4, 247361, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSlumberingGaspCD				= mod:NewCDTimer(54.7, 247379, nil, nil, nil, 3, nil, DBM_CORE_L.IMPORTANT_ICON)
 local timerGrotesqueSpawnCD				= mod:NewCDTimer(32.8, 247443, nil, nil, nil, 1)
 
 mod:AddReadyCheckOption(49199, false)
@@ -55,7 +53,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId) then
 			local amount = args.amount or 1
-			if amount % 3 == 0 then 
+			if amount % 3 == 0 then
 				if amount >= 6 then--Lasts 30 seconds, cast every 5 seconds, swapping will be at 6
 					if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 						specWarnInfectedClaws:Show(amount)

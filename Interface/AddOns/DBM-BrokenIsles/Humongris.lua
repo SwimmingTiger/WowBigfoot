@@ -1,12 +1,10 @@
 local mod	= DBM:NewMod(1770, "DBM-BrokenIsles", nil, 822)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17077 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(108879)
 mod:SetEncounterID(1917)
 mod:SetReCombatTime(20)
-mod:SetZone()
---mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")
 
@@ -23,23 +21,18 @@ local warnSnow					= mod:NewSpellAnnounce(216467, 3)
 local warnFireBoom				= mod:NewTargetAnnounce(216428, 2)
 
 local specWarnFireBoom			= mod:NewSpecialWarningMoveAway(216428, nil, nil, nil, 1, 2)
-local yellFireBoom				= mod:NewYell(216428)
 local specWarnFireBoomNear		= mod:NewSpecialWarningClose(216428, nil, nil, nil, 1, 2)
 local specWarnIceFist			= mod:NewSpecialWarningMoveAway(216432, nil, nil, nil, 1, 2)
-local yellIceFist				= mod:NewYell(216428)
 local specWarnStomp				= mod:NewSpecialWarningSpell(216430, nil, nil, nil, 2, 2)
 local specWarnGoBangYou			= mod:NewSpecialWarningMoveAway(216817, nil, nil, nil, 3, 2)
-local yellGoBang				= mod:NewFadesYell(216817)
 local specWarnGoBangSwap		= mod:NewSpecialWarningTaunt(216817, nil, nil, nil, 1, 2)
 
 local timerFireBoomCD			= mod:NewCDTimer(14, 216428, nil, nil, nil, 3)
 local timerStompCD				= mod:NewCDTimer(28.8, 216430, nil, nil, nil, 2)--28-37
 local timerIceFistCD			= mod:NewCDTimer(29, 216432, nil, nil, nil, 2)--29-37
 local timerSnowCD				= mod:NewCDTimer(35, 216467, nil, nil, nil, 2)
-local timerGoBangCD				= mod:NewCDTimer(24.4, 216817, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerGoBangStarts			= mod:NewTargetTimer(12, 216817, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-
-local countdownBangEnds			= mod:NewCountdown("Alt12", 216817)
+local timerGoBangCD				= mod:NewCDTimer(24.4, 216817, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerGoBangStarts			= mod:NewTargetTimer(12, 216817, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 
 --mod:AddReadyCheckOption(37460, false)
 mod:AddRangeFrameOption(8, 216432)
@@ -49,7 +42,6 @@ function mod:BoomTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnFireBoom:Show()
 		specWarnFireBoom:Play("runout")
-		yellFireBoom:Yell()
 	elseif self:CheckNearby(10, targetname) then
 		specWarnFireBoomNear:Show(targetname)
 		specWarnFireBoomNear:Play("watchstep")
@@ -63,7 +55,6 @@ function mod:IceFists(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnIceFist:Show()
 		specWarnIceFist:Play("runout")
-		yellIceFist:Yell()
 	else
 		warnIceFist:Show(targetname)
 	end
@@ -116,10 +107,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGoBangYou:Show()
 			specWarnGoBangYou:Play("runout")
-			yellGoBang:Schedule(11, 1)
-			yellGoBang:Schedule(10, 2)
-			yellGoBang:Schedule(9, 3)
-			countdownBangEnds:Start()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(25)
 			end
@@ -135,8 +122,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if spellId == 216817 then
 		timerGoBangStarts:Stop(args.destName)
 		if args:IsPlayer() then
-			yellGoBang:Cancel()
-			countdownBangEnds:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end

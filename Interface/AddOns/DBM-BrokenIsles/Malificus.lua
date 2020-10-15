@@ -1,12 +1,10 @@
 local mod	= DBM:NewMod(1884, "DBM-BrokenIsles", nil, 822)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17471 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(117303)
 --mod:SetEncounterID(1880)
 mod:SetReCombatTime(20)
-mod:SetZone()
---mod:SetMinSyncRevision(11969)
 
 mod:RegisterCombat("combat")
 
@@ -24,7 +22,6 @@ local warnIncitePanic				= mod:NewSpellAnnounce(233568, 2, nil, false)--Off caus
 local warnShadowBarrage				= mod:NewSpellAnnounce(234452, 2)
 
 local specWarnIncitePanic			= mod:NewSpecialWarningYou(233568, nil, nil, nil, 2, 2)
-local yellIncitePanic				= mod:NewYell(233568)
 local specWarnIncitePanicNear		= mod:NewSpecialWarningClose(233568, nil, nil, nil, 1, 2)
 local specWarnVirulentInfection		= mod:NewSpecialWarningMove(233850, nil, nil, nil, 1, 2)
 
@@ -86,7 +83,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnIncitePanic:Show()
 			specWarnIncitePanic:Play("scatter")
-			yellIncitePanic:Yell()
 		elseif self:CheckNearby(10, args.destName) and not DBM:UnitDebuff("player", args.spellName) then
 			specWarnIncitePanicNear:CombinedShow(0.5, args.destName)
 			if self:AntiSpam(3, 1) then

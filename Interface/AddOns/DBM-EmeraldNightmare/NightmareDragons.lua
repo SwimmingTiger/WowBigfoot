@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1704, "DBM-EmeraldNightmare", nil, 768)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17623 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(102679)--Ysondre, 102683 (Emeriss), 102682 (Lethon), 102681 (Taerar)
 mod:SetEncounterID(1854)
-mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetHotfixNoticeRev(15407)
 mod.respawnTime = 39
@@ -70,7 +69,7 @@ local specWarnBellowingRoar			= mod:NewSpecialWarningSpell(204078, nil, nil, nil
 
 --All
 local timerMarkCD					= mod:NewNextTimer(7, "ej12809", 28836, false, 2, 3, 203102)--Now off by default, to further reduce timer clutter, plus sometimes it's wrong because in rare cases the dragons desync for some reason
-local timerBreathCD					= mod:NewCDSourceTimer(27, 203028, 21131, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--27-34 for Ysondre, Cohorts 27-29.
+local timerBreathCD					= mod:NewCDSourceTimer(27, 203028, 21131, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--27-34 for Ysondre, Cohorts 27-29.
 --Ysondre
 mod:AddTimerLine(Ysondre)
 local timerNightmareBlastCD			= mod:NewCDTimer(15, 203153, nil, "-Tank", nil, 3)--15-20
@@ -81,16 +80,13 @@ local timerVolatileInfectionCD		= mod:NewCDTimer(45.4, 203787, nil, "-Tank", 2, 
 local timerEssenceOfCorruptionCD	= mod:NewNextTimer(30, 205298, nil, nil, nil, 1)
 --Lethon
 mod:AddTimerLine(Lethon)
-local timerSiphonSpiritCD			= mod:NewNextTimer(49.9, 203888, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerSiphonSpiritCD			= mod:NewNextTimer(49.9, 203888, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerShadowBurstCD			= mod:NewNextTimer(14.5, 204040, nil, nil, nil, 3)--Air
 --Taerar
 mod:AddTimerLine(Taerar)
-local timerShadesOfTaerarCD			= mod:NewNextTimer(48.5, 204100, nil, "-Healer", nil, 1)
+local timerShadesOfTaerarCD			= mod:NewNextTimer(48.5, 204100, nil, "-Healer", nil, 1, nil, nil, nil, 1, 4)
 local timerSeepingFogCD				= mod:NewCDTimer(15.5, 205341, nil, false, 2, 3, 24814)--Spawn pretty often, and timers don't help dodge, so now off by default
 local timerBellowingRoarCD			= mod:NewCDTimer(44.5, 204078, 118699, nil, nil, 2)--Air
-
---Taerar
-local countdownShadesOfTaerar		= mod:NewCountdown(48.5, 204100, "Tank")
 
 mod:AddRangeFrameOption(10, 203787)
 mod:AddSetIconOption("SetIconOnInfection", 203787, false)
@@ -382,7 +378,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				timerBellowingRoarCD:Stop()
 				timerBreathCD:Start(17, bossName)
 				timerShadesOfTaerarCD:Start(19.5)--19.5-21
-				countdownShadesOfTaerar:Start(19.5)
 				timerSeepingFogCD:Start(25)
 			end
 			self:SendSync("IEEU", bossName, unitGUID)
@@ -443,7 +438,6 @@ function mod:OnSync(msg, targetName, guid)
 			end
 		elseif cid == 102681 then--Taerar
 			timerShadesOfTaerarCD:Stop()
-			countdownShadesOfTaerar:Cancel()
 			timerSeepingFogCD:Stop()
 			if not self:IsEasy() then
 				timerBellowingRoarCD:Start(44.5)
@@ -465,12 +459,10 @@ function mod:OnSync(msg, targetName, guid)
 			timerBellowingRoarCD:Stop()
 			timerBreathCD:Start(17, targetName)
 			timerShadesOfTaerarCD:Start(19.5)--19.5-21
-			countdownShadesOfTaerar:Start(19.5)
 			timerSeepingFogCD:Start(25)
 		end
 	elseif msg == "Shades" then
 		timerShadesOfTaerarCD:Start()
-		countdownShadesOfTaerar:Start()
 	elseif msg == "Fear" then
 		timerBellowingRoarCD:Start()
 	elseif msg == "SiphonSpirit" then

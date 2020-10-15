@@ -1,9 +1,12 @@
-﻿## Interface: 80300
-## X-Min-Interface: 70000
-## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r Emerald Nightmare
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 翡翠梦魇
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r 翡翠夢魘
-## Notes:|cff00ff00DBM-EmeraldNightmare|r
+﻿## Interface: 90001
+## X-Min-Interface: 80000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Emerald Nightmare|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Der Smaragdgrüne Alptraum|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0翡翠梦魇|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0翡翠夢魘|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pesadilla Esmeralda|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0에메랄드의 악몽|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Изумрудный Кошмар|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -12,16 +15,22 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: LEG
-## X-DBM-Mod-Has-Mythic : 1
+## X-DBM-StatTypes: normal,heroic,mythic,lfr
 ## X-DBM-Mod-Sort: 506
 ## X-DBM-Mod-MapID: 1520
-## X-DBM-Mod-MinCoreRevision: 14737
-## X-Revision: BigFoot
+## X-DBM-Mod-MinCoreRevision: 20200524142133
+## X-DBM-Mod-MinExpansion: 6
+## X-Curse-Project-ID: 301324
+## X-WoWI-ID: 24905
+## Version: r21
 
 localization.en.lua
 localization.cn.lua
+localization.de.lua
 localization.tw.lua
-
+localization.es.lua
+localization.kr.lua
+localization.ru.lua
 Nythendra.lua
 Ilgynoth.lua
 Renferal.lua

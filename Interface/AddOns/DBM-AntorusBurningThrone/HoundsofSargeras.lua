@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1987, "DBM-AntorusBurningThrone", nil, 946)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17666 $"):sub(12, -3))
+mod:SetRevision("20200806141949")
 mod:SetCreatureID(122477, 122135)--122477 F'harg, 122135 Shatug
 mod:SetEncounterID(2074)
-mod:SetZone()
 mod:SetBossHPInfoToHighest()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6)
 mod:SetHotfixNoticeRev(16949)
@@ -58,27 +57,22 @@ local yellSiphoned						= mod:NewShortFadesYell(248819)
 --Mythic
 local specWarnFlameTouched				= mod:NewSpecialWarningYouPos(244054, nil, nil, nil, 3, 8)
 local specWarnShadowtouched				= mod:NewSpecialWarningYouPos(244055, nil, nil, nil, 3, 8)
-local yellTouched						= mod:NewPosYell(244054, DBM_CORE_AUTO_YELL_CUSTOM_POSITION)
+local yellTouched						= mod:NewPosYell(244054, DBM_CORE_L.AUTO_YELL_CUSTOM_POSITION)
 
 --General/Mythic
 local timerFocusingPower				= mod:NewCastTimer(15, 251356, nil, nil, nil, 6)
 mod:AddTimerLine(Fharg)
-local timerBurningMawCD					= mod:NewCDTimer(10.1, 251448, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--usually 11 but some pulls it's 10
+local timerBurningMawCD					= mod:NewCDTimer(10.1, 251448, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--usually 11 but some pulls it's 10
 local timerMoltenTouchCD				= mod:NewCDTimer(95.9, 244072, nil, nil, nil, 3)
 local timerEnflamedCorruptionCD			= mod:NewCDTimer(95.9, 244057, nil, nil, nil, 3)
 local timerDesolateGazeCD				= mod:NewCDTimer(95.9, 244768, nil, nil, nil, 3)
 mod:AddTimerLine(Shatug)
-local timerCorruptingMawCD				= mod:NewCDTimer(10.1, 251447, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)--usually 11 but some pulls it's 10
+local timerCorruptingMawCD				= mod:NewCDTimer(10.1, 251447, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)--usually 11 but some pulls it's 10
 local timerComsumingSphereCD			= mod:NewCDTimer(77, 244131, nil, nil, nil, 3)--Verify in transcritor
 local timerWeightOfDarknessCD			= mod:NewCDTimer(77, 254429, nil, nil, nil, 3)
 local timerSiphonCorruptionCD			= mod:NewCDTimer(77, 244056, nil, nil, nil, 3)
 
 --local berserkTimer					= mod:NewBerserkTimer(600)
-
---F'harg
-local countdownBurningMaw				= mod:NewCountdown("Alt10", 251448, "Tank", nil, 3)
---Shatug
-local countdownCorruptingMaw			= mod:NewCountdown("Alt10", 251447, "Tank", nil, 3)
 
 mod:AddSetIconOption("SetIconOnWeightofDarkness2", 254429, false)
 --mod:AddInfoFrameOption(239154, true)
@@ -90,8 +84,6 @@ mod.vb.longTimer = 95.9
 mod.vb.mediumTimer = 77
 
 local function UpdateAllTimers(self)
-	countdownBurningMaw:Cancel()
-	countdownCorruptingMaw:Cancel()
 	--Fire Doggo
 	timerBurningMawCD:Stop()
 	timerMoltenTouchCD:AddTime(15)
@@ -111,9 +103,7 @@ function mod:OnCombatStart(delay)
 	self.vb.WeightDarkIcon = 1
 	--Fire doggo
 	timerBurningMawCD:Start(8.2-delay)--was same on heroic/mythic, or now
-	--countdownBurningMaw:Start(8.2-delay)
 	timerCorruptingMawCD:Start(8.9-delay)--was same on heroic/normal, for now
-	--countdownCorruptingMaw:Start(8.9-delay)
 	--Shadow doggo
 	if self:IsMythic() then
 		self.vb.longTimer = 88.3--88.3-89
@@ -218,21 +208,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBurningMaw:Show(args.destName)
 		if self:IsMythic() then
 			timerBurningMawCD:Start(9.7)
-			if self:CheckInterruptFilter(args.sourceGUID, true) then
-				countdownBurningMaw:Start(9.7)
-			end
 		else
 			timerBurningMawCD:Start()
-			if self:CheckInterruptFilter(args.sourceGUID, true) then
-				countdownBurningMaw:Start()
-			end
 		end
 	elseif spellId == 245098 then
 		warnCorruptingMaw:Show(args.destName)
 		timerCorruptingMawCD:Start()
-		if self:CheckInterruptFilter(args.sourceGUID, true) then
-			countdownCorruptingMaw:Start()
-		end
 	end
 end
 
@@ -262,7 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 248819 then--Siphoned
 		warnSiphoned:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnSiphoned:Show(DBM_ALLY)
+			specWarnSiphoned:Show(DBM_CORE_L.ALLY)
 			specWarnSiphoned:Play("gathershare")
 			yellSiphoned:Countdown(4)
 			if self.Options.RangeFrame then
@@ -272,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 254429 then
 		warnWeightofDarkness:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			specWarnWeightOfDarkness:Show(DBM_ALLY)
+			specWarnWeightOfDarkness:Show(DBM_CORE_L.ALLY)
 			specWarnWeightOfDarkness:Play("gathershare")
 			yellWeightOfDarkness:Yell()
 			yellWeightOfDarknessFades:Countdown(5)
@@ -285,13 +266,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlameTouched:Show(self:IconNumToTexture(7))--Red X for flame (more voted on red x than orange circle)
 			specWarnFlameTouched:Play("firerun")
-			yellTouched:Yell(7, "", 7)
+			yellTouched:Yell(7, "")
 		end
 	elseif spellId == 244055 then--Shadowtouched
 		if args:IsPlayer() then
 			specWarnShadowtouched:Show(self:IconNumToTexture(3))--Purple diamond for shadow
 			specWarnShadowtouched:Play("shadowrun")
-			yellTouched:Yell(3, "", 3)
+			yellTouched:Yell(3, "")
 		end
 	end
 end
