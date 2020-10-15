@@ -1,13 +1,16 @@
+if GetLocale() ~= "koKR" then
+	return
+end
 local L
 
 ------------------------
 -- White Tiger Temple --
 ------------------------
-L= DBM:GetModLocalization("d640")
+L = DBM:GetModLocalization("d640")
 
 L:SetMiscLocalization({
-	Endless			= "Endless",--Could not find a global for this one.
-	ReplyWhisper	= "<Deadly Boss Mods> %s is busy in Proving Grounds (Mode: %s Wave: %d)"
+	Endless			= "무한",
+	ReplyWhisper	= "<Deadly Boss Mods> %s님은 수련의 장을 플레이하느라 바쁩니다. (모드: %s, 단계: %d)"
 })
 
 ------------------------
@@ -16,7 +19,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Kruul")
 
 L:SetGeneralLocalization({
-	name	= "The Highlord's Return"
+	name	= "대군주의 귀환"
 })
 
 ------------------------
@@ -25,7 +28,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactHealer")
 
 L:SetGeneralLocalization({
-	name	= "End of the Risen Threat"
+	name	= "되살아난 위협의 끝"
 })
 
 ------------------------
@@ -34,7 +37,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactFelTotem")
 
 L:SetGeneralLocalization({
-	name	= "Feltotem's Fall"
+	name	= "지옥토템의 몰락"
 })
 
 ------------------------
@@ -43,11 +46,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactImpossibleFoe")
 
 L:SetGeneralLocalization({
-	name	= "An Impossible Foe"
+	name	= "말도 안 되게 강력한 적"
 })
 
 L:SetMiscLocalization({
-	impServants	= "Kill the Imp Servants before they energize Agatha!"
+	impServants	= "임프 하수인들이 아가타에게 힘을 불어넣기 전에 처치하세요!"
 })
 
 ------------------------
@@ -56,7 +59,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ArtifactQueen")
 
 L:SetGeneralLocalization({
-	name	= "The God-Queen's Fury"
+	name	= "여신왕의 분노"
 })
 
 ------------------------
@@ -65,7 +68,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactTwins")
 
 L:SetGeneralLocalization({
-	name	= "Thwarting the Twins"
+	name	= "쌍둥이의 싸움 막기"
 })
 
 ------------------------
@@ -74,7 +77,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactXylem")
 
 L:SetGeneralLocalization({
-	name	= "Closing the Eye"
+	name	= "눈동자가 어둠에 물들기 전에"
 })
 
 ------------------------
@@ -86,8 +89,3 @@ L:SetGeneralLocalization({
 -- N'Zoth Visions: Orgrimmar --
 ------------------------
 --L= DBM:GetModLocalization("d1995")
-
-------------------------
--- Torghast --
-------------------------
---L= DBM:GetModLocalization("d1963")

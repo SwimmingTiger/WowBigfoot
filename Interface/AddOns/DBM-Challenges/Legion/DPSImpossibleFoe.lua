@@ -1,11 +1,10 @@
-﻿local mod	= DBM:NewMod("ArtifactImpossibleFoe", "DBM-Challenges", 2)
+﻿local mod	= DBM:NewMod("ArtifactImpossibleFoe", "DBM-Challenges", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 84 $"):sub(12, -3))
+mod:SetRevision("20200912042916")
 mod:SetCreatureID(115638)
 mod:SetZone()--Healer (1710), Tank (1698), DPS (1703-The God-Queen's Fury), DPS (Fel Totem Fall)
 mod.soloChallenge = true
-mod.onlyNormal = true
 
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
@@ -22,12 +21,7 @@ local specWarnImpServants		= mod:NewSpecialWarningSwitch(235140, nil, nil, nil, 
 local specWarnDarkFury			= mod:NewSpecialWarningSwitch(243111, nil, nil, nil, 1, 7)
 
 local timerImpServantsCD		= mod:NewCDTimer(45, 235140, nil, nil, nil, 1)
-local timerDarkFuryCD			= mod:NewCDTimer(51.1, 243111, nil, nil, nil, 5)
-
-local countdownDarkFury			= mod:NewCountdown(10, 243111)
-
-local voiceImpServants			= mod:NewVoice(235140)--bigmob
-local voiceDarkFury				= mod:NewVoice(243111)--attackshield/shieldover
+local timerDarkFuryCD			= mod:NewCDTimer(51.1, 243111, nil, nil, nil, 5, nil, nil, nil, 1, 4)
 
 mod:AddInfoFrameOption(243113, true)
 
@@ -37,7 +31,6 @@ function mod:OnCombatStart(delay)
 	self.vb.phase = 1
 	timerImpServantsCD:Start(11-delay)--14 in one log, 11 in another
 	timerDarkFuryCD:Start(50-delay)
-	countdownDarkFury:Start(50-delay)
 end
 
 function mod:OnCombatEnd()
@@ -50,13 +43,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	local spellId = args.spellId
 	if spellId == 243113 then
 		specWarnDarkFury:Show()
-		voiceDarkFury:Play("attackshield")
+		specWarnDarkFury:Play("attackshield")
 		if self.vb.phase == 2 then
 			timerDarkFuryCD:Start(68)
-			countdownDarkFury:Start(68)
 		else
 			timerDarkFuryCD:Start()
-			countdownDarkFury:Start(51.1)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(args.spellName)
@@ -68,7 +59,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 243113 then
-		voiceDarkFury:Play("shieldover")
+		specWarnDarkFury:Play("shieldover")
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
@@ -81,8 +72,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 242987 then--Translocate
 		if self.vb.phase == 1 then
 			self.vb.phase = 2
@@ -94,7 +84,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find(L.impServants) or msg == L.impServants then
 		specWarnImpServants:Show()
-		voiceImpServants:Play("bigmob")
+		specWarnImpServants:Play("bigmob")
 		timerImpServantsCD:Start()
 	end
 end

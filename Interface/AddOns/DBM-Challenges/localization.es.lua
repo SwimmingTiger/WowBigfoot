@@ -1,13 +1,16 @@
+if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then
+	return
+end
 local L
 
 ------------------------
 -- White Tiger Temple --
 ------------------------
-L= DBM:GetModLocalization("d640")
+L = DBM:GetModLocalization("d640")
 
 L:SetMiscLocalization({
-	Endless			= "Endless",--Could not find a global for this one.
-	ReplyWhisper	= "<Deadly Boss Mods> %s is busy in Proving Grounds (Mode: %s Wave: %d)"
+	Endless			= "Interminable",
+	ReplyWhisper	= "<Deadly Boss Mods> %s está ocupado en el Terreno de Pruebas (%s, oleada %d)."
 })
 
 ------------------------
@@ -16,7 +19,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Kruul")
 
 L:SetGeneralLocalization({
-	name	= "The Highlord's Return"
+	name	= "El retorno del Alto Señor"
 })
 
 ------------------------
@@ -25,7 +28,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactHealer")
 
 L:SetGeneralLocalization({
-	name	= "End of the Risen Threat"
+	name	= "Fin a la amenaza resucitada"
 })
 
 ------------------------
@@ -34,7 +37,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactFelTotem")
 
 L:SetGeneralLocalization({
-	name	= "Feltotem's Fall"
+	name	= "La caída de los Tótem Vil"
 })
 
 ------------------------
@@ -43,11 +46,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactImpossibleFoe")
 
 L:SetGeneralLocalization({
-	name	= "An Impossible Foe"
+	name	= "Rival imposible"
 })
 
 L:SetMiscLocalization({
-	impServants	= "Kill the Imp Servants before they energize Agatha!"
+	impServants	= "¡Mata a los Sirvientes diablillo antes de que energicen a Agatha!"
 })
 
 ------------------------
@@ -56,7 +59,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ArtifactQueen")
 
 L:SetGeneralLocalization({
-	name	= "The God-Queen's Fury"
+	name	= "La furia de la Reina diosa"
 })
 
 ------------------------
@@ -65,7 +68,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactTwins")
 
 L:SetGeneralLocalization({
-	name	= "Thwarting the Twins"
+	name	= "Fiasco de los gemelos"
 })
 
 ------------------------
@@ -74,7 +77,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ArtifactXylem")
 
 L:SetGeneralLocalization({
-	name	= "Closing the Eye"
+	name	= "Cerrar el ojo"
 })
 
 ------------------------
@@ -86,8 +89,3 @@ L:SetGeneralLocalization({
 -- N'Zoth Visions: Orgrimmar --
 ------------------------
 --L= DBM:GetModLocalization("d1995")
-
-------------------------
--- Torghast --
-------------------------
---L= DBM:GetModLocalization("d1963")

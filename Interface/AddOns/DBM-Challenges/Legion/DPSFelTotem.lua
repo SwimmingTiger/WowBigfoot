@@ -1,12 +1,11 @@
-﻿local mod	= DBM:NewMod("ArtifactFelTotem", "DBM-Challenges", 2)
+﻿local mod	= DBM:NewMod("ArtifactFelTotem", "DBM-Challenges", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 87 $"):sub(12, -3))
+mod:SetRevision("20200912042916")
 mod:SetCreatureID(117230, 117484)--Tugar, Jormog
 mod:SetZone()--Healer (1710), Tank (1698), DPS (1703-The God-Queen's Fury), DPS (Fel Totem Fall)
 mod:SetBossHPInfoToHighest()
 mod.soloChallenge = true
-mod.onlyNormal = true
 
 mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
@@ -39,13 +38,6 @@ local timerFelSurgeCD		= mod:NewCDTimer(25, 242496, nil, nil, nil, 3)--25-33
 local timerFelRuptureCD		= mod:NewCDTimer(10.9, 241664, nil, nil, nil, 3)--10.9-13.4
 local timerFelBurstCD		= mod:NewCDCountTimer(10.9, 242733, nil, nil, nil, 3)--HIGHLY variable
 
---local countdownTimer		= mod:NewCountdownFades(10, 141582)
-
-local voiceSonicScream		= mod:NewVoice(241687)--stopcast
-local voiceEarthquake		= mod:NewVoice(237950)--aesoon
-local voiceCharge			= mod:NewVoice(100)--chargemove
-local voiceFelSurge			= mod:NewVoice(242496)--stunsoon
-
 --[[
 ["242733-Fel Burst"] = "pull:40.2, 23.1, 21.8, 20.7, 21.9, 18.2, 17.7, 19.2, 15.4, 15.8, 14.6, 23.1, 13.3, 12.1, 12.1, 24.3, 10.9, 12.1, 12.1, 19.4",
 ["242733-Fel Burst"] = "pull:19.0, 23.1, 21.9, 20.6, 20.7, 19.5, 18.2, 24.3, 15.8, 15.8, 14.6, 17.0, 13.4, 12.1",
@@ -70,10 +62,10 @@ function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 241687 then
 		specWarnSonicScream:Show()
-		voiceSonicScream:Play("stopcast")
+		specWarnSonicScream:Play("stopcast")
 	elseif spellId == 242496 then--Fel Surge
 		specWarnFelSurge:Show()
-		voiceFelSurge:Play("stunsoon")
+		specWarnFelSurge:Play("stunsoon")
 		timerFelSurgeCD:Start()
 	elseif spellId == 242733 then--Fel Burst (DPS)
 		felburstCount = felburstCount + 1
@@ -89,7 +81,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
 	if spellId == 237950 then
 		specWarnEarthquake:Show(args.sourceName)
-		voiceEarthquake:Play("aesoon")
+		specWarnEarthquake:Play("aesoon")
 		timerEarthquakeCD:Start()
 	elseif spellId == 242730 then
 		warnFelShock:Show()
@@ -117,8 +109,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, spellGUID)
-	local spellId = tonumber(select(5, strsplit("-", spellGUID)), 10)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 241664 then--Rupture
 		warnRupture:Show()
 		timerFelRuptureCD:Start()
@@ -129,6 +120,6 @@ end
 function mod:CHAT_MSG_MONSTER_EMOTE(msg)
 	if msg:find("Interface\\Icons\\spell_shaman_earthquake") then
 		specWarnCharge:Show()
-		voiceCharge:Play("charge")
+		specWarnCharge:Play("charge")
 	end
 end
