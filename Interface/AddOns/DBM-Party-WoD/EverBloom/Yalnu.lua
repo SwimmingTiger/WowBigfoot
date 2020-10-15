@@ -1,10 +1,11 @@
 local mod	= DBM:NewMod(1210, "DBM-Party-WoD", 5, 556)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 35 $"):sub(12, -3))
+mod.statTypes = "normal,heroic,mythic,challenge,timewalker"
+
+mod:SetRevision((string.sub("20200912135206", 1, -5)):sub(12, -3))
 mod:SetCreatureID(83846)
 mod:SetEncounterID(1756)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -22,8 +23,8 @@ local specWarnGenesis			= mod:NewSpecialWarningSpell(169613, nil, nil, nil, 1, 2
 
 --Only timers that were consistent, others are all over the place.
 local timerFontOfLife			= mod:NewNextTimer(15, 169120, nil, nil, nil, 1)
-local timerGenesis				= mod:NewCastTimer(17, 169613)
-local timerGenesisCD			= mod:NewNextTimer(60.5, 169613, nil, nil, nil, 5)
+local timerGenesis				= mod:NewCastTimer(17, 169613, nil, nil, nil, 5)
+local timerGenesisCD			= mod:NewNextTimer(60.5, 169613, nil, nil, nil, 6)
 
 function mod:OnCombatStart(delay)
 	--timerFontOfLife:Start(-delay)
@@ -37,9 +38,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnColossalBlow:Play("shockwave")
 	elseif spellId == 169613 then
 		specWarnGenesis:Show()
+		specWarnGenesis:Play("169613")
 		timerGenesis:Start()
 		timerGenesisCD:Start()
-		specWarnGenesis:Play("169613")
 	end
 end
 

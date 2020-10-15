@@ -1,7 +1,9 @@
 local mod	= DBM:NewMod(1139, "DBM-Party-WoD", 6, 537)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 24 $"):sub(12, -3))
+mod.statTypes = "normal,heroic,mythic,challenge,timewalker"
+
+mod:SetRevision("20200912133955")
 mod:SetCreatureID(75509)
 mod:SetEncounterID(1677)
 
@@ -18,14 +20,11 @@ local specWarnDarkCommunion		= mod:NewSpecialWarningSwitch(153153, nil, nil, 2, 
 local specWarnWhispers			= mod:NewSpecialWarningSpell(153094, nil, nil, nil, 2, 2)
 local specWarnDarkEclipse		= mod:NewSpecialWarningSpell(164974, nil, nil, nil, 3, 2)
 
-local timerDarkCommunionCD		= mod:NewCDTimer(60, 153153, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)
+local timerDarkCommunionCD		= mod:NewCDTimer(60, 153153, nil, nil, nil, 1, nil, DBM_CORE_L.DAMAGE_ICON)
 local timerDarkEclipseCD		= mod:NewNextTimer(45.5, 164974, nil, nil, nil, 6)--timer seems changed?
-
---local countdownDarkCommunion	= mod:NewCountdown(45.5, 153153)
 
 function mod:OnCombatStart(delay)
 	timerDarkCommunionCD:Start(24-delay)
-	--countdownDarkCommunion:Start(15-delay)
 	timerDarkEclipseCD:Start(-delay)
 end
 
@@ -35,13 +34,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDaggerFall:Show()
 	elseif spellId == 153153 then
 		specWarnDarkCommunion:Show()
-		timerDarkCommunionCD:Start()
-		--countdownDarkCommunion:Start()
 		specWarnDarkCommunion:Play("killmob")
+		timerDarkCommunionCD:Start()
 	elseif spellId == 164974 then
 		specWarnDarkEclipse:Show()
-		timerDarkEclipseCD:Start()
 		specWarnDarkEclipse:Play("164974")
+		timerDarkEclipseCD:Start()
 	end
 end
 

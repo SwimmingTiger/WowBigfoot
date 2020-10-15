@@ -1,9 +1,8 @@
 local mod	= DBM:NewMod("MawTrash", "DBM-Party-Legion", 8)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17522 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 --mod:SetEncounterID(1823)
-mod:SetZone()
 
 mod.isTrashMod = true
 

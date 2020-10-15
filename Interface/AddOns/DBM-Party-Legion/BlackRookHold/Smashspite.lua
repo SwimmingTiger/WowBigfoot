@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1664, "DBM-Party-Legion", 1, 740)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17473 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 mod:SetCreatureID(98949)
 mod:SetEncounterID(1834)
-mod:SetZone()
 mod:SetUsedIcons(1)
 
 mod:RegisterCombat("combat")
@@ -32,7 +31,7 @@ local timerStompCD					= mod:NewCDTimer(17, 198073, nil, nil, nil, 2)--Next time
 local timerHatefulGazeCD			= mod:NewCDTimer(25.5, 198079, nil, nil, nil, 3)--Next timers but delayed by other casts
 
 mod:AddInfoFrameOption(198080)
-mod:AddSetIconOption("SetIconOnHatefulGaze", 198079, true)
+mod:AddSetIconOption("SetIconOnHatefulGaze", 198079, true, false, {1})
 
 local superWarned = false
 

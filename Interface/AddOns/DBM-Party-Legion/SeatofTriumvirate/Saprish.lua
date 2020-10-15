@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1980, "DBM-Party-Legion", 13, 945)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 mod:SetCreatureID(124872)
 mod:SetEncounterID(2066)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -33,9 +32,7 @@ local timerVoidTrapCD					= mod:NewCDTimer(15.8, 246026, nil, nil, nil, 3)
 local timerOverloadTrapCD				= mod:NewCDTimer(20.6, 247206, nil, nil, nil, 3)
 local timerRavagingDarknessCD			= mod:NewCDTimer(8.8, 245802, nil, nil, nil, 3)
 local timerUmbralFlankingCD				= mod:NewCDTimer(35.2, 247245, nil, nil, nil, 3)
-local timerScreechCD					= mod:NewCDTimer(15.4, 248831, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON)
-
---local countdownBreath					= mod:NewCountdown(22, 227233)
+local timerScreechCD					= mod:NewCDTimer(15.4, 248831, nil, nil, nil, 3, nil, DBM_CORE_L.HEROIC_ICON)
 
 function mod:OnCombatStart(delay)
 	timerRavagingDarknessCD:Start(5.5-delay)
@@ -87,7 +84,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 247245 then
-		
+
 	end
 end
 

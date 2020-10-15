@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1657, "DBM-Party-Legion", 2, 762)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 mod:SetCreatureID(99192)
 mod:SetEncounterID(1839)
-mod:SetZone()
 mod:SetUsedIcons(2, 1)
 
 mod:RegisterCombat("combat")
@@ -30,12 +29,12 @@ local yellNightmare					= mod:NewYell(200243)
 local specWarnParanoia				= mod:NewSpecialWarningMoveAway(200289, nil, nil, nil, 1, 2)
 local yellParanoia					= mod:NewYell(200289)
 
-local timerFesteringRipCD			= mod:NewCDTimer(17, 200182, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--17-21
+local timerFesteringRipCD			= mod:NewCDTimer(17, 200182, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_L.MAGIC_ICON)--17-21
 local timerNightmareCD				= mod:NewCDTimer(17, 200243, nil, nil, nil, 3)--17-25
 local timerParanoiaCD				= mod:NewCDTimer(18, 200359, nil, nil, nil, 3)--18-28
 --local timerApocNightmareCD			= mod:NewCDTimer(18, 200050, nil, nil, nil, 2)
 
-mod:AddSetIconOption("SetIconOnNightmare", 200243)
+mod:AddSetIconOption("SetIconOnNightmare", 200243, true, false, {1, 2})
 
 mod.vb.nightmareIcon = 1
 
@@ -85,7 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellParanoia:Yell()
 		else
 			warnParanoia:Show(args.destName)
-		end		
+		end
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED

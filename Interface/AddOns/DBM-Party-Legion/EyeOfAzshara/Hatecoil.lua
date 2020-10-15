@@ -1,16 +1,15 @@
 local mod	= DBM:NewMod(1490, "DBM-Party-Legion", 3, 716)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17623 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 mod:SetCreatureID(91789)
 mod:SetEncounterID(1811)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 193698",
-	"SPELL_CAST_START 193682 193597 193611"
+	"SPELL_CAST_START 193682 193597"
 )
 
 --TODO, maybe add a "get back in boss area warning" if you take Crackling THunder damage
@@ -25,20 +24,17 @@ mod:RegisterEventsInCombat(
 --]]
 local warnCurseofWitch				= mod:NewTargetAnnounce(193698, 3)
 
-local specWarnStaticNova			= mod:NewSpecialWarning("specWarnStaticNova", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dodge:format(193597), nil, 3, 2)
-local specWarnFocusedLightning		= mod:NewSpecialWarning("specWarnFocusedLightning", nil, DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
+local specWarnStaticNova			= mod:NewSpecialWarning("specWarnStaticNova", nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.dodge:format(193597), nil, 3, 2)
+local specWarnFocusedLightning		= mod:NewSpecialWarning("specWarnFocusedLightning", nil, DBM_CORE_L.AUTO_SPEC_WARN_OPTIONS.soon:format(193611), nil, 1)
 local specWarnAdds					= mod:NewSpecialWarningSwitch(193682, "Tank", nil, nil, 1, 2)
 local yellCurseofWitch				= mod:NewShortFadesYell(193698)
 
 local timerAddsCD					= mod:NewCDTimer(47, 193682, nil, nil, nil, 1)--47-51
-local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerStaticNovaCD				= mod:NewCDTimer(34, 193597, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON, nil, 1, 4)
 local timerFocusedLightningCD		= mod:NewNextTimer(15.5, 193611, nil, nil, nil, 3)
-
-local countdownStaticNova			= mod:NewCountdown(34, 193597)
 
 function mod:OnCombatStart(delay)
 	timerStaticNovaCD:Start(10.5-delay)
-	countdownStaticNova:Start(10.5-delay)
 	timerAddsCD:Start(19-delay)
 end
 
@@ -47,11 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if spellId == 193698 then
 		warnCurseofWitch:CombinedShow(0.3, args.destName)
 		if args:IsPlayer() then
-			local _, _, _, _, _, expires = DBM:UnitDebuff("player", args.spellName)
-			local debuffTime = expires - GetTime()
-			yellCurseofWitch:Schedule(debuffTime-1, 1)
-			yellCurseofWitch:Schedule(debuffTime-2, 2)
-			yellCurseofWitch:Schedule(debuffTime-3, 3)
+			yellCurseofWitch:Countdown(spellId)
 		end
 	end
 end
@@ -66,9 +58,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnStaticNova:Show()
 		specWarnStaticNova:Play("findshelter")
 		timerFocusedLightningCD:Start()
-		countdownStaticNova:Start()
 		specWarnFocusedLightning:Schedule(10)--5 seconds before focused lightning cast
---	elseif spellId == 193611 then--Maybe not needed at all
-		
 	end
 end

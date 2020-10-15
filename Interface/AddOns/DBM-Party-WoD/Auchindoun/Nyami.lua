@@ -1,10 +1,11 @@
 local mod	= DBM:NewMod(1186, "DBM-Party-WoD", 1, 547)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 24 $"):sub(12, -3))
+mod.statTypes = "normal,heroic,mythic,challenge,timewalker"
+
+mod:SetRevision("20200912135206")
 mod:SetCreatureID(76177)
 mod:SetEncounterID(1685)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -21,7 +22,7 @@ local specWarnSoulVessel		= mod:NewSpecialWarningSpell(155327, nil, nil, nil, 2,
 local specWarnSoulVesselEnd		= mod:NewSpecialWarningEnd(155327, nil, nil, nil, 1, 2)
 local specWarnTornSpirits		= mod:NewSpecialWarningSwitch(153991, "-Healer", nil, nil, 1, 2)
 
-local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON)
+local timerSoulVessel			= mod:NewBuffActiveTimer(11.5, 155327, nil, nil, nil, 2, nil, DBM_CORE_L.DEADLY_ICON)
 local timerSoulVesselCD			= mod:NewCDTimer(51.5, 155327, nil, nil, nil, 6)
 local timerTornSpiritsCD		= mod:NewCDTimer(25.5, 153991, nil, nil, nil, 1)
 
@@ -45,7 +46,7 @@ function mod:SPELL_CAST_START(args)
 		timerTornSpiritsCD:Start()
 		timerSoulVesselCD:Start()
 		specWarnSoulVessel:Play("findshadow")
-		specWarnSoulVesselEnd:ScheduleVoice("safenow")
+		specWarnSoulVesselEnd:ScheduleVoice(11.5, "safenow")
 	elseif spellId == 153994 then
 		specWarnTornSpirits:Show()
 		specWarnTornSpirits:Play("mobsoon")

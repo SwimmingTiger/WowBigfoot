@@ -1,7 +1,9 @@
 local mod	= DBM:NewMod(1208, "DBM-Party-WoD", 5, 556)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 24 $"):sub(12, -3))
+mod.statTypes = "normal,heroic,mythic,challenge,timewalker"
+
+mod:SetRevision("20200912133955")
 mod:SetCreatureID(82682)
 mod:SetEncounterID(1751)--TODO: Verify, Label was "Boss 3"
 
@@ -18,11 +20,11 @@ mod:RegisterEventsInCombat(
 local warnFrostPhase			= mod:NewSpellAnnounce(166476, 2, nil, nil, nil, nil, nil, 2)
 local warnArcanePhase			= mod:NewSpellAnnounce(166477, 2, nil, nil, nil, nil, nil, 2)
 
-local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, "Tank")
+local specWarnParasiticGrowth	= mod:NewSpecialWarningCount(168885, "Tank")--No voice ideas for this
 --local specWarnFireBloom			= mod:NewSpecialWarningSpell(166492, nil, nil, nil, 2)
-local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726, nil, nil, nil, 1, 2)
+local specWarnFrozenRainMove	= mod:NewSpecialWarningMove(166726, nil, nil, nil, 1, 8)
 
-local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_TANK_ICON)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
+local timerParasiticGrowthCD	= mod:NewCDCountTimer(11.5, 168885, nil, "Tank|Healer", 2, 5, nil, DBM_CORE_L.TANK_ICON)--Every 12 seconds unless comes off cd during fireball/frostbolt, then cast immediately after.
 
 mod.vb.ParasiteCount = 0
 
@@ -48,7 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--specWarnFireBloom:Play("firecircle")
 	if spellId == 166726 and args:IsPlayer() and self:AntiSpam(2) then--Because dumb spell has no cast Id, we can only warn when people get debuff from standing in it.
 		specWarnFrozenRainMove:Show()
-		specWarnFrozenRainMove:Play("runaway")
+		specWarnFrozenRainMove:Play("watchfeet")
 	elseif spellId == 166476 then
 		warnFrostPhase:Show()
 		warnFrostPhase:Play("ptwo")

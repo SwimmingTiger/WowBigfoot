@@ -1,10 +1,9 @@
 local mod	= DBM:NewMod(1663, "DBM-Party-Legion", 8, 727)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod:SetRevision("20200806142123")
 mod:SetCreatureID(96759)
 mod:SetEncounterID(1824)
-mod:SetZone()
 
 mod:RegisterCombat("combat")
 
@@ -29,10 +28,8 @@ local timerTaintofSeaCD					= mod:NewCDTimer(12, 197262, nil, false, nil, 3)
 local timerPiercingTentacleCD			= mod:NewNextTimer(9, 197596, nil, nil, nil, 3)
 --local timerDestructorTentacleCD		= mod:NewCDTimer(26, "ej12364", nil, nil, nil, 1)--More data
 local timerSubmerged					= mod:NewBuffFadesTimer(15, 196947, nil, nil, nil, 6)
-local timerBreathCD						= mod:NewNextTimer(22, 227233, nil, nil, nil, 3)
-local timerTorrentCD					= mod:NewCDTimer(9.7, 198495, nil, nil, nil, 4, nil, DBM_CORE_INTERRUPT_ICON)--often delayed and after breath so often will see 12-14
-
-local countdownBreath					= mod:NewCountdown(22, 227233)
+local timerBreathCD						= mod:NewNextTimer(22, 227233, nil, nil, nil, 3, nil, nil, nil, 1, 4)
+local timerTorrentCD					= mod:NewCDTimer(9.7, 198495, nil, nil, nil, 4, nil, DBM_CORE_L.INTERRUPT_ICON)--often delayed and after breath so often will see 12-14
 
 mod.vb.phase = 1
 
@@ -47,12 +44,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnBreath:Show()
 		specWarnBreath:Play("breathsoon")
 		timerBreathCD:Start()
-		countdownBreath:Start()
 	elseif spellId == 202088 then
 		specWarnBrackwaterBarrage:Show()
 		specWarnBrackwaterBarrage:Play("breathsoon")
 		--timerBreathCD:Start()
-		--countdownBreath:Start()
 	elseif spellId == 198495 then
 		timerTorrentCD:Start()
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
@@ -69,7 +64,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTaintofSeaCD:Stop()
 		timerBreathCD:Stop()
 		timerTorrentCD:Stop()
-		countdownBreath:Cancel()
 		warnSubmerged:Show(args.destName)
 		timerSubmerged:Start()
 		if self.vb.phase == 1 then
@@ -86,7 +80,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTorrentCD:Start(5)
 		specWarnSubmergedOver:Show()
 		timerBreathCD:Start(15)
-		countdownBreath:Start(15)
 	end
 end
 

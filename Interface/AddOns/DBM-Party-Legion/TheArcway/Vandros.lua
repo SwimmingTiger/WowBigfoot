@@ -1,12 +1,11 @@
 local mod	= DBM:NewMod(1501, "DBM-Party-Legion", 6, 726)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod.statTypes = "heroic,mythic,challenge"
+
+mod:SetRevision("20200912135206")
 mod:SetCreatureID(98208)
 mod:SetEncounterID(1829)
-mod:SetZone()
-
-mod.noNormal = true
 
 mod:RegisterCombat("combat")
 
@@ -32,9 +31,7 @@ local specWarnTimeLock				= mod:NewSpecialWarningInterrupt(203957, "HasInterrupt
 local specWarnUnstableMana			= mod:NewSpecialWarningMove(203176, nil, nil, nil, 1, 2)
 
 local timerForceBombD				= mod:NewCDTimer(31.8, 202974, nil, nil, nil, 2)
-local timerEvent					= mod:NewBuffFadesTimer(124, 203914, nil, nil, nil, 6)
-
-local countdownEvent				= mod:NewCountdownFades(124, 203914, nil, nil, 10)
+local timerEvent					= mod:NewBuffFadesTimer(124, 203914, nil, nil, nil, 6, nil, nil, nil, 1, 10)
 
 mod.vb.interruptCount = 0
 
@@ -83,7 +80,6 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 203882 then
 		timerForceBombD:Cancel()
 		timerEvent:Start()
-		countdownEvent:Start()
 	elseif spellId == 203176 then
 		if self.vb.interruptCount == 3 then self.vb.interruptCount = 0 end
 		self.vb.interruptCount = self.vb.interruptCount + 1
@@ -115,7 +111,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
 	if spellId == 147995 then--Interrupt Channeling
 		self.vb.interruptCount = 0
 		timerEvent:Cancel()
-		countdownEvent:Cancel()
 		timerForceBombD:Start(20)--20-23
 	end
 end

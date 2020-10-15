@@ -1,15 +1,14 @@
 local mod	= DBM:NewMod(1835, "DBM-Party-Legion", 11, 860)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 17603 $"):sub(12, -3))
+mod.statTypes = "heroic,mythic,challenge"
+
+mod:SetRevision("20200912135206")
 mod:SetCreatureID(114262, 114264)--114264 midnight
 mod:SetEncounterID(1960)--Verify
-mod:SetZone()
 mod:SetUsedIcons(1)
 --mod:SetHotfixNoticeRev(14922)
 --mod.respawnTime = 30
-
-mod.noNormal = true
 
 mod:RegisterCombat("combat")
 
@@ -28,13 +27,11 @@ local specWarnMortalStrike			= mod:NewSpecialWarningDefensive(227493, "Tank", ni
 local specWarnSharedSuffering		= mod:NewSpecialWarningMoveTo(228852, nil, nil, nil, 3, 2)
 local yellSharedSuffering			= mod:NewYell(228852)
 
-local timerPresenceCD				= mod:NewAITimer(11, 227404, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--FIXME, one day
-local timerMortalStrikeCD			= mod:NewNextTimer(11, 227493, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
-local timerSharedSufferingCD		= mod:NewNextTimer(19, 228852, nil, nil, nil, 3)
+local timerPresenceCD				= mod:NewAITimer(11, 227404, nil, "Healer", nil, 5, nil, DBM_CORE_L.HEALER_ICON)--FIXME, one day
+local timerMortalStrikeCD			= mod:NewNextTimer(11, 227493, nil, "Tank", nil, 5, nil, DBM_CORE_L.TANK_ICON)
+local timerSharedSufferingCD		= mod:NewNextTimer(19, 228852, nil, nil, nil, 3, nil, nil, nil, 1, 4)
 
-local countdownSharedSuffering		= mod:NewCountdown(19, 228852)
-
-mod:AddSetIconOption("SetIconOnSharedSuffering", 228852, true)
+mod:AddSetIconOption("SetIconOnSharedSuffering", 228852, true, false, {1})
 
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
@@ -80,11 +77,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, bfaSpellId, _, legacySpellId)
 		timerPresenceCD:Stop()
 		timerMortalStrikeCD:Start()
 		timerSharedSufferingCD:Start()
-		countdownSharedSuffering:Start()
 	elseif spellId == 227584 or spellId == 227601 then--Mounted or Intermission
 		timerMortalStrikeCD:Stop()
 		timerSharedSufferingCD:Stop()
-		countdownSharedSuffering:Cancel()
 		timerPresenceCD:Start(2)
 	elseif spellId == 227404 then--Intangible Presence
 		timerPresenceCD:Start()
