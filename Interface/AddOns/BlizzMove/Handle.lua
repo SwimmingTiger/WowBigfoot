@@ -30,9 +30,9 @@ function BlizzMove:InformUser(action)
 		BlizzMoveInformDB[action] = true
 
 		if action == "move" then
-			print(printPrefix .. "Has just moved a frame. SHIFT+Click to reset the position.")
+			print(printPrefix .. "窗体已移动，按住 SHIFT 再点击标题栏可重置。")
 		else
-			print(printPrefix .. "Has just resized a frame. CTRL+Click to reset the scale.")
+			print(printPrefix .. "窗体已缩放，按住 CTRL 再点击标题栏可重置。")
 		end
 	end
 end
