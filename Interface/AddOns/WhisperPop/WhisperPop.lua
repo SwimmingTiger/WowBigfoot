@@ -80,7 +80,7 @@ function WhisperPop:CreatePlayerButton(button, name, parent)
 	return button
 end
 
-function WhisperPop:OnNewMessage(name, text, inform, guid)
+function WhisperPop:OnNewMessage(inform)
 	if not inform and self.db.sound then
 		PlaySoundFile("Interface\\AddOns\\WhisperPop\\Notify.mp3") -- Got new message!
 	end
@@ -94,6 +94,7 @@ function WhisperPop:GetNewName(id)
 	return self.newNames[id or 1]
 end
 
+local info
 function WhisperPop:OnListUpdate()
 	wipe(self.newNames)
 	for i = 1, self.list:GetDataCount() do
@@ -101,7 +102,8 @@ function WhisperPop:OnListUpdate()
 		if data.state == "new" then
 			local name;
 			if data.BNguid and data.BNguid > 0 then
-				name = select(2,BNGetFriendInfoByID(data.BNguid));
+				info = C_BattleNet.GetAccountInfoByID(data.BNguid)
+				name = info.accountName
 			else
 				name = data.name;
 			end

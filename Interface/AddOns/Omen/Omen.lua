@@ -87,6 +87,8 @@ local defaults = {
 		Locked       = false,
 		PositionW    = 200,
 		PositionH    = 82,
+        PositionX    = GetScreenWidth()/2 + 200,
+        PositionY    = GetScreenHeight()/2 - 150,
 		VGrip1       = 85,
 		VGrip2       = 115,
 		UseFocus     = false,
@@ -159,7 +161,8 @@ local defaults = {
 			Raid = true,
 			-- Deprecated SV values
 			-- Resting = false, PVP = false, Dungeon = true, ShowOnlyInCombat = false,
-			HideWhileResting = true,
+--terry@bf change default here
+			HideWhileResting = false,
 			HideInPVP = true,
 			HideWhenOOC = false,
 		},

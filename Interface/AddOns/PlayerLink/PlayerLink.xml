@@ -16,7 +16,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				if (self.onshow) then
 					self.onshow(self.arg1, self.arg2);
 				end
-
 				if (self.macro) then
 					self:SetAttribute("macrotext", format(self.macro, self.arg1));
 				end
@@ -35,7 +34,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<OnEnter>
 				getglobal(self:GetName().."Highlight"):Show();
 				if ( self.tooltipTitle ) then
-					GameTooltip_AddNewbieTip(self, self.tooltipTitle, 1.0, 1.0, 1.0, self.tooltipText, 1);
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip_SetTitle(GameTooltip, self.tooltipTitle);
 				end
 				PlayerLink_StopCount();
 			</OnEnter>
@@ -54,19 +54,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	<Button name="PlayerLinkList" hidden="true" frameStrata="FULLSCREEN_DIALOG" topLevel="true" enableMouse="true" parent="UIParent">
 		<Frames>
 			<Frame name="$parentMenuBackdrop" setAllPoints="true" inherits="BackdropTemplate">
-				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="16"/>
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="16"/>
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
-				</Backdrop>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+				</KeyValues>
 				<Scripts>
-					<OnLoad>
+					<OnLoad inherit="prepend">
 						self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r, 	TOOLTIP_DEFAULT_COLOR.g, TOOLTIP_DEFAULT_COLOR.b);
 						self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
 					</OnLoad>

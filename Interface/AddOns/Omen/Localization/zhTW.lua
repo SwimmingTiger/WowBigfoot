@@ -54,8 +54,7 @@ L["Controls the scaling of the main Omen window."] = "控制 Omen 主視窗的�
 L["Controls the transparency of the main Omen window."] = "控制 Omen 主視窗的透明度."
 L["Controls whether the main Omen window can be dragged offscreen"] = "控制 Omen 主要視窗是否可以被拖動到螢幕外."
 L["DEATHKNIGHT"] = "死亡騎士"
---[[Translation missing --]]
---[[ L["DEMONHUNTER"] = "Demon Hunter"--]] 
+L["DEMONHUNTER"] = "惡魔獵手"
 L["Disable while tanking"] = "當為坦克時關閉警報"
 L["DISABLE_WHILE_TANKING_DESC"] = "如果在防禦姿態，熊形態，正義之怒與血魄領域啟用時，不顯示警報。"
 L["Display large numbers in Ks"] = "大數字時用千位(K)顯示"
@@ -190,8 +189,7 @@ L["Right-click|r to open the options menu"] = "右鍵|r打開選項選單"
 L["ROGUE"] = "盜賊"
 L["Scale"] = "縮放"
 L["Sets how far inside the frame the threat bars will display from the 4 borders of the frame"] = "威脅棒條顯示的內框與外框之間距離"
---[[Translation missing --]]
---[[ L["SFX"] = "SFX"--]] 
+L["SFX"] = "SFX"
 L["SHAMAN"] = "薩滿"
 L["Short Numbers"] = "簡化數字"
 L["Show a bar for the amount of threat you will need to reach in order to pull aggro."] = "顯示獲得仇恨所需威脅數值的棒條."

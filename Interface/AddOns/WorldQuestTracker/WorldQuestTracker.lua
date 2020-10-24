@@ -907,30 +907,30 @@ function WorldQuestTracker.ShowTutorialAlert()
 			return
 		end
 		
-		if (GetExpansionLevel() == 6 or UnitLevel ("player") == 110) then --legion
-			WorldMapFrame:SetMapID (WorldQuestTracker.MapData.ZoneIDs.BROKENISLES)
-		elseif (GetExpansionLevel() == 7 or UnitLevel ("player") == 120) then --bfa
-			WorldMapFrame:SetMapID (WorldQuestTracker.MapData.ZoneIDs.KULTIRAS)
-		end
+		-- if (GetExpansionLevel() == 6 or UnitLevel ("player") == 110) then --legion
+			-- WorldMapFrame:SetMapID (WorldQuestTracker.MapData.ZoneIDs.BROKENISLES)
+		-- elseif (GetExpansionLevel() == 7 or UnitLevel ("player") == 120) then --bfa
+			-- WorldMapFrame:SetMapID (WorldQuestTracker.MapData.ZoneIDs.KULTIRAS)
+		-- end
 		
 		WorldQuestTracker.UpdateWorldQuestsOnWorldMap (true)
 		
-		C_Timer.After (4, tutorial_one)
+		--C_Timer.After (4, tutorial_one)
 		return
 		
 	elseif (WorldQuestTracker.db.profile.TutorialPopupID == 2) then
 	
-		C_Timer.After (.5, tutorial_two)
+		--C_Timer.After (.5, tutorial_two)
 		return
 
 	elseif (WorldQuestTracker.db.profile.TutorialPopupID == 3) then
 	
-		C_Timer.After (.5, tutorial_three)
+		--C_Timer.After (.5, tutorial_three)
 		return
 		
 	elseif (WorldQuestTracker.db.profile.TutorialPopupID == 4) then
 	
-		C_Timer.After (.5, tutorial_four)
+		--C_Timer.After (.5, tutorial_four)
 		return
 		
 	end

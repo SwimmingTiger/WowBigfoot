@@ -366,32 +366,26 @@ function TI_CompleteQuest()
 		CompleteQuest();
 		TI_ResetPointers();
 	elseif GetNumGossipOptions()>0 then
-	
+
 		DeclineQuest();
 	end
 end
 
 function TI_HandleGossipWindow(gorq)
-	local SAcQ;
-	local SAvQ;
+	local SAcQ = C_GossipInfo.SelectActiveQuest;
+	local SAvQ = C_GossipInfo.SelectAvailableQuest;
 	local AvailableQuests;
 	local ActiveQuests;
 	local GossipOptions;
 	if(gorq == "g") then
-		AvailableQuests = TI_TabulateGossipAvailableQuests(GetGossipAvailableQuests());
-		ActiveQuests = TI_TabulateGossipActiveQuests(GetGossipActiveQuests());
-		GossipOptions = TI_TabulateGossipOptions(GetGossipOptions());
-		SAcQ = SelectGossipActiveQuest;
-		SAvQ = SelectGossipAvailableQuest;
+		AvailableQuests = TI_TabulateGossipAvailableQuests(C_GossipInfo.GetAvailableQuests());
+		ActiveQuests = TI_TabulateGossipActiveQuests(C_GossipInfo.GetActiveQuests());
+		GossipOptions = C_GossipInfo.GetOptions();
 	elseif(gorq == "q") then
 		AvailableQuests = TI_GetQuests("Available");
 		ActiveQuests = TI_GetQuests("Active");
 		GossipOptions = {};
-		SAcQ=SelectActiveQuest;
-		SAvQ=SelectAvailableQuest;
 	end
-
-
 
 	local ListEntry = {};
 	for i,v in ipairs(AvailableQuests) do
@@ -583,18 +577,6 @@ function TI_DeleteNPC(index)
 	local name = TI_NPCIndex[index];
 	table.remove(TI_NPCIndex, index);
 	TI_NPCDB[name] = nil;
-end
-
-function TI_TabulateGossipOptions(...)
-	local x = {};
-	local arg = {...};
-	for i=1, #arg, 2 do
-		local temp = {};
-		temp.name = arg[i];
-		temp.type = arg[i+1];
-		table.insert(x, temp);
-	end
-	return x;
 end
 
 function TI_TabulateGossipAvailableQuests(...)

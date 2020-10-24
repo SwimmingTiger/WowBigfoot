@@ -199,9 +199,11 @@ function list:OnButtonCreated(button)
 	button.nameText:SetPoint("RIGHT", del, "LEFT")
 end
 
+local info
 function list:OnButtonUpdate(button, data)
 	if data.BNguid and data.BNguid > 0 then
-		button.name = select(2,BNGetFriendInfoByID(data.BNguid))
+		info = C_BattleNet.GetAccountInfoByID(data.BNguid)
+		button.name = info.accountName
 	else
 		button.name = data.name
 	end
@@ -218,7 +220,8 @@ end
 function list:OnButtonEnter(button, data)
 	local name;
 	if data.BNguid and data.BNguid > 0 then
-		name = select(2,BNGetFriendInfoByID(data.BNguid));
+		info = C_BattleNet.GetAccountInfoByID(data.BNguid)
+		name = info.accountName
 	else
 		name = data.name;
 	end
@@ -259,7 +262,8 @@ end
 function list:OnButtonClick(button, data, flag)
 	local name,presenceID;
 	if data.BNguid and data.BNguid > 0 then
-		name = select(2,BNGetFriendInfoByID(data.BNguid));
+		info = C_BattleNet.GetAccountInfoByID(data.BNguid)
+		name = info.accountName
 	else
 		name = data.name;
 		presenceID = BNet_GetBNetIDAccount(data.name)
@@ -281,7 +285,7 @@ function list:OnButtonClick(button, data, flag)
 			if data.bnFriend then
 				FriendsFrame_BattlenetInvite(nil, data.BNguid);
 			else
-				InviteUnit(name)
+				 C_PartyInfo.InviteUnit(name)
 			end
 		else
 			if data.bnFriend then
@@ -295,7 +299,7 @@ function list:OnButtonClick(button, data, flag)
 end
 
 list:SetScript("OnEvent", function (self, event, text, name, _, _, _, status, _, _, _, _, _, guid, BNguid)
-	if type(text) ~= "string" or type(name) ~= "string" or (BNguid == 0 and (type(guid) ~= "string")) or WhisperPop:IsIgnoredMessage(text) or status == "DEV" or IsIgnored(name) then
+	if type(text) ~= "string" or type(name) ~= "string" or (BNguid == 0 and (type(guid) ~= "string")) or WhisperPop:IsIgnoredMessage(text) or status == "DEV" or C_FriendList.IsIgnored(name) then
 		return
 	end
 	name = Ambiguate(name, "none")
@@ -310,6 +314,7 @@ list:SetScript("OnEvent", function (self, event, text, name, _, _, _, status, _,
 	local findData = BNguid > 0 and BNguid or name
 	local idx = list:FindData(findData, CompareData)
 	local data = list:GetData(idx)
+
 	if data then
 		if idx ~= 1 then
 			list:ShiftData(idx, 1)
@@ -318,7 +323,7 @@ list:SetScript("OnEvent", function (self, event, text, name, _, _, _, status, _,
 			WhisperPop.messageFrame:UpdateHeight()
 		end
 	else
-		data = { name = name, class = class, messages = {}, bnFriend = bnFriend } -- Person not in list, create a new record for him
+		data = { name = name, messages = {}, bnFriend = bnFriend } -- Person not in list, create a new record for him
 		if bnFriend then
 			data.class = "BN"
 			data.BNguid = BNguid
@@ -344,7 +349,7 @@ list:SetScript("OnEvent", function (self, event, text, name, _, _, _, status, _,
 	end
 
 	list:UpdateData(1)
-	WhisperPop:OnNewMessage(name, text, inform, guid, bnFriend)
+	WhisperPop:OnNewMessage(inform)
 	WhisperPop:OnListUpdate()
 end)
 

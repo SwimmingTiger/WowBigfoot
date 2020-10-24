@@ -1,4 +1,8 @@
 
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
+
 local _, sm = ...
 sm.borders = {}
 
@@ -846,7 +850,7 @@ function mod:OnInitialize(profile)
 		}
 	end
 	self.db = profile.borders
-	if (self.db.borderName == nil) then
+	if not self.db.borderName then
 		self.db.borderName = "Blue Rune Circles"
 	end
 

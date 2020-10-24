@@ -18,17 +18,9 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="16"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+        </KeyValues>
 		<Scripts>
 			<OnLoad>
 				self:SetBackdropBorderColor(0.4, 0.4, 0.4);
@@ -334,7 +326,7 @@
 	</Frame>
 
 	<!-- -->
-	<Frame Name="TI_TempNPCListWindow" parent="UIParent" frameStrata="DIALOG" toplevel="true" enableMouse="true" movable="true" hidden="true">
+	<Frame Name="TI_TempNPCListWindow" parent="UIParent" frameStrata="DIALOG" toplevel="true" enableMouse="true" movable="true" hidden="true" inherits="BackdropTemplate">
 		<Size>
 			<AbsDimension x="200" y="130" />
 		</Size>
@@ -404,17 +396,9 @@
 				</Anchors>
 			</Frame>
 		</Frames>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="16"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_TOOLTIP_16_16_5555" type="global"/>
+        </KeyValues>
 		<Scripts>
 			<OnMouseUp>
 				if ( self.isMoving ) then
@@ -439,7 +423,7 @@
 	<!-- -->
 
 	<!-- 设置界面 -->
-	<Frame Name="TI_OptionsFrame" frameStrata="DIALOG" toplevel="true" enableMouse="true" enableMouseWheel="true" movable="true" parent="UIParent" hidden="true">
+	<Frame Name="TI_OptionsFrame" frameStrata="DIALOG" toplevel="true" enableMouse="true" enableMouseWheel="true" movable="true" parent="UIParent" hidden="true" inherits="TI_OptionFrameBoxTemplate">
 		<TitleRegion>
 			<Size>
 				<AbsDimension x="128" y="64"/>
@@ -452,24 +436,9 @@
 				</Anchor>
 			</Anchors>
 		 </TitleRegion>
-
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32"/>
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-		</Backdrop>
-
-		<Scripts>
-			<OnShow>
-
-			</OnShow>
-		</Scripts>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
+        </KeyValues>
 		<Size>
 			<AbsDimension x="300" y="500"/>
 		</Size>
@@ -502,7 +471,6 @@
 
 			</Layer>
 		</Layers>
-
 		<Frames>
 			<Button name="$parent_Close" inherits="UIPanelCloseButton">
 				<Anchors>
@@ -661,7 +629,6 @@
 			<Frame name="TI_OptionsPriorityContainer" inherits="TI_OptionFrameBoxTemplate">
 				<Scripts>
 					<OnLoad>
-						Mixin(self, BackdropTemplateMixin)
 						self:SetBackdropBorderColor(0.4, 0.4, 0.4);
 						self:SetBackdropColor(0.15, 0.15, 0.15);
 						getglobal(self:GetName().."Title"):SetText("优先列表");
@@ -869,7 +836,6 @@
 			<Frame name="TI_OptionsNPCContainer" inherits="TI_OptionFrameBoxTemplate">
 				<Scripts>
 					<OnLoad>
-						Mixin(self, BackdropTemplateMixin)
 						self:SetBackdropBorderColor(0.4, 0.4, 0.4);
 						self:SetBackdropColor(0.15, 0.15, 0.15);
 						getglobal(self:GetName().."Title"):SetText("NPC 数据");
@@ -886,7 +852,6 @@
 					<AbsDimension x="264" y="176" />
 				</Size>
 				<Frames>
-
 					<ScrollFrame name="TI_NPCListScrollFrame" inherits="FauxScrollFrameTemplate" hidden="false" enableMouseWheel="true">
 						<Anchors>
 							<Anchor point="TOPLEFT">

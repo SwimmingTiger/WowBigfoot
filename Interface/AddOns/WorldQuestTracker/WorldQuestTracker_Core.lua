@@ -4275,7 +4275,7 @@ WorldQuestTracker.OnToggleWorldMap = function (self)
 			
 			--> options on the interface menu
 			WorldQuestTracker.OptionsInterfaceMenu = CreateFrame ("frame", "WorldQuestTrackerInterfaceOptionsPanel", UIParent, "BackdropTemplate")
-			WorldQuestTracker.OptionsInterfaceMenu.name = "World Quest Tracker"
+			WorldQuestTracker.OptionsInterfaceMenu.name = L["World Quest Tracker"]
 			InterfaceOptions_AddCategory (WorldQuestTracker.OptionsInterfaceMenu)
 			
 			WorldQuestTracker.OptionsInterfaceMenu.options_button = CreateFrame ("button", nil, WorldQuestTracker.OptionsInterfaceMenu, "OptionsButtonTemplate")

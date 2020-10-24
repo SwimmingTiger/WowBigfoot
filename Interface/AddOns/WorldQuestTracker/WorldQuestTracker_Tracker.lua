@@ -315,7 +315,7 @@ end
 
 --cria o header
 local WorldQuestTrackerHeader = CreateFrame ("frame", "WorldQuestTrackerQuestsHeader", WorldQuestTrackerFrame, "ObjectiveTrackerHeaderTemplate") -- "ObjectiveTrackerHeaderTemplate"
-WorldQuestTrackerHeader.Text:SetText ("World Quest Tracker")
+WorldQuestTrackerHeader.Text:SetText (L["World Quest Tracker"])
 local minimizeButton = CreateFrame ("button", "WorldQuestTrackerQuestsHeaderMinimizeButton", WorldQuestTrackerFrame, "BackdropTemplate")
 local minimizeButtonText = minimizeButton:CreateFontString (nil, "overlay", "GameFontNormal")
 minimizeButtonText:SetText (L["S_WORLDQUESTS"])
@@ -340,7 +340,7 @@ minimizeButton:SetScript ("OnClick", function()
 		WorldQuestTrackerFrame_QuestHolder:Hide()
 		WorldQuestTrackerHeader:Hide()
 		minimizeButtonText:Show()
-		minimizeButtonText:SetText ("World Quest Tracker")
+		minimizeButtonText:SetText (L["World Quest Tracker"])
 	end
 end)
 minimizeButton:SetNormalTexture ([[Interface\Buttons\UI-Panel-QuestHideButton]])
@@ -486,8 +486,9 @@ local buildTooltip = function (self)
 	end
 
 	local title, factionID, capped = C_TaskQuest.GetQuestInfoByQuestID (questID)
+	local tagInfo = C_QuestLog.GetQuestTagInfo(questID)
+	local rarity = tagInfo.rarity --não existe mais?
 
-	local tagID, tagName, worldQuestType, rarity, isElite, tradeskillLineIndex = C_QuestLog.GetQuestTagInfo (questID)
 	local color = WORLD_QUEST_QUALITY_COLORS [rarity]
 	GameTooltip:SetText (title, color.r, color.g, color.b)
 

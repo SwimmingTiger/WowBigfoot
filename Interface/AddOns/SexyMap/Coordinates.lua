@@ -1,4 +1,8 @@
 
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
+
 local _, sm = ...
 sm.coordinates = {}
 
@@ -14,7 +18,7 @@ local options = {
 	childGroups = "tab",
 	disabled = function() return not mod.db.enabled end,
 	args = {
-		enable = {
+		enabled = {
 			type = "toggle",
 			name = L["Enable Coordinates"],
 			order = 1,
@@ -38,8 +42,10 @@ local options = {
 			type = "range",
 			name = L["Horizontal Position"],
 			order = 2,
-			min = -250,
-			max = 250,
+			max = 2000,
+			softMax = 250,
+			min = -2000,
+			softMin = -250,
 			step = 1,
 			bigStep = 5,
 			get = function() return mod.db.xOffset end,
@@ -49,8 +55,10 @@ local options = {
 			type = "range",
 			name = L["Vertical Position"],
 			order = 3,
-			min = -250,
-			max = 250,
+			max = 2000,
+			softMax = 250,
+			min = -2000,
+			softMin = -250,
 			step = 1,
 			bigStep = 5,
 			get = function() return mod.db.yOffset end,
@@ -164,6 +172,31 @@ local options = {
 				mod.db.updateRate = v
 			end
 		},
+		coordPrecision = {
+			type = "multiselect",
+			name = L.Precision,
+			order = 12,
+			values = {"70,70", "70.1, 70.1", "70.11, 70.11"},
+			get = function(info, v)
+				if v == 1 and mod.db.coordPrecision == "%d,%d" then
+					return true
+				elseif v == 2 and mod.db.coordPrecision == "%.1f, %.1f" then
+					return true
+				elseif v == 3 and mod.db.coordPrecision == "%.2f, %.2f" then
+					return true
+				end
+			end,
+			set = function(info, v)
+				if v == 1 then
+					mod.db.coordPrecision = "%d,%d"
+				elseif v == 2 then
+					mod.db.coordPrecision = "%.1f, %.1f"
+				elseif v == 3 then
+					mod.db.coordPrecision = "%.2f, %.2f"
+				end
+				mod:Update()
+			end,
+		}
 	}
 }
 
@@ -173,7 +206,8 @@ function mod:OnInitialize(profile)
 			borderColor = {},
 			backgroundColor = {},
 			fontColor = {},
-			enabled = false,
+			enabled = true,
+			coordPrecision = "%d,%d",
 			updateRate = 1,
 			xOffset = 0,
 			yOffset = 10,
@@ -181,10 +215,6 @@ function mod:OnInitialize(profile)
 		}
 	end
 	self.db = profile.coordinates
-	-- XXX temp 7.3.5
-	if not profile.coordinates.updateRate then
-		profile.coordinates.updateRate = 1
-	end
 	-- XXX temp 8.0.1
 	if not profile.coordinates.xOffset then
 		profile.coordinates.xOffset = 0
@@ -195,6 +225,11 @@ function mod:OnInitialize(profile)
 	end
 	if not profile.coordinates.font then
 		profile.coordinates.font = media:GetDefault("font")
+	end
+	-- XXX temp 9.0.1
+	if not profile.coordinates.coordPrecision then
+		profile.coordinates.enabled = true
+		profile.coordinates.coordPrecision = "%d,%d"
 	end
 end
 
@@ -213,22 +248,27 @@ function mod:CreateFrame()
 		coordsText = coordFrame:CreateFontString(nil, nil, "GameFontNormalSmall")
 		coordsText:SetPoint("CENTER", coordFrame, "CENTER")
 		coordsText:SetJustifyH("CENTER")
-		coordsText:SetText("0.0, 0.0")
+		coordsText:SetText("0,0")
 		coordFrame:SetClampedToScreen(true)
+		coordFrame:SetClampRectInsets(4,-4,-4,4) -- Allow kissing the edge of the screen when hiding the backdrop border (size 4)
 
 		local GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 		local GetBestMapForUnit = C_Map.GetBestMapForUnit
 		local CTimerAfter = C_Timer.After
 		local function updateCoords()
-			CTimerAfter(mod.db.updateRate, updateCoords)
 			local uiMapID = GetBestMapForUnit"player"
 			if uiMapID then
 				local tbl = GetPlayerMapPosition(uiMapID, "player")
 				if tbl then
-					coordsText:SetFormattedText("%.1f, %.1f", tbl.x*100, tbl.y*100)
+					CTimerAfter(mod.db.updateRate, updateCoords)
+					coordsText:SetFormattedText(mod.db.coordPrecision, tbl.x*100, tbl.y*100)
 				else
-					coordsText:SetText("0.0, 0.0")
+					CTimerAfter(5, updateCoords)
+					coordsText:SetText("0,0")
 				end
+			else
+				CTimerAfter(5, updateCoords)
+				coordsText:SetText("0,0")
 			end
 		end
 		updateCoords()
@@ -259,7 +299,13 @@ function mod:Update()
 	local _, b, c = coordsText:GetFont()
 	coordsText:SetFont(media:Fetch("font", mod.db.font), mod.db.fontSize or b, c)
 
-	coordsText:SetText("99.9, 99.9")
+	if mod.db.coordPrecision == "%.2f, %.2f" then
+		coordsText:SetText("99.99, 99.99")
+	elseif mod.db.coordPrecision == "%.1f, %.1f" then
+		coordsText:SetText("99.9, 99.9")
+	else
+		coordsText:SetText("99, 99")
+	end
 	coordFrame:SetWidth(coordsText:GetStringWidth() * 1.2)
 	coordFrame:SetHeight(coordsText:GetStringHeight() + 10)
 end

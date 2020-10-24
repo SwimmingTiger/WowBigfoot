@@ -29,11 +29,6 @@
 		<Size>
 			<AbsDimension x="10" y="120"/>
 		</Size>
-		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="5"/>
-			</EdgeSize>
-		</Backdrop>
 		<Animations>
 			<AnimationGroup parentKey="alphaOut">
 				<Alpha targetKey="$parent" change="-0.7" duration="2" order="1" startDelay="0"/>

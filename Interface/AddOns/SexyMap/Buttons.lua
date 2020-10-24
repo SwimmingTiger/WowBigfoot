@@ -1,4 +1,8 @@
 
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
+
 local _, sm = ...
 sm.buttons = {}
 
@@ -12,7 +16,7 @@ local animFrames = {}
 local blizzButtons = {
 	GameTimeFrame = L["Calendar"],
 	MiniMapTracking = L["Tracking Button"],
-	MinimapZoneTextButton = L["Zone Text"],
+	SexyMapZoneTextButton = L["Zone Text"],
 	MinimapZoomIn = L["Zoom In Button"],
 	MinimapZoomOut = L["Zoom Out Button"],
 	MiniMapWorldMapButton = L["Map Button"],
@@ -180,7 +184,7 @@ function mod:OnInitialize(profile)
 				MinimapZoomIn = "never",
 				MinimapZoomOut = "never",
 				MiniMapWorldMapButton = "never",
-				MinimapZoneTextButton = "always",
+				SexyMapZoneTextButton = "always",
 				TimeManagerClockButton = "always",
 				MiniMapMailFrame = "always",
 				QueueStatusMinimapButton = "always",
@@ -194,6 +198,11 @@ function mod:OnInitialize(profile)
 	end
 
 	self.db = profile.buttons
+	-- XXX temp 9.0.1
+	if not profile.buttons.visibilitySettings.SexyMapZoneTextButton then
+		profile.buttons.visibilitySettings.SexyMapZoneTextButton = "always"
+		profile.buttons.visibilitySettings.MinimapZoneTextButton = nil
+	end
 end
 
 function mod:OnEnable()
@@ -226,11 +235,14 @@ function mod:OnEnable()
 	highlight:SetPoint("TOPLEFT", MiniMapWorldMapButton, "TOPLEFT", 2, -2)
 
 	GarrisonLandingPageMinimapButton:SetSize(36, 36) -- Shrink the missions button
-	-- We also need to hook this as Blizz likes to fiddle with its size
+	-- Stop Blizz changing the icon size || GarrisonLandingPageMinimapButton_UpdateIcon() >> SetLandingPageIconFromAtlases() >> self:SetSize()
 	hooksecurefunc(GarrisonLandingPageMinimapButton, "SetSize", function()
-		sm.core.frame.SetSize(GarrisonLandingPageMinimapButton, 36, 36)
+		sm.core.button.SetSize(GarrisonLandingPageMinimapButton, 36, 36)
 	end)
-
+	-- Stop Blizz moving the icon || GarrisonLandingPageMinimapButton_UpdateIcon() >> ApplyGarrisonTypeAnchor() >> anchor:SetPoint()
+	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", function()
+		mod:UpdateDraggables(GarrisonLandingPageMinimapButton)
+	end)
 	sm.core:RegisterModuleOptions("Buttons", options, L["Buttons"])
 
 	C_Timer.After(1, mod.StartFrameGrab)
@@ -314,6 +326,8 @@ do
 		AllFadeOut({MinimapStyleShowRegion, MinimapStyleChangePrevButton, MinimapStyleChangeNextButton});	--bf@178.com
 	end
 
+	local hideFrame = CreateFrame("Frame") -- Dummy frame we use for hiding buttons to prevent other addons re-showing them
+	hideFrame:Hide()
 	function mod:NewFrame(f)
 		local n = f:GetName()
 		-- Only add Blizz buttons & LibDBIcon buttons
@@ -338,20 +352,30 @@ do
 				f:SetParent(Minimap)
 				f:SetPoint("CENTER", Minimap, "CENTER", -60, 55)
 			end
-			-- Parented to MinimapCluster
-			if n == "MinimapZoneTextButton" then
-				f:SetParent(Minimap)
-			end
 
 			animFrames[#animFrames+1] = f
 
 			-- Configure fading
-			if mod.db.controlVisibility then
-				self:ChangeFrameVisibility(f, mod.db.visibilitySettings[n] or "always")
+			if n == "TimeManagerClockButton" then -- This is disgusting but have to work around other addons messing with it
+				hooksecurefunc(f, "SetParent", function(self)
+					local vis = mod.db.visibilitySettings[n] or "hover"
+					if vis == "always" then
+						sm.core.button.SetParent(self, Minimap)
+						self:SetAlpha(1)
+					elseif vis == "never" then
+						sm.core.button.SetParent(self, hideFrame)
+					else
+						sm.core.button.SetParent(self, Minimap)
+						self:SetAlpha(0)
+					end
+				end)
+				f:SetParent(Minimap) -- Run the hook
+			elseif mod.db.controlVisibility then
+				self:ChangeFrameVisibility(f, mod.db.visibilitySettings[n] or "hover")
 			end
 
 			-- Don't add config or moving capability to the Zone Text and Clock buttons, handled in their own modules
-			if n ~= "MinimapZoneTextButton" and n ~= "TimeManagerClockButton" then
+			if n ~= "SexyMapZoneTextButton" and n ~= "TimeManagerClockButton" then
 				self:AddButtonOptions(n)
 
 				-- Configure dragging
@@ -366,8 +390,6 @@ do
 		f:HookScript("OnLeave", OnLeave)
 	end
 
-	local hideFrame = CreateFrame("Frame") -- Dummy frame we use for hiding buttons to prevent other addons re-showing them
-	hideFrame:Hide()
 	local frameParents = {} -- Store the original button parents for restoration
 	function mod:ChangeFrameVisibility(frame, vis)
 		if vis == "always" then
@@ -499,7 +521,7 @@ do
 				local f = animFrames[i]
 				local n = f:GetName()
 				-- Don't move the Clock or Zone Text when changing shape/preset
-				if n ~= "MinimapZoneTextButton" and n ~= "TimeManagerClockButton" then
+				if n ~= "SexyMapZoneTextButton" and n ~= "TimeManagerClockButton" then
 					local x, y = f:GetCenter()
 					local angle = mod.db.dragPositions[n] or getCurrentAngle(f:GetParent(), x, y)
 					if angle then
@@ -517,7 +539,7 @@ end
 
 do
 	local tbl = {
-		Minimap, MiniMapTrackingButton, MinimapZoneTextButton, MiniMapTracking, TimeManagerClockButton, GameTimeFrame,
+		Minimap, MiniMapTrackingButton, MiniMapTracking, TimeManagerClockButton, GameTimeFrame,
 		MinimapZoomIn, MinimapZoomOut, MiniMapWorldMapButton, GuildInstanceDifficulty, MiniMapChallengeMode, MiniMapInstanceDifficulty,
 		MiniMapMailFrame, QueueStatusMinimapButton, GarrisonLandingPageMinimapButton
 	}

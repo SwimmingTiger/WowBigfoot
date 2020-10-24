@@ -6,7 +6,7 @@
 ## Notes-zhCN: |cff00ff00Skada|r
 ## Notes-zhTW: |cff00ff00Skada|r
 ## Author: Zarnivoop
-## Version: 1.8.0
+## Version: 1.8.2
 ## SavedVariables: SkadaDB
 ## SavedVariablesPerCharacter: SkadaPerCharDB
 ## Dependencies: BigFoot

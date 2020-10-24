@@ -1081,13 +1081,11 @@ local create_panel_entry = function (self, row)
 			pcall (editbox.onleave_func, editbox)
 		end
 	end)
-	
-	editbox:SetBackdrop ({bgFile = [[Interface\DialogFrame\UI-DialogBox-Background]], edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1})
-	editbox:SetBackdropColor (1, 1, 1, 0.1)
-	editbox:SetBackdropBorderColor (1, 1, 1, 0.1)
+
 	editbox.editbox.current_bordercolor = {1, 1, 1, 0.1}
 	
 	editbox:SetTemplate (DF:GetTemplate ("dropdown", "OPTIONS_DROPDOWN_TEMPLATE"))
+	editbox:SetBackdropColor (.2, .2, .2, 0.7)
 	
 	tinsert (row.entry_available, editbox)
 end
@@ -1128,7 +1126,6 @@ end
 local create_panel_icon = function (self, row)
 	row.icon_total = row.icon_total + 1
 	local iconbutton = DF:NewButton (row, nil, "$parentIconButton" .. row.icon_total, "iconbutton", 22, 20)
-	iconbutton:InstallCustomTexture()
 	
 	iconbutton:SetHook ("OnEnter", button_on_enter)
 	iconbutton:SetHook ("OnLeave", button_on_leave)
@@ -1331,6 +1328,7 @@ function DF:NewFillPanel (parent, rows, name, member, w, h, total_lines, fill_ro
 								if (type (results [index]) == "string") then
 									local result = results [index]:gsub (".-%\\", "")
 									iconwidget._icon.texture = results [index]
+									iconwidget._icon:SetTexCoord (0.1, .9, 0.1, .9)
 								
 								elseif (type (results [index]) == "table") then
 									iconwidget._icon:SetTexture (results [index].texture)
@@ -1339,7 +1337,7 @@ function DF:NewFillPanel (parent, rows, name, member, w, h, total_lines, fill_ro
 									if (textCoord) then
 										iconwidget._icon:SetTexCoord (unpack(textCoord))
 									else
-										iconwidget._icon:SetTexCoord (0, 1, 0, 1)
+										iconwidget._icon:SetTexCoord (0.1, .9, 0.1, .9)
 									end
 									
 									local color = results [index].color
@@ -1351,6 +1349,7 @@ function DF:NewFillPanel (parent, rows, name, member, w, h, total_lines, fill_ro
 									end
 								else
 									iconwidget._icon:SetTexture (results [index])
+									iconwidget._icon:SetTexCoord (0.1, .9, 0.1, .9)
 								end
 								
 								iconwidget:Show()

@@ -214,7 +214,8 @@ local function __ExpBar_OnEnter(self)
 	TextStatusBar_UpdateTextString(self);
 	ShowTextStatusBarText(self);
 	exhaustionTick.timer = 1;
-	GameTooltip_AddNewbieTip(self, XPBAR_LABEL, 1.0, 1.0, 1.0, NEWBIE_TOOLTIP_XPBAR, 1);
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	GameTooltip_SetTitle(GameTooltip, XPBAR_LABEL);
 	GameTooltip.canAddRestStateLine = 1;
 
 	local __playerMinXP, __playerMaxXP = self:GetMinMaxValues();
