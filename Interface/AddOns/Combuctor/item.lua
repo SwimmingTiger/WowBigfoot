@@ -313,6 +313,7 @@ function Item:OnEnter()
 				GameTooltip:Show()
 			end
 		else
+			-- 老虎会游泳：这里不能注释，否则背包内物品信息（鼠标提示）就不显示了
 			ContainerFrameItemButton_OnEnter(self)
 		end
 	end
