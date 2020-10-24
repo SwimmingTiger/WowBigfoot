@@ -6,7 +6,7 @@
 ## Notes-zhCN: |cff00ff00Grail|r
 ## Notes-zhTW: |cff00ff00Grail|r
 ## Author: Scott M Harrison
-## Version: 111
+## Version: 112
 ## SavedVariables: GrailDatabase
 ## SavedVariablesPerCharacter: GrailDatabasePlayer,GrailWhenPlayer
 ## Dependencies: BigFoot

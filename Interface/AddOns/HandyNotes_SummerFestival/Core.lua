@@ -68,7 +68,14 @@ local C_Timer_After = C_Timer.After
 local C_Calendar = C_Calendar
 local GameTooltip = GameTooltip
 local GetGameTime = GetGameTime
-local GetQuestsCompleted = GetQuestsCompleted
+local GetQuestsCompleted = function(tbl)
+    tbl = tbl or {}
+    local ids = C_QuestLog.GetAllCompletedQuestIDs()
+    for _, questId in ipairs(ids or {}) do
+        tbl[questId] = true
+    end
+    return tbl
+end
 local IsControlKeyDown = IsControlKeyDown
 local LibStub = LibStub
 local next = next

@@ -101,9 +101,7 @@
           </Anchor>
         </Anchors>
         <Scripts>
-			<OnClick>
-				self:GetParent():Hide();
-			</OnClick>
+          <OnClick function="HideParentPanel" />
         </Scripts>
       </Button>
       <Frame inherits="InsetFrameTemplate" useParentLevel="true" parentKey="Inset">

@@ -2,7 +2,7 @@
 local WIDGET, VERSION = 'TitlePanel', 1
 
 local GUI = LibStub('NetEaseGUI-2.0')
-local TitlePanel = GUI:NewClass(WIDGET, 'Frame', VERSION)
+local TitlePanel = GUI:NewClass(WIDGET, 'Frame.BackdropTemplate', VERSION)
 if not TitlePanel then
     return
 end
@@ -37,7 +37,7 @@ function TitlePanel:Constructor(parent)
     border:SetTexture([[Interface\DialogFrame\UI-DialogBox-Corner]])
     border:SetPoint('TOPRIGHT', -4, -4)
 
-    CloseButton:SetScript('OnClick', function() TitlePanel:Hide() end)
+    CloseButton:SetScript('OnClick', HideParentPanel)
 
     self.Title = Title
     self.CloseButton = CloseButton

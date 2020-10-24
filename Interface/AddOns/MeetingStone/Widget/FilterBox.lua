@@ -56,9 +56,7 @@ function FilterBox:Constructor()
 end
 
 function FilterBox:UpdateCheck()
-    if self.key ~= 'BossKilled' then
-        self.Check:SetChecked(self.MinBox:GetNumber() ~= 0 or self.MaxBox:GetNumber() ~= 0)
-    end
+    self.Check:SetChecked(self.MinBox:GetNumber() ~= 0 or self.MaxBox:GetNumber() ~= 0)
     self:Fire('OnChanged')
 end
 

@@ -31,17 +31,17 @@ local function CreateDispatcher(argCount)
         local xpcall, eh = ...
         local method, ARGS
         local function call() return method(ARGS) end
-
+    
         local function dispatch(func, ...)
             method = func
             if not method then return end
             ARGS = ...
             return xpcall(call, eh)
         end
-
+    
         return dispatch
     ]]
-
+    
     local ARGS = {}
     for i = 1, argCount do ARGS[i] = "arg"..i end
     code = code:gsub("ARGS", tconcat(ARGS, ", "))
@@ -56,7 +56,7 @@ end})
 Dispatchers[0] = function(func)
     return xpcall(func, errorhandler)
 end
-
+ 
 local function safecall(func, ...)
     return Dispatchers[select("#", ...)](func, ...)
 end
@@ -78,9 +78,9 @@ function Module:NewModule(objectorname, ...)
     end
     if type(name) ~= "string" then error(("Usage: NewModule([object,] name, [prototype, [lib, lib, lib, ...]): 'name' - string expected got '%s'."):format(type(name)), 2) end
     if type(prototype) ~= "string" and type(prototype) ~= "table" and type(prototype) ~= "nil" then error(("Usage: NewModule([object,] name, [prototype, [lib, lib, lib, ...]): 'prototype' - table (prototype), string (lib) or nil expected got '%s'."):format(type(prototype)), 2) end
-
+    
     if self.modules[name] then error(("Usage: NewModule([object,]name, [prototype, [lib, lib, lib, ...]): 'name' - Module '%s' already exists."):format(name), 2) end
-
+    
     local module
     if object then
         module = AceAddon:NewAddon(object, format("%s_%s", self.name or tostring(self), name))
@@ -108,11 +108,11 @@ function Module:NewModule(objectorname, ...)
             module[k] = v
         end
     end
-
+    
     safecall(self.OnModuleCreated, self, module) -- Was in Ace2 and I think it could be a cool thing to have handy.
     self.modules[name] = module
     tinsert(self.orderedModules, module)
-
+    
     return module
 end
 
@@ -124,11 +124,11 @@ function Module:ShowModule(name, ...)
     if not (type(module[0]) == 'userdata' and module.GetObjectType) then
         error(([[Cannot show module '%s' (is not uiobject)]]):format(name), 2)
     end
-    module:Hide();
+    HideUIPanel(module)
     if type(module.SetArguments) == 'function' then
         module:SetArguments(...)
     end
-    module:Show();
+    ShowUIPanel(module)
 end
 
 function Module:HideModule(name)
@@ -139,7 +139,7 @@ function Module:HideModule(name)
     if not (type(module[0]) == 'userdata' and module.GetObjectType) then
         error(([[Cannot hide module '%s' (is not uiobject)]]):format(name), 2)
     end
-    module:Hide();
+    HideUIPanel(module)
 end
 
 function Module:ToggleModule(name, ...)

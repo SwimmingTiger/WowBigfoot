@@ -103,7 +103,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         <Anchors>
             <Anchor point="RIGHT" relativeTo="SendMailNameEditBox" relativePoint="RIGHT">
                 <Offset>
-					<AbsDimension x="0" y="1"/>
+					<AbsDimension x="0" y="2"/>
 				</Offset>
             </Anchor>
         </Anchors>
@@ -166,7 +166,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="MailModList_DropDownMenu" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="15" y="0"/>
+					<AbsDimension x="11" y="0"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
@@ -195,7 +195,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="MailModList_DropDownMenu" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="15" y="0"/>
+					<AbsDimension x="11" y="0"/>
 				</Offset>
 			</Anchor>
 		</Anchors>

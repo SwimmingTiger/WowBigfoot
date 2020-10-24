@@ -9,7 +9,7 @@
 ## X-Website: https://www.townlong-yak.com/master-plan/
 ## SavedVariables: MasterPlanAG,SV_GarrisonMissionManager
 ## SavedVariablesPerCharacter: MasterPlanPC,SVPC_GarrisonMissionManager
-## Version: 0.118
+## Version: 0.118.1
 ## X-Version-Key: exarch
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot

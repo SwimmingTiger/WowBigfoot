@@ -23,7 +23,7 @@ local addonname,addon = ...
 local L = addon.L
 
 
-local HPetOption = CreateFrame("Frame","HPetOption",InterfaceOptionsFramePanelContainer)
+local HPetOption = CreateFrame("Frame","HPetOption",InterfaceOptionsFramePanelContainer, "BackdropTemplate")
 
 HPetOption:Hide()
 --~ tinsert(UISpecialFrames, "HPetOption")
@@ -731,7 +731,7 @@ do
                 C_PetJournal.SetFilterChecked(flag, value)
             end
         end
-		
+
         local need_add_all = false
         local ntypes = C_PetJournal.GetNumPetTypes()
         for i=1,ntypes do
@@ -740,7 +740,7 @@ do
                 need_add_all = true
             end
         end
-		
+
         if need_add_all then
             C_PetJournal.SetAllPetTypesChecked(true);
         end

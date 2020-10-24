@@ -6,7 +6,7 @@
 ## Notes-zhCN: |cff00ff00HandyNotes_HallowsEnd|r
 ## Notes-zhTW: |cff00ff00HandyNotes_HallowsEnd|r
 ## Author: Ravendwyr
-## Version: v1.5
+## Version: v1.5-4-g1f8dcfa
 ## X-Category: Map & Minimap
 ## SavedVariables: HandyNotes_HallowsEndDB
 ## RequiredDeps: HandyNotes

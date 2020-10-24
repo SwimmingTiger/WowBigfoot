@@ -94,11 +94,6 @@ end
 
 local function Create(_Meta)
     local object
-    if _Meta.__inherit then
-        _Meta.__inherit = _Meta.__inherit.. ',BackdropTemplate'
-    else
-        _Meta.__inherit = 'BackdropTemplate'
-    end
 
     if not _Meta.__ui then
         object = {}

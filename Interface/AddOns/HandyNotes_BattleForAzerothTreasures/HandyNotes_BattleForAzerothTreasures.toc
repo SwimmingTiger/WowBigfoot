@@ -6,7 +6,7 @@
 ## Notes-zhCN: |cff00ff00HandyNotes_BattleForAzerothTreasures|r
 ## Notes-zhTW: |cff00ff00HandyNotes_BattleForAzerothTreasures|r
 ## Author: Kemayo
-## Version: 1
+## Version: 9
 ## DefaultState: enabled
 ## X-Category: Map
 ## X-eMail: kemayo @ gmail DOT com

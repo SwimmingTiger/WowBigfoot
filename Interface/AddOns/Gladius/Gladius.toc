@@ -5,7 +5,7 @@
 ## Notes: |cffbc8f8fArena enemy unit frames.|r
 ## Notes-zhCN: |cff00ff00Gladius|r|n|cffbc8f8f竞技场敌人的头像插件。|r
 ## Notes-zhTW: |cff00ff00Gladius|r|n|cffbc8f8f競技場敵人的頭像插件。|r
-## Version: 7.0.1
+## Version: 7.0.2
 ## Author: Resike and Firebunny. Original author: Proditor
 ## SavedVariables: Gladius2DB
 ## Dependencies: BigFoot

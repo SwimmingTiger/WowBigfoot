@@ -221,6 +221,15 @@ local npcs = {
 
 }
 
+local GetQuestsCompleted = function(tbl)
+    tbl = tbl or {}
+    local ids = C_QuestLog.GetAllCompletedQuestIDs()
+    for _, questId in ipairs(ids or {}) do
+        tbl[questId] = true
+    end
+    return tbl
+end
+
 function PetTamerPinMixin:OnAcquired(poiInfo) -- override
 	if (poiInfo and poiInfo.name) then
 		if npcs[poiInfo.name] and npcs[poiInfo.name].QuestID then
