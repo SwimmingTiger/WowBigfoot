@@ -285,4 +285,3 @@ L["VerticalGrowdirection_Desc"] = "Lets you choose if the bars grow upwards or d
 L["VerticalPosition"] = "Vertical position"
 L["VerticalSpacing"] = "Vertical spacing"
 L["Width"] = "Width"
-

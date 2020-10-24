@@ -108,10 +108,11 @@ local FastQuestTable={};
 
 local function BFQuest_GetTable()
 	local tempTable={}
-	for i=1, GetNumQuestLogEntries(), 1 do
-		local questLogTitleText, _, _, _, _, isComplete = GetQuestLogTitle(i);
+	for i=1, C_QuestLog.GetNumQuestLogEntries(), 1 do
+		local info = C_QuestLog.GetInfo(i)
+		local questLogTitleText = info.title
 		if questLogTitleText then
-			tempTable[questLogTitleText]=isComplete
+			tempTable[questLogTitleText] = C_QuestLog.IsComplete(i)
 		end
 	end
 	return tempTable

@@ -286,4 +286,3 @@ L["VerticalGrowdirection_Desc"] = "選擇橫列要向上或向下增長。"
 L["VerticalPosition"] = "垂直位置"
 L["VerticalSpacing"] = "垂直間距"
 L["Width"] = "寬度"
-
