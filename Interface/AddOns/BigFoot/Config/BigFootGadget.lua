@@ -119,7 +119,9 @@ function BigFootGadgetConfigFunc()
 			BIGFOOTGADGET_Myslot_PROXMIO,
 			function()
 				if (BigFoot_IsAddOnLoadedFromBigFoot("MySlot")) then
-					MYSLOT_ReportFrame:Show();
+					if SlashCmdList.MYSLOT then
+						SlashCmdList.MYSLOT("")
+					end
 					ModManagementFrame:Hide();
 				end
 			end,
