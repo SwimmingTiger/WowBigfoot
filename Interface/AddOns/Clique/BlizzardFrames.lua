@@ -165,7 +165,12 @@ local function enable(frame)
     end
 
     -- skip the nameplates, they're TEHBROKEN
-    if frame and frame.GetName and frame:GetName() and frame:GetName() :match("^NamePlate") then
+    if frame and frame.GetName and frame:GetName() and frame:GetName():match("^NamePlate") then
+        return
+    end
+
+    -- skip the nameplates, new
+    if frame and frame.GetName and not frame:GetName() then
         return
     end
 

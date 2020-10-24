@@ -6,7 +6,7 @@
 ## Notes-zhCN: |cff00ff00Clique|r|n|cffbc8f8f简单而强大的点击施法工具。|r
 ## Notes-zhTW: |cff00ff00Clique|r|n|cffbc8f8f簡單而強大的點擊施法工具。|r
 ## Author: Cladhaire
-## Version: v90001-1.0.0
+## Version: v90001-1.0.1
 ## SavedVariables: CliqueDB, CliqueDB3
 ## Dependencies: BigFoot
 ## X-Revision: BigFoot
