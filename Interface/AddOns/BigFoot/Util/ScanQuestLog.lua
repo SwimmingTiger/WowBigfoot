@@ -1,7 +1,7 @@
 ﻿
 local _
 local match, tonumber, wipe, floor = strmatch, tonumber, wipe, math.floor;
-local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 
 local quests = {}
 local mosters = {}
@@ -55,8 +55,9 @@ local function OnQuestLogUpdate()
 	local qobsize = 0
 	local name, have, need;
 	for questid = 1, GetNumQuestLogEntries() do
-		local qtitle, _, _, header, _, iscomp = GetQuestLogTitle(questid)
-		if not header then
+		local info = C_QuestLog.GetInfo(questid)
+		local qtitle = info.title
+		if not info.isHeader then
 			quests[qtitle] = true;
 			for questobnum = 1, GetNumQuestLeaderBoards(questid) do
 
@@ -95,7 +96,7 @@ local function OnQuestLogUpdate()
 						mosters[name] = qobsize;
 					end
 				else
-					have, need = iscomp and 1 or 0, 1
+					have, need = C_QuestLog.IsComplete(questid) and 1 or 0, 1
 				end
 
 				if desc then desc = " - "..desc
@@ -115,9 +116,10 @@ end
 
 local function recordHeaderStatus()
 	for i =1, GetNumQuestLogEntries() do
-		local questName, _, _, isHeader,isCollapsed = GetQuestLogTitle(i)
-		if isHeader then
-			if isCollapsed then
+		local info = C_QuestLog.GetInfo(i)
+		local questName = info.title
+		if info.isHeader then
+			if info.isCollapsed then
 				headers[questName] = "collapsed"
 			else
 				headers[questName] = "expanded"
@@ -128,13 +130,14 @@ end
 
 local function getNextHeaderIndex(status)
 	for i = 1, GetNumQuestLogEntries() do
-		local questName, _, _, isHeader, isCollapsed = GetQuestLogTitle(i)
+		local info = C_QuestLog.GetInfo(i)
+		local questName = info.title
 		if (status == "expanded") then
-			if isHeader and not isCollapsed and headers[questName] =='collapsed' then
+			if info.isHeader and not info.isCollapsed and headers[questName] =='collapsed' then
 				return i,questName
 			end
 		elseif (status == "collapsed") then
-			if isHeader and isCollapsed then
+			if info.isHeader and info.isCollapsed then
 				return i,questName
 			end
 		end

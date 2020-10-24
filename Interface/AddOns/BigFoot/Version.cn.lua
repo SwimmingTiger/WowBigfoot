@@ -1,6 +1,6 @@
 if GetLocale()~='zhCN' then return end
 local main= "9.0.0."
-local minor = "820"
+local minor = "827"
 BIGFOOT_VERSION = "zhCN"..main..minor;
 
 function GetMinorVersion()
@@ -8,6 +8,51 @@ function GetMinorVersion()
 end
 
 BigFootChangelog_ah();
+
+	BigFootChangelog_at("2020/10/23 (9.0.0.827)")
+	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
+	BigFootChangelog_ar("可接任务","升级至最新版本(112)。")
+	BigFootChangelog_ar("秘境增强","升级至最新版本(0.19.3)。")
+
+
+	BigFootChangelog_at("2020/10/21 (9.0.0.826)")
+	BigFootChangelog_ar("大脚插件","移除界面调整增强模块。")
+	BigFootChangelog_ar("首领报警","升级至最新版本(9.0.2)。")
+	BigFootChangelog_ar("小地图美化","升级至最新版本(9.0.4)。")
+
+
+	BigFootChangelog_at("2020/10/20 (9.0.0.825)")
+	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
+	BigFootChangelog_ar("按键保存","升级至最新版本(5.4.1)。")
+	BigFootChangelog_ar("界面调整","升级至最新版本(4.10.5)。")
+	BigFootChangelog_ar("小地图美化","升级至最新版本(9.0.3)。")
+
+
+	BigFootChangelog_at("2020/10/19 (9.0.0.824)")
+	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
+	BigFootChangelog_ar("按键保存","升级至最新版本(5.4.0)。")
+	BigFootChangelog_ar("竞技语音","升级至最新版本(SLB-2)。")
+	BigFootChangelog_ar("界面调整","升级至最新版本(4.10.4)。")
+
+
+	BigFootChangelog_at("2020/10/18 (9.0.0.823)")
+	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
+	BigFootChangelog_ar("界面调整","升级至最新版本(4.10.3)。")
+	BigFootChangelog_ar("小地图美化","升级至最新版本(9.0.2)。")
+
+
+	BigFootChangelog_at("2020/10/17 (9.0.0.822)")
+	BigFootChangelog_ar("大脚插件","尝试修复可能引起的卡顿问题。")
+	BigFootChangelog_ar("大脚插件","移除腐蚀提示。")
+	BigFootChangelog_ar("集合石","升级至最新版本(90001.01)。")
+	BigFootChangelog_ar("秘境增强","升级至最新版本(0.19.0)。")
+
+
+	BigFootChangelog_at("2020/10/16 (9.0.0.821)")
+	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
+	BigFootChangelog_ar("世界任务","升级至最新版本(401)。")
+	BigFootChangelog_ar("界面调整","升级至最新版本(4.10.2)。")
+
 
 	BigFootChangelog_at("2020/10/15 (9.0.0.820)")
 	BigFootChangelog_ar("大脚插件","修复部分已知问题。")
@@ -1584,4 +1629,4 @@ BigFootChangelog_ah();
 BigFootChangelog_af();
 
 
-BF_VERSION_CHECKSUM = "50"
+BF_VERSION_CHECKSUM = "53"
